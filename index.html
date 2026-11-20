@@ -228,14 +228,21 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
 .besuch-neu i { width: 8px; height: 8px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 6px var(--neon-glut); animation: blinkpunkt 1.6s ease-in-out infinite; }
 @keyframes blinkpunkt { 50% { opacity: .35; } }
 .neu-box { max-width: 30em; margin: 0 auto 8px; font-size: 14px; color: var(--tx2); text-align: center; }
-.neu-box summary { cursor: pointer; list-style: none; }
+.neu-box summary { display: inline-flex; cursor: pointer; list-style: none; }
 .neu-box summary::-webkit-details-marker { display: none; }
 .neu-box summary::after { content: "▾"; transition: transform .3s; }
 .neu-box[open] summary::after { transform: rotate(180deg); }
 .neu-box summary:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
-.neu-box ul { margin: 8px 0 0; padding: 10px 14px 10px 30px; border-radius: 14px; background: var(--panel); border: 1px solid var(--panel-rand); text-align: left; }
-.neu-box li { margin: 4px 0; color: var(--tx); }
-.neu-box li::marker { color: var(--neon); }
+/* Nichts Neues: kein Blinken, nur ein stiller Knopf zum Aufklappen */
+.neu-box.ruhig summary { font-weight: 600; color: var(--tx2); }
+.neu-box.ruhig summary i { display: none; }
+.neu-box ol { list-style: disc; margin: 8px 0 0; padding: 10px 14px 10px 30px; border-radius: 14px; background: var(--panel); border: 1px solid var(--panel-rand); text-align: left; }
+.neu-box li { margin: 5px 0; color: var(--tx2); }
+.neu-box li.ist-neu { color: var(--tx); }
+.neu-box li::marker { color: var(--tx3); }
+.neu-box li.ist-neu::marker { color: var(--neon); }
+.neu-box .neu-wann { font-size: 12px; font-weight: 700; color: var(--tx3); }
+.neu-box li.ist-neu .neu-wann::after { content: " · neu"; color: var(--gut); }
 .neu-box a { color: var(--gut); font-weight: 800; }
 .neu-box .neu-bau { display: inline-block; margin-top: 6px; font-size: 13px; }
 .buehne { display: grid; justify-items: center; gap: 14px; padding-top: 6px; }
@@ -1043,14 +1050,18 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 <main>
   <!-- Stand und letzter Besuch; ohne JS nur der Stand -->
   <p class="besuch"><span class="besuch-stand">Stand 20.11.2026, 21:08</span></p>
-  <!-- Was ist neu: wer seit seinem letzten Besuch etwas verpasst hat, sieht diese Einträge oben.
+  <!-- Was zuletzt neu ist: immer da, auch ohne JS. Was seit dem letzten Besuch dazukam, markiert das Skript.
        Neue Einträge oben anfügen, mit data-wann auf „neu“; ./update_netlify setzt beim Hochladen die Zeit. -->
-  <ol class="neuigkeiten" hidden>
-    <li data-wann="2026-11-20T21:08">Diese Liste: Wer wiederkommt, sieht hier, was seit seinem letzten Besuch neu ist.</li>
+  <details class="neu-box" open>
+    <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
+    <ol class="neuigkeiten">
+    <li data-wann="neu">Diese Liste: Hier steht, was zuletzt neu ist. Was seit deinem letzten Besuch dazukam, ist markiert.</li>
     <li data-wann="2026-11-20T20:59"><a href="#a-haken">Zu schön, um wahr zu sein?</a> Je Sicht eine ehrliche Antwort samt Haken, dazu ein Netz, in das du deinen Space hängen kannst.</li>
     <li data-wann="2026-11-20T20:59"><a href="#a-haken">Was MyrSpace nicht behauptet</a>: ehrliche Grenzen in der Sicht Konzerner und Cyberpunk.</li>
     <li data-wann="2026-11-20T20:59">Mit „Bewegung aus“ stehen Konzerner und Cyberpunk jetzt lesbar untereinander.</li>
-  </ol>
+    </ol>
+    <a class="neu-bau" href="#bautafel">Was noch kommt, steht auf der Bautafel →</a>
+  </details>
 
   <!-- ═════ 1 · Die Handy-Demo ═════ -->
   <section class="buehne" aria-label="Kennst du das?">
@@ -2574,42 +2585,40 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 })();
 </script>
 <script>
-// Stand und letzter Besuch. Der Besuch steht nur im eigenen Browser; ein Neuladen im selben Tab zählt nicht als neuer Besuch.
+// Stand, letzter Besuch und was seitdem neu ist. Gemerkt wird nur im eigenen Browser: welchen Stand man zuletzt
+// gesehen hat und wann. Im Zweifel (nichts gemerkt, Speicher gesperrt) bleibt die ganze Liste offen.
 (() => {
-  const zeile = document.querySelector('.besuch'), meta = document.querySelector('meta[name="myr-stand"]');
-  if (!zeile || !meta) return;
+  const zeile = document.querySelector('.besuch'), meta = document.querySelector('meta[name="myr-stand"]'), box = document.querySelector('.neu-box');
+  if (!zeile || !meta || !box) return;
   const stand = new Date(meta.content);
   const datum = d => d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-  let vorher = null;
+  const kurz = d => d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  let gesehen = null, besuch = null;
   try {
-    let v = sessionStorage.getItem('myr-pitch-vorher');
-    if (v === null) { v = localStorage.getItem('myr-pitch-besuch') || ''; sessionStorage.setItem('myr-pitch-vorher', v); }
+    const g = localStorage.getItem('myr-pitch-gesehen'), b = localStorage.getItem('myr-pitch-besuch');
+    if (b) besuch = new Date(b);
+    // Ältere Besuche kennen nur die Zeit, nicht den gesehenen Stand
+    gesehen = g ? new Date(g) : besuch;
+    localStorage.setItem('myr-pitch-gesehen', meta.content);
     localStorage.setItem('myr-pitch-besuch', new Date().toISOString());
-    if (v) vorher = new Date(v);
   } catch (e) {}
-  if (isNaN(stand)) return;
-  zeile.querySelector('.besuch-stand').textContent = 'Stand ' + datum(stand);
-  if (!vorher || isNaN(vorher)) return;
-  const b = document.createElement('span'); b.textContent = 'Dein letzter Besuch: ' + datum(vorher);
-  zeile.append(b);
-  const neu = [...document.querySelectorAll('.neuigkeiten > li')].filter(li => new Date(li.dataset.wann) > vorher);
-  if (neu.length) {
-    // Aufgeklappt: Wer wiederkommt, soll gleich sehen, was neu ist
-    const box = document.createElement('details'); box.className = 'neu-box'; box.open = true;
-    const sum = document.createElement('summary'); sum.className = 'besuch-neu';
-    sum.innerHTML = '<i aria-hidden="true"></i>';
-    sum.append(neu.length === 1 ? 'Seitdem ist eines neu' : `Seitdem sind ${neu.length} Dinge neu`);
-    const liste = document.createElement('ul');
-    neu.forEach(li => liste.append(li.cloneNode(true)));
-    const bau = document.createElement('a'); bau.href = '#bautafel'; bau.className = 'neu-bau'; bau.textContent = 'Was noch kommt, steht auf der Bautafel →';
-    box.append(sum, liste, bau);
-    zeile.after(box);
-  } else if (stand > vorher) {
-    const a = document.createElement('a'); a.className = 'besuch-neu'; a.href = '#bautafel';
-    a.innerHTML = '<i aria-hidden="true"></i>Seitdem hat sich etwas verändert →';
-    zeile.append(a);
-  } else {
-    const u = document.createElement('span'); u.textContent = '· seitdem unverändert'; zeile.append(u);
+  if (!isNaN(stand)) zeile.querySelector('.besuch-stand').textContent = 'Stand ' + datum(stand);
+  if (besuch && !isNaN(besuch)) { const s = document.createElement('span'); s.textContent = 'Dein letzter Besuch: ' + datum(besuch); zeile.append(s); }
+
+  const eintraege = [...box.querySelectorAll('.neuigkeiten > li')];
+  eintraege.forEach(li => {
+    const w = new Date(li.dataset.wann);
+    if (isNaN(w)) return;
+    const z = document.createElement('small'); z.className = 'neu-wann'; z.textContent = kurz(w);
+    li.prepend(z, ' ');
+    if (gesehen && !isNaN(gesehen) && w > gesehen) li.classList.add('ist-neu');
+  });
+  const n = eintraege.filter(li => li.classList.contains('ist-neu')).length;
+  const titel = box.querySelector('.neu-titel');
+  if (n) titel.textContent = n === 1 ? 'Seit deinem letzten Besuch ist eines neu' : `Seit deinem letzten Besuch sind ${n} Dinge neu`;
+  else if (gesehen && !isNaN(gesehen)) {
+    box.open = false; box.classList.add('ruhig');
+    if (!(stand > gesehen)) { const u = document.createElement('span'); u.textContent = '· seitdem unverändert'; zeile.append(u); }
   }
 })();
 
