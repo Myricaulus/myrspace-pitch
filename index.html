@@ -947,6 +947,96 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 .bau-zu:focus-visible { outline: 3px solid var(--neon); outline-offset: 2px; }
 .bauschild[aria-expanded="true"] { border-color: var(--fenster); box-shadow: 0 0 16px -4px var(--glut-farbe); }
 
+/* ── Ankunft des merge-train: hinter „Kontrolliere“ klappt oben der Bahnhof herunter (Zeichnung nach merge-train),
+   ein Zug fährt ein, im Waggon steckt ein Diff mit einem Gespräch zwischen Mensch und Agent ── */
+.js .tipp[role="button"] { cursor: pointer; color: var(--tx2); font-weight: 600; }
+.ak { --bh-wand: #b3aa9b; --bh-welle: #a1988a; --bh-dach: #6c655c; --bh-turm: #a59c8d; --bh-glas: #2b333b; --bh-glasrand: #575047;
+  --bh-fenster: #3b4650; --bh-glut: none; --bh-schild: #e9e1cc; --bh-schrift: #3d3830; --bh-schotter: #6e665c; --bh-schwelle: #4a3f35;
+  --bh-schiene: #2f2f2f; --bh-stahl: #4b5157; --ak-kasten: #fbf9f4; --ak-rand: #8a8178; --ak-p: #2f8a46; --ak-m: #c4373f;
+  position: fixed; z-index: 40; top: 0; left: 0; right: 0; perspective: 1100px; pointer-events: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ak, :root:not([data-theme="light"]) .ak-diff { --bh-wand: #4f4c4c; --bh-welle: #45423f; --bh-turm: #4a4746; --bh-dach: #2c2a2a;
+    --bh-schrift: #c9bfa6; --bh-fenster: #f2c45a; --bh-glut: drop-shadow(0 0 3px #f2b13a); --bh-glas: #4a3f22; --bh-glasrand: #2c2a2a;
+    --bh-schild: #8f8672; --bh-schotter: #3b3732; --bh-schwelle: #28221d; --bh-schiene: #8a8a8a; --bh-stahl: #5d636a;
+    --ak-kasten: #221b42; --ak-rand: #8a80a8; --ak-p: #7fdc8a; --ak-m: #ff7a85; }
+}
+:root[data-theme="dark"] .ak, :root[data-theme="dark"] .ak-diff { --bh-wand: #4f4c4c; --bh-welle: #45423f; --bh-turm: #4a4746; --bh-dach: #2c2a2a;
+  --bh-schrift: #c9bfa6; --bh-fenster: #f2c45a; --bh-glut: drop-shadow(0 0 3px #f2b13a); --bh-glas: #4a3f22; --bh-glasrand: #2c2a2a;
+  --bh-schild: #8f8672; --bh-schotter: #3b3732; --bh-schwelle: #28221d; --bh-schiene: #8a8a8a; --bh-stahl: #5d636a;
+  --ak-kasten: #221b42; --ak-rand: #8a80a8; --ak-p: #7fdc8a; --ak-m: #ff7a85; }
+.ak[hidden] { display: none; }
+.ak-szene { position: relative; pointer-events: auto; background: linear-gradient(var(--himmel-oben), var(--himmel-unten));
+  border-bottom: 3px solid var(--bh-dach); box-shadow: 0 12px 34px rgba(10, 6, 24, .4);
+  transform-origin: 50% 0; transform: rotateX(-89deg); opacity: .3; transition: transform .6s cubic-bezier(.3, 1.3, .5, 1), opacity .35s; }
+.ak.auf .ak-szene { transform: none; opacity: 1; }
+.ak-anlage { display: block; width: 100%; height: auto; max-height: 40vh; }
+.ak-hinweis { position: absolute; top: 9px; right: 50px; left: 34%; margin: 0; text-align: right; font-size: 13px; line-height: 1.35; color: var(--tx);
+  text-shadow: 0 0 6px var(--grund), 0 0 2px var(--grund); opacity: 0; transition: opacity .4s; pointer-events: none; }
+.ak.steht .ak-hinweis { opacity: 1; }
+.ak-zu, .akd-zu { position: absolute; top: 7px; right: 9px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--panel-rand);
+  background: var(--panel); color: var(--tx); font: 16px/1 system-ui, sans-serif; cursor: pointer; }
+.b-wand { fill: var(--bh-wand); } .b-welle { stroke: var(--bh-welle); stroke-width: 1; } .b-dach { fill: var(--bh-dach); } .b-turm { fill: var(--bh-turm); }
+.b-glas { fill: var(--bh-glas); stroke: var(--bh-glasrand); stroke-width: 2; } .b-sprosse { stroke: var(--bh-glasrand); stroke-width: 1.5; }
+.b-fenster { fill: var(--bh-fenster); filter: var(--bh-glut); } .b-tor { fill: #2a2622; } .b-torrand { fill: none; stroke: var(--bh-dach); stroke-width: 3; }
+.b-schild { fill: var(--bh-schild); stroke: var(--bh-dach); } .b-schrift { font: 800 8px system-ui, sans-serif; fill: var(--bh-schrift); }
+.b-gurt { stroke: #26292d; stroke-width: 3.5; } .b-gut { stroke: #9c8a6c; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 3.5; }
+.b-stahl { stroke: var(--bh-stahl); stroke-width: 1.6; fill: none; } .b-stuetze { stroke-width: 2.4; }
+.b-trommel { fill: #2e3236; } .b-schurre { fill: #5b6066; stroke: #3a3e43; } .b-strahl { stroke: #9c8a6c; stroke-width: 4; stroke-dasharray: 2 3; opacity: 0; }
+.b-schotter { fill: var(--bh-schotter); } .b-schwelle { fill: var(--bh-schwelle); } .b-schiene { stroke: var(--bh-schiene); stroke-width: 2.2; }
+.ak.laedt .b-gut { animation: ak-band .3s linear infinite; } .ak.laedt .b-strahl { opacity: 1; animation: ak-fallen .25s linear infinite; }
+@keyframes ak-band { to { stroke-dashoffset: -5.5; } } @keyframes ak-fallen { to { stroke-dashoffset: -5; } }
+.ak-zug { transition: transform 2.6s cubic-bezier(.12, .6, .3, 1); }
+.ak.weg .ak-zug { transition: transform 1.9s cubic-bezier(.6, 0, .9, .5); }
+.ak-wagen, .ak-lok { cursor: pointer; outline: none; }
+.ak-kasten { fill: var(--ak-kasten); stroke: var(--ak-rand); stroke-width: 1.5; }
+.ak-wagen:hover .ak-kasten, .ak-wagen:focus-visible .ak-kasten { stroke: var(--neon); stroke-width: 3; }
+.ak-lok:hover, .ak-lok:focus-visible { filter: drop-shadow(0 0 4px var(--neon)); }
+.ak.steht .ak-wagen { filter: drop-shadow(0 0 8px var(--neon)); animation: ak-glimmen 1.6s ease-in-out infinite alternate; }
+@keyframes ak-glimmen { from { filter: drop-shadow(0 0 2px var(--neon-glut)); } to { filter: drop-shadow(0 0 12px var(--neon)); } }
+.ak-fuell { fill: #b08a5a; opacity: .45; transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); transition: transform 1.3s ease-out; }
+.ak.voll .ak-fuell { transform: none; }
+.ak-tx { fill: var(--tx); font: 12px system-ui, sans-serif; } .ak-fett { font-weight: 600; } .ak-klein { font-size: 11px; opacity: .75; }
+.ak-p { fill: var(--ak-p); } .ak-m { fill: var(--ak-m); } .ak-radw { fill: var(--ak-rand); }
+.ak-rad { transform-box: fill-box; transform-origin: center; } .ak.faehrt .ak-rad { animation: ak-drehen .55s linear infinite; }
+@keyframes ak-drehen { to { transform: rotate(360deg); } }
+.ak-dampf circle { fill: #f4f1ea; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.ak.faehrt .ak-dampf circle { animation: ak-dampf 1s ease-out infinite; }
+.ak.faehrt .ak-dampf circle:nth-child(2) { animation-delay: .33s; } .ak.faehrt .ak-dampf circle:nth-child(3) { animation-delay: .66s; }
+@keyframes ak-dampf { from { opacity: .6; transform: scale(.6); } to { opacity: 0; transform: translate(-26px, -12px) scale(1.7); } }
+/* Das Diff im Waggon */
+.ak-diff { width: min(580px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); padding: 0; overflow: auto; color: var(--tx); background: var(--grund);
+  border: 1px solid var(--panel-rand); border-radius: 12px; box-shadow: 0 22px 60px rgba(10, 6, 24, .5); }
+.ak-diff::backdrop { background: rgba(10, 6, 24, .55); }
+.ak-diff[open] { animation: auftauchen .3s ease both; }
+.akd-kopf { margin: 0; padding: 12px 50px 10px 14px; border-bottom: 1px solid var(--panel-rand); font: 600 14px/1.4 ui-monospace, Menlo, Consolas, monospace; }
+.akd-kopf small { display: block; font: 12.5px system-ui, sans-serif; color: var(--tx3); } .akd-kopf .p { color: var(--ak-p); } .akd-kopf .m { color: var(--ak-m); }
+.akd-code { padding: 6px 0; overflow-x: auto; font: 13px/1.6 ui-monospace, Menlo, Consolas, monospace; }
+.akd-z { display: grid; grid-template-columns: 2em 2em 1.4em 1fr; white-space: pre; padding-right: 10px; }
+.akd-z i { font-style: normal; text-align: right; padding-right: .45em; opacity: .45; user-select: none; }
+.akd-z b { font-weight: 400; text-align: center; user-select: none; }
+.akd-z.plus { background: color-mix(in srgb, var(--ak-p) 15%, transparent); } .akd-z.plus b { color: var(--ak-p); }
+.akd-z.minus { background: color-mix(in srgb, var(--ak-m) 15%, transparent); } .akd-z.minus b { color: var(--ak-m); }
+.akd-z.frisch { animation: ak-blitz 1.4s ease-out; }
+@keyframes ak-blitz { 0%, 35% { background: color-mix(in srgb, var(--neon) 50%, transparent); } }
+.akd-z em { font: italic 11.5px system-ui, sans-serif; color: var(--tx3); margin-left: .8em; }
+@media (max-width: 480px) { .akd-z em span { display: none; } .akd-code { font-size: 12.5px; } }
+.akd-faden { margin: 4px 10px 8px calc(4em + 10px); padding: 8px 10px; border: 1px solid var(--panel-rand); border-left: 3px solid var(--tx3); border-radius: 8px;
+  background: var(--panel); font: 14px/1.45 system-ui, sans-serif; }
+.akd-msg { margin: 0 0 7px; animation: auftauchen .35s ease both; } .akd-msg b { margin-right: .3em; } .akd-msg.agent b { color: var(--tx2); }
+.akd-denkt { margin: 0 0 7px; color: var(--tx3); font-style: italic; } .akd-denkt i { animation: ak-punkt 1s infinite; font-style: normal; }
+.akd-denkt i:nth-child(2) { animation-delay: .2s; } .akd-denkt i:nth-child(3) { animation-delay: .4s; }
+@keyframes ak-punkt { 50% { opacity: .2; } }
+.akd-eingabe { display: flex; gap: 6px; }
+.akd-feld { flex: 1; min-height: 2.2em; padding: 5px 8px; border: 1px solid var(--panel-rand); border-radius: 6px; background: var(--grund); }
+.akd-feld:empty::before { content: attr(data-leer); color: var(--tx3); opacity: .7; }
+.akd-senden { padding: 4px 12px; border: 0; border-radius: 6px; background: var(--knopf); color: var(--knopf-tx); font: 600 13px system-ui, sans-serif; transition: transform .15s; }
+.akd-senden.druck { transform: scale(.9); }
+.akd-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; padding: 10px 14px 12px;
+  border-top: 1px solid var(--panel-rand); font-size: 13.5px; color: var(--tx3); }
+.akd-fuss p { margin: 0; flex: 1 1 16em; } .akd-fuss div { display: flex; gap: 8px; }
+.akd-fuss button { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--panel-rand); background: var(--panel); color: var(--tx); font: 600 13.5px system-ui, sans-serif; cursor: pointer; }
+.akd-fuss .akd-fertig { background: var(--knopf); color: var(--knopf-tx); border-color: transparent; }
+
 /* ── Bewegung reduzieren: alles steht still ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
@@ -1101,6 +1191,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <details class="neu-box" open>
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
+    <li data-wann="neu">Der merge-train fährt ein: Tipp im äußersten Ring (Sicht Konzerner/Cyberpunk) auf „Kontrolliere“. Oben klappt ein Bahnhof herunter, und im Waggon steckt ein Diff, an dem jemand den Agenten fragt.</li>
     <li data-wann="neu">Im äußersten Ring, Sicht Konzerner/Cyberpunk: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
     <li data-wann="neu">Konzerner und Cyberpunk wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
@@ -1386,7 +1477,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
-  <!-- ═════ Von innen nach außen: Ringe füllen sich beim Scrollen, vom Taschen-Space bis zur Föderation ═════ -->
+  <!-- ═════ Von innen nach außen: Ring um Ring per Klick, vom Taschen-Space bis zur Föderation ═════ -->
   <section class="abschnitt anker" aria-labelledby="a-ringe">
     <h2 class="kicker" id="a-ringe">Von innen nach außen</h2>
     <div class="je-sicht">
@@ -1479,7 +1570,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Je Sicht eine ehrliche Antwort mit Haken: praktisch, erweiterbar, sicher. Dazu ein Netz ohne Mitte, in das du deinen Space hängst, und gleich danach Mitmachen.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z32"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Was MyrSpace nicht behauptet</span><span class="bau-zettel" role="tooltip" id="bau-z32">Ehrliche Grenzen statt Superlativen, aufklappbar unter „Sicher? Das sagen alle.“, dazu ein fremder Dienst, der nur Verschlüsseltes sieht.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Fünf Ringe, vom Taschen-Space bis zur Föderation. Erst ist nur das Handy offen, jeder Klick öffnet einen Ring mehr. Darin ist auch „Ein Netz aus Myrten“ aufgegangen.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der merge-train fährt ein</span><span class="bau-zettel" role="tooltip" id="bau-z21">Hinter „Kontrolliere“ im äußersten Ring: Der Bahnhof klappt herunter, ein Zug fährt ein, und im Waggon steckt ein Diff, an dem Mensch und Agent ein Gespräch führen.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Der merge-train fährt ein</span><span class="bau-zettel" role="tooltip" id="bau-z21">Hinter „Kontrolliere“ im äußersten Ring (Sicht Konzerner/Cyberpunk): Der Bahnhof klappt herunter, ein Zug fährt ein, und im Waggon steckt ein Diff, an dem Mensch und Agent ein Gespräch führen.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Die drei Türen noch einmal nebeneinander, darunter derselbe Revolver. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
       </ul>
@@ -2740,6 +2831,192 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     eintraege.forEach(li => li.value = +li.dataset.ring);  // Nummer = Ring, auch wenn davor welche zu sind
     oeffnen(1, true);
   }
+
+  /* ── Ankunft des merge-train: „Kontrolliere“ im äußersten Ring (Sicherheit) klappt oben den Bahnhof herunter.
+     Bahnhof, Lok und Waggon sind vereinfacht aus merge-train übernommen (zeichnungen.js, zug.js, gleicher Autor). ── */
+  (() => {
+    const ausloeser = $('#tipp-mt') && $('#tipp-mt').parentElement;
+    if (!ausloeser) return;
+    ausloeser.setAttribute('role', 'button');
+    const H = 212, gl = H - 4, W = 170, WH = 56, LOK = 200, r = n => n.toFixed(1);
+    const FRAGE = 'Warum alle? Das sollen nur Oma und Opa sehen.';
+    const ANTWORT = 'Stimmt, „alle“ hieße: jeder, der den Link hat. Jetzt geht es nur an deinen Kreis „Familie“.';
+    const ALT = 'teile mit: alle', NEU = 'teile mit: Kreis "Familie"';
+    const ak = document.createElement('div');
+    ak.className = 'ak'; ak.hidden = true;
+    ak.innerHTML = '<div class="ak-szene" role="region" aria-label="Bahnhof von merge-train"><svg class="ak-anlage"></svg>' +
+      '<p class="ak-hinweis">Waggon antippen: Diff ansehen.<br>Lok antippen: weiterfahren.</p>' +
+      '<button type="button" class="ak-zu" aria-label="Bahnhof zuklappen">✕</button></div>';
+    document.body.append(ak);
+    const sv = $('.ak-anlage', ak);
+    let L = 640, stopp = 0, lauf = 0, offen = false, zugEl, wagenEl, markeEl;
+
+    const rad = (cx, cy, rr) => {
+      let t = `<g class="ak-rad"><circle cx="${cx}" cy="${cy}" r="${rr}" fill="#2f6b45" stroke="#e9e4cf" stroke-width="1.4"/>`;
+      for (let k = 0; k < 8; k++) {
+        const w = k * Math.PI / 4;
+        t += `<line x1="${cx}" y1="${cy}" x2="${r(cx + Math.cos(w) * (rr - 1.5))}" y2="${r(cy + Math.sin(w) * (rr - 1.5))}" stroke="#e9e4cf" stroke-width=".7"/>`;
+      }
+      return t + `<circle cx="${cx}" cy="${cy}" r="2.2" fill="#d8cfa4"/></g>`;
+    };
+    // bayerische S 3/6 wie in merge-train, Fahrtrichtung rechts, Schiene bei y=70
+    const lok = () => {
+      const gr = '#2f6b45', dk = '#1d4630', sw = '#1b1b1b', ms = '#d8cfa4';
+      return `<g class="ak-dampf"><circle cx="150" cy="2" r="4"/><circle cx="138" cy="-3" r="5.5"/><circle cx="123" cy="-6" r="7"/></g>
+ <rect x="0" y="27" width="50" height="29" rx="2" fill="${gr}" stroke="${dk}"/><rect x="2" y="21" width="46" height="7" rx="2" fill="${sw}"/>
+ <line x1="6" y1="33" x2="44" y2="33" stroke="${ms}" stroke-width=".8"/><line x1="6" y1="51" x2="44" y2="51" stroke="${ms}" stroke-width=".8"/>
+ <rect x="50" y="49" width="6" height="3" fill="${sw}"/><rect x="53" y="10" width="30" height="5" rx="2" fill="${dk}"/>
+ <rect x="55" y="14" width="26" height="42" fill="${gr}" stroke="${dk}"/><rect x="60" y="19" width="13" height="12" rx="2" fill="#bcd3df" stroke="${sw}" stroke-width=".8"/>
+ <rect x="80" y="21" width="92" height="25" rx="12" fill="${gr}" stroke="${dk}"/><rect x="80" y="38" width="22" height="18" fill="${gr}" stroke="${dk}"/>
+ <path d="M102,22V45M127,22V45M152,22V45" stroke="${ms}"/>
+ <rect x="111" y="14" width="13" height="9" rx="4" fill="${gr}" stroke="${dk}"/><rect x="135" y="15" width="11" height="8" rx="4" fill="${gr}" stroke="${dk}"/>
+ <rect x="157" y="9" width="9" height="13" fill="${gr}" stroke="${dk}"/><rect x="155" y="6" width="13" height="4" rx="1" fill="${sw}"/>
+ <rect x="168" y="22" width="11" height="24" fill="${sw}"/><polygon points="179,22 192,34 179,46" fill="${sw}"/>
+ <circle cx="186" cy="20" r="2.5" fill="${ms}"/><rect x="184" y="21" width="4" height="5" fill="${sw}"/>
+ <line x1="78" y1="48" x2="190" y2="48" stroke="${sw}" stroke-width="3"/><rect x="186" y="49" width="6" height="8" fill="#7a1e1e"/>
+ <rect x="192" y="51" width="6" height="3" fill="${sw}"/>
+ ${rad(12, 64, 6)}${rad(38, 64, 6)}${rad(88, 63, 7)}${rad(106, 59, 11)}${rad(130, 59, 11)}${rad(154, 59, 11)}${rad(174, 64, 6)}${rad(188, 64, 6)}
+ <path d="M106,62H154L170,52" fill="none" stroke="#c9c9c9" stroke-width="2" stroke-linecap="round"/>`;
+    };
+
+    function zeichnen(x) {
+      L = Math.max(html.clientWidth, 640);
+      const cx = Math.round(Math.max(L / 2, 330));
+      sv.setAttribute('viewBox', `0 0 ${L} ${H}`);
+      let s = `<rect x="0" y="${gl - 4}" width="${L}" height="8" class="b-schotter"/>`;
+      for (let i = 3; i < L; i += 11) s += `<rect x="${i}" y="${gl - 1}" width="7" height="3" class="b-schwelle"/>`;
+      // Gebäude: Bandturm mit Schild, Halle mit Glasband, Tor fürs Gleis
+      s += `<rect x="112" y="30" width="66" height="50" class="b-turm"/><rect x="108" y="25" width="74" height="6" class="b-dach"/>
+  <rect x="120" y="38" width="12" height="13" class="b-fenster"/><rect x="139" y="38" width="12" height="13" class="b-fenster"/>
+  <rect x="158" y="38" width="12" height="13" class="b-fenster"/><rect x="118" y="58" width="54" height="13" rx="1.5" class="b-schild"/>
+  <text x="145" y="67.5" text-anchor="middle" class="b-schrift">MERGE-TRAIN</text><rect x="6" y="84" width="172" height="${gl - 84}" class="b-wand"/>`;
+      let welle = '';
+      for (let i = 10; i < 178; i += 5) welle += `M${i},144V${gl}`;
+      s += `<path d="${welle}" class="b-welle"/><rect x="2" y="78" width="180" height="7" class="b-dach"/>
+  <rect x="12" y="93" width="160" height="46" rx="2" class="b-glas"/><path d="M52,94V138M92,94V138M132,94V138" class="b-sprosse"/>
+  <rect x="6" y="139" width="172" height="5" class="b-dach"/><path d="M28,${gl} V166 Q92,154 156,166 V${gl} Z" class="b-tor"/>
+  <path d="M28,166 Q92,154 156,166" class="b-torrand"/><rect x="172" y="143" width="10" height="16" class="b-tor"/>`;
+      // Förderband aus der Halle schräg hinauf bis über den Waggon
+      const x0 = 180, y0 = 150, y1 = 106, T = 10, dy = (y1 - y0) / (cx - x0), y = v => y0 + (v - x0) * dy;
+      let fw = `M${x0},${y0}`;
+      for (let v = x0, k = 0; v < cx; v += 16, k++) { const n = Math.min(v + 16, cx); fw += `L${r(n)},${r(y(n) + (k % 2 ? 0 : T))}`; }
+      for (let v = x0 + 110; v < cx - 60; v += 160) {
+        const yb = y(v) + T, u = gl - 4;
+        s += `<path d="M${r(v - 12)},${u}L${r(v - 3)},${r(yb)}M${r(v + 12)},${u}L${r(v + 3)},${r(yb)}M${r(v - 9)},${r(u - (gl - yb) * .3)}H${r(v + 9)}M${r(v - 6)},${r(u - (gl - yb) * .65)}H${r(v + 6)}" class="b-stahl b-stuetze"/>`;
+      }
+      s += `<path d="M${cx - 14},${gl - 4}L${cx - 8},${y1 + T}M${cx + 14},${gl - 4}L${cx + 8},${y1 + T}M${cx - 12},${gl - 40}H${cx + 12}M${cx - 10},${gl - 70}H${cx + 10}" class="b-stahl b-stuetze"/>
+  <line x1="${x0}" y1="${y0 + T}" x2="${cx}" y2="${y1 + T}" class="b-stahl"/><path d="${fw}" class="b-stahl"/>
+  <line x1="${x0}" y1="${y0}" x2="${cx}" y2="${y1}" class="b-gurt"/>
+  <line x1="${x0 + 3}" y1="${r(y(x0 + 3) - 3.5)}" x2="${cx - 5}" y2="${r(y(cx - 5) - 3.5)}" class="b-gut"/>
+  <circle cx="${cx}" cy="${y1}" r="5" class="b-trommel"/>
+  <polygon class="b-schurre" points="${cx - 2},${y1 + 3} ${cx + 12},${y1 + 3} ${cx + 7},${y1 + 24} ${cx + 1},${y1 + 24}"/>
+  <line x1="${cx + 4}" y1="${y1 + 24}" x2="${cx + 4}" y2="${y1 + 44}" class="b-strahl"/>
+  <line x1="0" y1="${gl}" x2="${L}" y2="${gl}" class="b-schiene"/>`;
+      // Zug: ein Waggon nach Art von merge-train, dahinter (rechts) die Lok
+      const wy = gl - WH - 10;
+      stopp = cx + 4 - W / 2;
+      s += `<g class="ak-zug" style="transform: translateX(${x == null ? -(W + 14 + LOK + 20) : x === 'stopp' ? stopp : x}px)">
+  <g class="ak-wagen" tabindex="0" role="button" aria-label="Waggon „Urlaubsfotos teilen“, plus 2, minus 1: Diff ansehen">
+   <rect class="ak-kasten" x="0" y="${wy}" width="${W}" height="${WH}" rx="5"/>
+   <rect class="ak-fuell" x="1.5" y="${wy + 26}" width="${W - 3}" height="${WH - 27.5}" rx="3.5"/>
+   <text x="10" y="${wy + 17}" class="ak-tx ak-fett">Urlaubsfotos teilen</text>
+   <text x="10" y="${wy + 35}" class="ak-tx"><tspan class="ak-p">+2</tspan> <tspan class="ak-m">−1</tspan> <tspan class="ak-klein">1 Dat.</tspan></text>
+   <text x="${W - 10}" y="${wy + 35}" text-anchor="end" class="ak-tx ak-fett ak-marke">● offen</text>
+   <rect x="10" y="${wy + 43}" width="100" height="4" class="ak-p"/><rect x="110" y="${wy + 43}" width="50" height="4" class="ak-m"/>
+   <circle cx="24" cy="${wy + WH + 4}" r="6" class="ak-radw"/><circle cx="${W - 24}" cy="${wy + WH + 4}" r="6" class="ak-radw"/></g>
+  <line x1="${W}" y1="${wy + WH - 8}" x2="${W + 14}" y2="${wy + WH - 8}" stroke="var(--ak-rand)" stroke-width="2"/>
+  <g class="ak-lok" tabindex="0" role="button" aria-label="Lok: weiterfahren und Bahnhof zuklappen"><g transform="translate(${W + 14},${gl - 70})">${lok()}</g></g></g>`;
+      sv.innerHTML = s;
+      zugEl = $('.ak-zug', sv); wagenEl = $('.ak-wagen', sv); markeEl = $('.ak-marke', sv);
+      const tun = (g, fn) => {
+        g.addEventListener('click', fn);
+        g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
+      };
+      tun(wagenEl, () => { if (ak.classList.contains('steht')) diffZeigen(); });
+      tun($('.ak-lok', sv), abfahrt);
+    }
+    const fahren = x => { zugEl.style.transform = `translateX(${x}px)`; };
+
+    async function ankunft() {
+      if (offen) return;
+      offen = true;
+      const n = ++lauf;
+      zeichnen();
+      ak.className = 'ak'; ak.hidden = false;
+      void ak.offsetWidth;
+      ak.classList.add('auf');
+      await warte(650); if (n !== lauf) return;
+      ak.classList.add('faehrt'); fahren(stopp);
+      await warte(2600); if (n !== lauf) return;
+      ak.classList.remove('faehrt'); ak.classList.add('laedt', 'voll');
+      await warte(1300); if (n !== lauf) return;
+      ak.classList.remove('laedt'); ak.classList.add('steht');
+      wagenEl.focus({ preventScroll: true });
+    }
+    async function abfahrt() {
+      if (!offen || ak.classList.contains('weg')) return;
+      const n = ++lauf;
+      ak.classList.remove('steht', 'laedt');
+      ak.classList.add('weg', 'faehrt'); fahren(L + 20);
+      await warte(1900); if (n !== lauf) return;
+      ak.classList.remove('faehrt', 'auf');
+      await warte(650); if (n !== lauf) return;
+      ak.hidden = true; offen = false;
+      ausloeser.focus({ preventScroll: true });
+    }
+    ausloeser.addEventListener('click', ankunft);
+    ausloeser.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ankunft(); } });
+    $('.ak-zu', ak).addEventListener('click', abfahrt);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && offen && !dlg.open) abfahrt(); });
+    addEventListener('resize', () => { if (ak.classList.contains('steht')) zeichnen('stopp'); });
+
+    /* Das Diff im Waggon: eine Myrte von jemand anderem, v1.2 → v1.3; am Faden fragt man den Agenten, er ändert die Zeile */
+    const dlg = document.createElement('dialog');
+    dlg.className = 'ak-diff';
+    dlg.setAttribute('aria-labelledby', 'akd-titel');
+    const z = (a, b, art, text) => `<div class="akd-z ${art}"><i>${a}</i><i>${b}</i><b>${art === 'plus' ? '+' : art === 'minus' ? '−' : ''}</b><span>${text}</span></div>`;
+    dlg.innerHTML = `<p class="akd-kopf" id="akd-titel">🌿 Urlaubsfotos teilen <small>Myrte, Version 1.2 → 1.3 · <span class="p">+2</span> <span class="m">−1</span></small></p>
+  <button type="button" class="akd-zu" aria-label="Diff schließen">✕</button>
+  <div class="akd-code">${z(1, 1, '', 'myrte "Urlaubsfotos teilen"')}${z(2, 2, '', '  wenn neues Foto in "Urlaub":')}${z(3, '', 'minus', '    verkleinere auf 2000 px')}${z('', 3, 'plus', '    verkleinere auf 1200 px')}<div class="akd-z plus akd-ziel"><i></i><i>4</i><b>+</b><span>    <span class="akd-text"></span><em hidden>✎<span> Agent</span></em></span></div>
+   <div class="akd-faden" aria-live="polite"><div class="akd-msgs"></div><p class="akd-denkt" hidden>Agent arbeitet<i>.</i><i>.</i><i>.</i></p>
+    <div class="akd-eingabe"><div class="akd-feld" data-leer="Frag an dieser Zeile …"></div><span class="akd-senden" aria-hidden="true">Senden</span></div></div>
+   ${z(4, 5, '', '    sage Bescheid: "Neue Fotos da"')}</div>
+  <div class="akd-fuss"><p>Geht auch ohne Agent: Zeile selbst ändern und dann mit dem Finger reinlassen.</p>
+   <div><button type="button" class="akd-nochmal">↺ Nochmal</button><button type="button" class="akd-fertig">Fertig</button></div></div>`;
+    document.body.append(dlg);
+    const ziel = $('.akd-ziel', dlg), zielText = $('.akd-text', dlg), agentMarke = $('.akd-ziel em', dlg), msgs = $('.akd-msgs', dlg),
+      denkt = $('.akd-denkt', dlg), feld = $('.akd-feld', dlg), senden = $('.akd-senden', dlg);
+    let spiel = 0;
+    const nachricht = (wer, text) => {
+      const p = document.createElement('p');
+      p.className = 'akd-msg' + (wer === 'Agent' ? ' agent' : '');
+      p.innerHTML = `<b>${wer}:</b>`; p.append(text);
+      msgs.append(p);
+    };
+    async function szene() {
+      const n = ++spiel, weiter = () => n === spiel && dlg.open;
+      zielText.textContent = ALT; agentMarke.hidden = true; ziel.classList.remove('frisch');
+      msgs.textContent = ''; feld.textContent = ''; denkt.hidden = true;
+      await warte(900); if (!weiter()) return;
+      if (ruhig.matches) feld.textContent = FRAGE;
+      else for (const ch of FRAGE) { feld.textContent += ch; await warte(42); if (!weiter()) return; }
+      await warte(400); senden.classList.add('druck');
+      await warte(180); senden.classList.remove('druck'); if (!weiter()) return;
+      feld.textContent = ''; nachricht('Du', FRAGE);
+      await warte(500); denkt.hidden = false;
+      await warte(1700); if (!weiter()) return;
+      zielText.textContent = NEU; agentMarke.hidden = false;
+      void ziel.offsetWidth; ziel.classList.add('frisch');
+      await warte(900); if (!weiter()) return;
+      denkt.hidden = true; nachricht('Agent', ANTWORT);
+      if (markeEl) markeEl.textContent = '💬 2';
+    }
+    function diffZeigen() { if (!dlg.open) { dlg.showModal(); szene(); } }
+    $('.akd-zu', dlg).addEventListener('click', () => dlg.close());
+    $('.akd-fertig', dlg).addEventListener('click', () => dlg.close());
+    $('.akd-nochmal', dlg).addEventListener('click', szene);
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  })();
 
   /* ── Parallaxe ────────────────────────────────────────────── */
   const ebenen = [...document.querySelectorAll('[data-tiefe]')];
