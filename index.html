@@ -619,6 +619,139 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
   .handy { width: 300px; }
 }
 
+/* ── Baustelle: Absperrband, Bauschild, Bautafel ───────────────── */
+.absperrband { position: relative; z-index: 4; width: 106vw; margin: 0 -3vw; overflow: hidden; padding: 5px 0;
+  transform: rotate(-1.1deg); transform-origin: 50% 50%;
+  background: repeating-linear-gradient(-45deg, var(--fenster) 0 16px, var(--beere-dunkel) 16px 32px);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, .2), 0 0 24px -6px var(--glut-farbe); }
+.band-lauf { display: flex; width: max-content; animation: bandlauf 48s linear infinite; }
+.band-lauf span { flex: none; margin: 0 22px; padding: 2px 12px; border-radius: 3px; background: var(--fenster); color: #17122a;
+  font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+@keyframes bandlauf { to { transform: translateX(-50%); } }
+
+.kopf-rechts { display: inline-flex; align-items: center; gap: 8px; }
+.bauschild { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--panel-rand); background: var(--panel);
+  border-radius: 999px; padding: 5px 12px 5px 8px; font-size: 14px; font-weight: 700; text-decoration: none;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.bauschild svg { width: 28px; height: 24px; overflow: visible; }
+.bauschild .bake-lampe { animation: blinken 2.4s ease-in-out infinite; filter: drop-shadow(0 0 3px var(--glut-farbe)); }
+.bauschild:hover svg { animation: locken 1.2s ease; }
+.bauschild:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+@media (max-width: 430px) { .bauschild span { display: none; } .bauschild { padding: 5px 8px; } }
+
+.platzhalter-marke { background: repeating-linear-gradient(-45deg, var(--fenster) 0 8px, #ffe2a6 8px 16px); color: #17122a; }
+
+.bautafel { padding-top: 30px; }
+.bautafel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10px; border-radius: 22px 22px 0 0;
+  background: repeating-linear-gradient(-45deg, var(--fenster) 0 12px, var(--beere-dunkel) 12px 24px); opacity: .9; }
+.bautafel > h3 { margin: 10px 0 0; font-size: clamp(21px, 5.6vw, 28px); line-height: 1.15; letter-spacing: -.015em; }
+.bau-intro { margin: 8px 0 0; font-size: 16.5px; }
+.bau-legende { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 13.5px; color: var(--tx2); }
+.bau-legende li { display: inline-flex; align-items: center; gap: 7px; }
+.bau-legende .kasten { width: 16px; height: 16px; margin: 0; }
+.bau-gruppe { margin-top: 22px; }
+.bau-gruppe h4 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0; font-size: 17px; }
+.bau-gruppe h4 small { font-size: 13px; font-weight: 600; color: var(--tx3); }
+.bau-zahl { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--tx2); }
+.bau-balken { display: block; height: 6px; margin: 7px 0 4px; border-radius: 99px; background: var(--panel-rand); overflow: hidden; }
+.bau-balken i { display: block; height: 100%; width: calc(var(--anteil, 0) * 100%); border-radius: inherit;
+  background: linear-gradient(90deg, var(--gut), var(--neon)); box-shadow: var(--mark-glut); transition: width 1.2s cubic-bezier(.2, .8, .2, 1); }
+.bau-balken { display: flex; }
+.bau-balken b { display: block; height: 100%; width: calc(var(--beschrieben, 0) * 100%); transition: width 1.2s .4s cubic-bezier(.2, .8, .2, 1);
+  background: repeating-linear-gradient(-45deg, var(--neon) 0 3px, transparent 3px 7px); opacity: .7; }
+html:not(.js) .bau-zahl, html:not(.js) .bau-balken { display: none; }
+.bau-ziel { margin: 4px 0 6px; font-size: 14px; color: var(--tx2); }
+.bau-liste { list-style: none; margin: 6px 0 0; padding: 0; }
+.bau-liste li { position: relative; display: flex; gap: 11px; align-items: flex-start; margin: 0 -8px; padding: 6px 8px;
+  border-radius: 10px; cursor: help; outline: none; transition: background-color .2s; }
+.bau-liste li:focus-visible { outline: 3px solid var(--neon); outline-offset: 1px; }
+.bau-liste li:focus, .bau-liste li.offen { background: color-mix(in srgb, var(--fenster) 14%, transparent); z-index: 6; }
+@media (hover: hover) { .bau-liste li:hover { background: color-mix(in srgb, var(--fenster) 14%, transparent); z-index: 6; } }
+.bau-titel { font-size: 16px; font-weight: 600; line-height: 1.35; }
+
+/* Kästchen: fertig = abgehakt, als Nächstes = pulsiert, Idee = nur umrissen (wie der spätere Fahrplan) */
+.kasten { position: relative; flex: none; display: inline-block; width: 20px; height: 20px; margin-top: 1px; border-radius: 6px;
+  border: 2px solid var(--tx3); }
+.fertig .kasten { background: var(--gut); border-color: var(--gut); box-shadow: var(--mark-glut); }
+.fertig .kasten::after { content: ""; position: absolute; left: 30%; top: 8%; width: 28%; height: 56%;
+  border: solid var(--grund); border-width: 0 2.6px 2.6px 0; transform: rotate(45deg); }
+.fertig .bau-titel { text-decoration: line-through; text-decoration-thickness: 2px;
+  text-decoration-color: color-mix(in srgb, var(--gut) 50%, transparent); }
+.dran .kasten { border-color: var(--neon); animation: dranring 1.8s ease-out infinite; }
+.dran .kasten::after { content: ""; position: absolute; inset: 3px; border-radius: 3px; background: var(--neon); animation: dranpuls 1.8s ease-in-out infinite; }
+@keyframes dranpuls { 50% { opacity: .3; transform: scale(.55); } }
+@keyframes dranring { from { box-shadow: 0 0 0 0 var(--neon-glut); } to { box-shadow: 0 0 0 9px transparent; } }
+.idee .kasten { border-style: dashed; border-color: var(--idee, var(--tx3)); }
+.idee .bau-titel { color: var(--idee, var(--tx3)); }
+/* Ideen sind nachts lavendel statt blattgrün, sonst sähen sie wie „fertig“ aus */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --idee: #b8a8ee; } }
+:root[data-theme="dark"] { --idee: #b8a8ee; }
+
+/* Zettel: ein Notizzettel im Laternenlicht, ein Glühwürmchen hat ihn gebracht */
+.bau-zettel { position: absolute; z-index: 7; left: 38px; bottom: calc(100% + 4px); width: min(20em, calc(100% - 38px));
+  padding: 10px 14px 11px; border-radius: 13px 13px 13px 4px; pointer-events: none;
+  background: var(--grund); color: var(--tx); font-size: 14px; line-height: 1.42; font-weight: 500;
+  border: 1px solid color-mix(in srgb, var(--fenster) 65%, transparent);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .28), 0 0 28px -6px var(--glut-farbe);
+  opacity: 0; visibility: hidden; transform: translateY(6px) scale(.96); transform-origin: 12px 100%;
+  transition: opacity .2s, transform .32s cubic-bezier(.3, 1.6, .5, 1), visibility 0s .32s; }
+.bau-zettel::before { content: ""; position: absolute; top: -5px; right: 12px; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--fenster); box-shadow: 0 0 10px 3px var(--glut-farbe); animation: blinken 2.8s ease-in-out infinite; }
+.bau-zettel::after { content: ""; position: absolute; left: -1px; bottom: -6px; width: 10px; height: 10px; background: var(--grund);
+  border: solid color-mix(in srgb, var(--fenster) 65%, transparent); border-width: 0 1px 1px 0; transform: rotate(45deg) skew(8deg, 8deg); }
+.bau-zettel b { color: var(--tx2); }
+.bau-liste li:focus .bau-zettel, .bau-liste li.offen .bau-zettel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+@media (hover: hover) { .bau-liste li:hover .bau-zettel { opacity: 1; visibility: visible; transform: none; transition-delay: .08s; } }
+.bau-liste li.unten .bau-zettel { bottom: auto; top: calc(100% + 4px); border-radius: 4px 13px 13px 13px; transform-origin: 12px 0; }
+.bau-liste li.unten .bau-zettel::after { bottom: auto; top: -6px; border-width: 1px 0 0 1px; }
+/* Ohne JavaScript: alles aufgeklappt, Zettel stehen klein unter dem Punkt */
+html:not(.js) .bau-zettel { position: static; display: block; width: auto; margin-top: 4px; padding: 0; border: 0; box-shadow: none;
+  background: none; opacity: 1; visibility: visible; transform: none; color: var(--tx2); }
+html:not(.js) .bau-zettel::before, html:not(.js) .bau-zettel::after { display: none; }
+.fuss a { font-weight: 700; }
+
+/* Phasen als kleiner Pfad (Vorläufer des Fahrplans) */
+.bau-pfad { position: relative; z-index: 6; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 14px 0 6px; padding: 0; }
+.bau-pfad::before { content: ""; position: absolute; top: 17px; left: 12.5%; right: 12.5%; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gut) 0 33%, var(--neon) 33% 50%, transparent 50%),
+              repeating-linear-gradient(90deg, var(--tx3) 0 6px, transparent 6px 12px); opacity: .8; }
+.bau-pfad li { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 4px 2px 6px; border-radius: 12px;
+  text-align: center; cursor: help; outline: none; transition: background-color .2s; }
+.bau-pfad li:focus-visible { outline: 3px solid var(--neon); outline-offset: 1px; }
+.bau-pfad li:focus, .bau-pfad li.offen { background: color-mix(in srgb, var(--fenster) 14%, transparent); }
+@media (hover: hover) { .bau-pfad li:hover { background: color-mix(in srgb, var(--fenster) 14%, transparent); } }
+.bau-pfad .kasten { width: 26px; height: 26px; border-radius: 50%; background: var(--grund); }
+.bau-pfad .fertig .kasten { background: var(--gut); }
+.bau-pfad .kasten::after { border-radius: 50%; }
+.bau-pfad .fertig .kasten::after { border-radius: 0; }
+.bau-pfad .bau-titel { display: flex; flex-direction: column; font-size: clamp(11.5px, 3.3vw, 14.5px); text-decoration: none; line-height: 1.2; hyphens: manual; }
+.bau-pfad .bau-titel small { font-size: clamp(10px, 2.8vw, 11.5px); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--tx2); }
+.bau-pfad .bau-zettel { left: 0; width: min(20em, 100%); text-align: left; }
+.bau-pfad .bau-zettel::after { display: none; }
+/* Zettel unter dem eigenen Punkt beginnen lassen, aber nie über den Rand hinaus */
+.bau-pfad li:nth-child(2) .bau-zettel { left: clamp(0px, 12.5%, calc(100% - 20em)); }
+.bau-pfad li:nth-child(3) .bau-zettel, .bau-pfad li:nth-child(4) .bau-zettel { left: auto; right: 0; }
+.bau-pfad li:focus .bau-zettel, .bau-pfad li.offen .bau-zettel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+@media (hover: hover) { .bau-pfad li:hover .bau-zettel { opacity: 1; visibility: visible; transform: none; transition-delay: .08s; } }
+.bau-pfad li.unten .bau-zettel { bottom: auto; top: calc(100% + 4px); }
+html:not(.js) .bau-pfad .bau-zettel { display: none; }
+.bau-unter { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 16px 0 0; font-size: 15.5px; }
+.bau-danach { margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; border: 1px dashed var(--panel-rand); font-size: 14px; color: var(--tx2); }
+.bau-danach b { color: var(--tx); }
+
+/* Schublade: dieselbe Bautafel fährt oben von rechts herein und scrollt mit der Seite weg */
+.kopf.schublade-auf { z-index: 25; }
+.bau-schublade { position: absolute; z-index: 30; top: calc(100% + 12px); right: 16px; width: min(40em, calc(100vw - 32px)); margin: 0;
+  background: color-mix(in srgb, var(--grund) 93%, transparent);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .35), 0 0 40px -10px var(--glut-farbe);
+  transform: translateX(calc(100% + 60px)) rotate(4deg); transform-origin: 100% 0; opacity: 0; visibility: hidden;
+  transition: transform .6s cubic-bezier(.2, 1.25, .4, 1), opacity .3s, visibility 0s .6s; }
+.bau-schublade.offen { transform: none; opacity: 1; visibility: visible; transition-delay: 0s; }
+.bau-zu { position: absolute; top: 18px; right: 14px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--panel-rand); background: var(--panel); font-size: 20px; line-height: 1; font-weight: 700; }
+.bau-zu:focus-visible { outline: 3px solid var(--neon); outline-offset: 2px; }
+.bauschild[aria-expanded="true"] { border-color: var(--fenster); box-shadow: 0 0 16px -4px var(--glut-farbe); }
+
 /* ── Bewegung reduzieren: alles steht still ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
@@ -721,6 +854,14 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
   </div>
 </div>
 
+<!-- ═════ Baustelle: Absperrband ═════ -->
+<div class="absperrband" id="anfang" role="note" aria-label="Baustelle: Diese Seite ist ein Prototyp und noch nicht fertig.">
+  <div class="band-lauf" aria-hidden="true">
+    <span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span><span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span>
+    <span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span><span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span>
+  </div>
+</div>
+
 <!-- ═════ Kopfzeile ═════ -->
 <header class="kopf">
   <a class="marke" href="#" aria-label="MyrSpace">
@@ -734,11 +875,23 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
     </svg>
     MyrSpace
   </a>
+  <div class="kopf-rechts">
+  <a class="bauschild" href="#bautafel" aria-label="Baustelle: zur Bautafel mit dem Stand">
+    <svg viewBox="0 0 32 28" aria-hidden="true">
+      <defs><pattern id="bake-streifen" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3.5" height="7" fill="#ffcf73"/><rect x="3.5" width="3.5" height="7" fill="#2f2552"/></pattern></defs>
+      <path d="M8 15v11M24 15v11M5 26h6M21 26h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <circle class="bake-lampe" cx="16" cy="4.5" r="3.2" fill="#ffb85c"/>
+      <path d="M16 7.7v2.3" stroke="currentColor" stroke-width="2"/>
+      <rect x="2" y="10" width="28" height="8" rx="1.8" fill="url(#bake-streifen)" stroke="#2f2552" stroke-width="1.2"/>
+    </svg>
+    <span>Baustelle</span>
+  </a>
   <button class="thema" type="button" aria-label="Zwischen Nacht und Morgen wechseln">
     <svg class="ic-sonne" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#f2b84b"/><g stroke="#e0a040" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></g></svg>
     <svg class="ic-mond" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="#b8a8ee"/></svg>
     <span class="thema-text">Morgen</span>
   </button>
+  </div>
 </header>
 
 <main>
@@ -969,7 +1122,66 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
-  <p class="fuss"><span>Prototyp · erster Bildschirm, „Warum dezentral“, „Alles unter einer Haube“ und ein Platzhalter · im Aufbau</span></p>
+  <!-- ═════ Bautafel: Stand der Entwicklung und der Seite (Vorläufer des Fahrplans) ═════ -->
+  <section class="abschnitt anker bautafel" id="bautafel" aria-labelledby="a-bau">
+    <h2 class="kicker" id="a-bau">Bautafel · Stand 20.11.2026</h2>
+    <h3>Hier wird noch gebaut.</h3>
+    <p class="bau-intro">Was schon steht und was noch kommt. Zeig auf einen Punkt oder tipp ihn an, dann erzählt er mehr.</p>
+    <ul class="bau-legende" aria-label="Zeichen">
+      <li class="fertig"><i class="kasten" aria-hidden="true"></i>fertig</li>
+      <li class="dran"><i class="kasten" aria-hidden="true"></i>als Nächstes</li>
+      <li class="idee"><i class="kasten" aria-hidden="true"></i>noch Idee</li>
+    </ul>
+    <div class="bau-gruppe" data-fertig="0" data-beschrieben="9" data-alle="15" data-einheit="Use Cases">
+      <h4>MyrSpace selbst <small>in vier Phasen</small></h4>
+      <ol class="bau-pfad">
+      <li class="fertig" tabindex="0" aria-describedby="bau-p1"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel"><small>Phase 1</small>Myrthen&shy;hain</span><span class="bau-zettel" role="tooltip" id="bau-p1">Abgeschlossen, das war der erste Test: Apps auf dem NAS, jede mit eigenem Namen und https. Neue Apps kommen mit <code>myr-deploy</code>.</span></span></li>
+      <li class="dran" tabindex="0" aria-describedby="bau-p2"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">läuft: </span><span class="bau-titel"><small>Phase 2</small>Ausweise</span><span class="bau-zettel" role="tooltip" id="bau-p2">Läuft gerade. Jedes Gerät bekommt Ausweise, und was etwas ändert, besiegelst du mit dem Finger. Erst Fassung 1, dann Fassung 2.</span></span></li>
+      <li class="idee" tabindex="0" aria-describedby="bau-p3"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel"><small>Phase 3</small>Contai&shy;ner</span><span class="bau-zettel" role="tooltip" id="bau-p3">MyrSpace als Container mit Einrichtungsbefehl, damit Freunde es selbst aufsetzen. Erst wenn Phase 2 bei dir stabil läuft.</span></span></li>
+      <li class="idee" tabindex="0" aria-describedby="bau-p4"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel"><small>Phase 4</small>Föde&shy;ration</span><span class="bau-zettel" role="tooltip" id="bau-p4">Gerät zu Gerät und Spaces untereinander: Fenster zum Fernseher, Bildschirm teilen, Freundschaft schließen.</span></span></li>
+      </ol>
+      <h5 class="bau-unter">Phase 2, Fassung 1 „AGAP“<span class="bau-zahl"></span></h5>
+      <span class="bau-balken" aria-hidden="true"><i></i><b></b></span>
+      <p class="bau-ziel">Anschauen, Genehmigen, Ausführen, Protokollieren: Ein Skript, auch von einer KI, läuft erst, wenn du am Handy den Finger auflegst.
+        Dazu gehören 15 Use Cases. Gebaut ist noch keiner, 9 sind fertig beschrieben (gestreift). Geplant ist also schon viel, gebaut noch nichts.</p>
+      <ul class="bau-liste">
+        <li class="fertig" tabindex="0" aria-describedby="bau-z2"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Proben: Finger am Handy, Ausweis im Browser, sudo-Modul</span><span class="bau-zettel" role="tooltip" id="bau-z2">Fünf Wegwerf-Versuche vom 14. bis 16.11., alle bestanden. Der Finger gilt je Unterschrift und nur bei entsperrtem Handy.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z3"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Namensdienst entschieden</span><span class="bau-zettel" role="tooltip" id="bau-z3">Die FritzBox bleibt DNS-Server. Ist der NAS aus, hat das Heimnetz trotzdem Namen.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z4"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Ausweis-Formate als Entwurf abgenickt</span><span class="bau-zettel" role="tooltip" id="bau-z4">Entwurf 5 vom 19.11.: Ausweise und Briefe, wer was unterschreiben darf, sudo über das Handy. Festgeschrieben wird erst mit Fassung 1.</span></span></li>
+        <li class="dran" tabindex="0" aria-describedby="bau-z5"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Zwei offene Fragen zur Fassung 1</span><span class="bau-zettel" role="tooltip" id="bau-z5">Wie Argumente in einen Lauf kommen und was ins Protokoll gehört. Vorschläge liegen, der PO schaut noch.</span></span></li>
+        <li class="dran" tabindex="0" aria-describedby="bau-z6"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Prüfung und Testsatz</span><span class="bau-zettel" role="tooltip" id="bau-z6">Eine Prüfung in Python, eine in Kotlin. Beide müssen denselben Satz guter und absichtlich falscher Ausweise bestehen.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z0"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Schnittstellen für Fassung 1</span><span class="bau-zettel" role="tooltip" id="bau-z0">Neun kurze Dokumente: wie sudo, Myrling, App, NAS und die Werkzeuge miteinander reden. Erst dann lassen sich Tests schreiben.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z7"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Wurzel, Ausgabestelle, Koppeln per QR</span><span class="bau-zettel" role="tooltip" id="bau-z7">Die Wurzel bleibt offline. Der NAS stellt Ausweise aus, das Handy koppelt per QR, Sperrbriefe ziehen zurück.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z8"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Myrling auf dem Rechner</span><span class="bau-zettel" role="tooltip" id="bau-z8">Lauscht im Heimnetz. Ein root-Helfer lässt sudo nur zu, wenn vom Handy eine Erlaubnis kommt.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z9"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">MyrSpace-App fürs Handy</span><span class="bau-zettel" role="tooltip" id="bau-z9">Zeigt dir, was gleich passieren soll. Finger drauf, die Erlaubnis geht zurück an den Rechner.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z10"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Der Test: sudo mit dem Finger</span><span class="bau-zettel" role="tooltip" id="bau-z10">Ein Skript läuft per sudo, du bestätigst am Handy, und danach steht der Lauf im Laufbuch.</span></span></li>
+      </ul>
+      <p class="bau-danach"><b>Danach</b> kommen noch 39 Use Cases, die für Fassung 1 keine Rolle spielen: <b>Fassung 2</b> mit 6 (säen ohne NAS, signierte Bündel, Ersatz-Handy),
+        <b>Myrten, die einziehen</b> mit 18 (Spielzeit-Wächter, MyrPass, MyrDrive …) und <b>spätere Phasen</b> mit 15 (Familie, Freunde, Firma, Föderation).</p>
+    </div>
+    <div class="bau-gruppe">
+      <h4>Diese Seite <small>Pitch, Prototyp</small><span class="bau-zahl"></span></h4>
+      <span class="bau-balken" aria-hidden="true"><i></i></span>
+      <ul class="bau-liste">
+        <li class="fertig" tabindex="0" aria-describedby="bau-z12"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Konzept und Erzählbogen</span><span class="bau-zettel" role="tooltip" id="bau-z12">Drei Versprechen: eigen, besiegelt, offen. Drei Sichten: Anwender, Bastler, Sicherheit.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z13"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Nacht und Morgen im Hain</span><span class="bau-zettel" role="tooltip" id="bau-z13">Farben aus den Moodboards, Hintergrund in SVG-Ebenen. Die Fenster leuchten auch morgens noch.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z14"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Handy-Demo „Kennst du das?“</span><span class="bau-zettel" role="tooltip" id="bau-z14">2FA-Code, Gäste-WLAN, fremder Rechner, „Komm essen“. Jedes Mal löst es ein Finger.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z15"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Weiche als Revolver</span><span class="bau-zettel" role="tooltip" id="bau-z15">Anwender, Bastler, Konzerner. Ab und zu stößt ihn der Cyberpunk hinaus. Die Sicht steht im Link.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z16"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Warum dezentral</span><span class="bau-zettel" role="tooltip" id="bau-z16">Je Sicht ein eigenes Bild: deine Geräte, Stern gegen Netz, Schilde gegen fremde Pakete.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z17"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Alles unter einer Haube</span><span class="bau-zettel" role="tooltip" id="bau-z17">Kuppel auf: Zahnräder und Fachwörter. Kuppel zu: Für dich bleiben App, Myrling und Finger.</span></span></li>
+        <li class="dran" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Die Frage nach der Kuppel, je Sicht eigen: praktisch? erweiterbar? sicher? Dazu, wie alle zusammen das Netz tragen. Darum kommt Mitmachen wohl gleich danach.</span></span></li>
+        <li class="dran" tabindex="0" aria-describedby="bau-z18"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Ein Netz aus Myrten</span><span class="bau-zettel" role="tooltip" id="bau-z18">Die Texte stehen, das Bild fehlt noch: MyrTube antippen, seine Verbindungen leuchten.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Der merge-train fährt vorbei</span><span class="bau-zettel" role="tooltip" id="bau-z21">Eine Dampflok mit Papierwagen am unteren Rand. Antippen erzählt von KI, Anfrage und Siegel.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Für jede Sicht ein eigener Weg. Unten steht derselbe Revolver noch einmal.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <p class="fuss"><span>Prototyp, noch im Bau · <a class="nach-oben" href="#anfang">↑ zurück zum Anfang</a></span></p>
 </main>
 
 <button class="dock" type="button" aria-label="Sicht weiterdrehen" tabindex="-1">
@@ -1794,6 +2006,70 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
   };
   window.addEventListener('scroll', () => { if (!geplant) { geplant = true; requestAnimationFrame(versetze); } }, { passive: true });
   ruhig.addEventListener('change', versetze);
+})();
+</script>
+<script>
+// Bautafel: Schublade oben, Zähler je Gruppe, Zettel per Tippen auf und zu, Zettel klappt nach unten, wenn oben kein Platz ist.
+(() => {
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)');
+  const tafel = document.getElementById('bautafel'), kopf = document.querySelector('.kopf'), schild = document.querySelector('.bauschild');
+
+  // Die Schublade ist eine Kopie der Tafel unten (ids mit „s-“ davor). Sie hängt am Kopf, scrollt also normal mit weg.
+  const lade = tafel.cloneNode(true);
+  lade.classList.remove('anker'); lade.classList.add('bau-schublade');
+  lade.querySelectorAll('[id]').forEach(e => { e.id = 's-' + e.id; });
+  lade.querySelectorAll('[aria-describedby]').forEach(e => e.setAttribute('aria-describedby', 's-' + e.getAttribute('aria-describedby')));
+  lade.id = 's-bautafel'; lade.setAttribute('aria-labelledby', 's-a-bau'); lade.tabIndex = -1;
+  const zuKnopf = document.createElement('button');
+  zuKnopf.type = 'button'; zuKnopf.className = 'bau-zu'; zuKnopf.setAttribute('aria-label', 'Bautafel schließen'); zuKnopf.textContent = '×';
+  lade.prepend(zuKnopf);
+  kopf.append(lade);
+  schild.setAttribute('aria-controls', 's-bautafel'); schild.setAttribute('aria-expanded', 'false');
+  const schublade = auf => {
+    lade.classList.toggle('offen', auf); kopf.classList.toggle('schublade-auf', auf);
+    schild.setAttribute('aria-expanded', String(auf));
+    if (auf) lade.focus({ preventScroll: true }); else if (lade.contains(document.activeElement)) schild.focus();
+  };
+  schild.addEventListener('click', e => { e.preventDefault(); schublade(!lade.classList.contains('offen')); });
+  zuKnopf.addEventListener('click', () => schublade(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && lade.classList.contains('offen') && !(e.target instanceof Element && e.target.closest('.bau-liste li, .bau-pfad li'))) schublade(false); });
+  document.addEventListener('click', e => { if (lade.classList.contains('offen') && !lade.contains(e.target) && !schild.contains(e.target)) schublade(false); });
+
+  // Zurück zum Anfang, sanft, außer bei „Bewegung reduzieren“
+  document.querySelectorAll('.nach-oben').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); window.scrollTo({ top: 0, behavior: ruhig.matches ? 'auto' : 'smooth' });
+  }));
+
+  document.querySelectorAll('.bau-gruppe').forEach(g => {
+    // Eigene Zahlen (etwa Use Cases) gehen vor, sonst zählt die Liste selbst.
+    const d = g.dataset;
+    const alle = +d.alle || g.querySelectorAll('.bau-liste li').length;
+    const fertig = d.fertig !== undefined ? +d.fertig : g.querySelectorAll('.bau-liste li.fertig').length;
+    g.querySelector('.bau-zahl').textContent = fertig + ' von ' + alle + (d.einheit ? ' ' + d.einheit : '') + ' fertig';
+    const balken = g.querySelector('.bau-balken i'), streifen = g.querySelector('.bau-balken b');
+    if (streifen) streifen.style.setProperty('--beschrieben', (+d.beschrieben || 0) / alle);
+    // Der Balken wächst erst, wenn die Tafel ins Bild kommt.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { balken.style.setProperty('--anteil', fertig / alle); io.disconnect(); } }, { threshold: .15 });
+      io.observe(g);
+    } else balken.style.setProperty('--anteil', fertig / alle);
+  });
+  const punkte = [...document.querySelectorAll('.bau-liste li, .bau-pfad li')];
+  const platz = li => li.classList.toggle('unten', li.getBoundingClientRect().top < li.querySelector('.bau-zettel').offsetHeight + 70);
+  const zu = () => punkte.forEach(p => p.classList.remove('offen'));
+  punkte.forEach(li => {
+    li.addEventListener('pointerenter', () => platz(li));
+    li.addEventListener('focus', () => platz(li));
+    li.addEventListener('click', () => {
+      const war = li.classList.contains('offen'); zu();
+      if (war) li.blur(); else { platz(li); li.classList.add('offen'); }
+    });
+    li.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { zu(); li.blur(); }
+      else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); }
+    });
+  });
+  document.addEventListener('click', e => { if (!(e.target instanceof Element && e.target.closest('.bau-liste li, .bau-pfad li'))) zu(); });
 })();
 </script>
 </body>
