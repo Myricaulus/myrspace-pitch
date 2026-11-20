@@ -554,6 +554,42 @@ svg.netz .wb-netz { stroke: var(--schild, #6f9bff); opacity: .3; }
 .geraete-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
 .geraete-text.gut { color: var(--gut); }
 
+/* Alles unter einer Haube */
+html:not(.js) .haube-bild { display: none; }
+.haube-bild { margin: 12px 0 0; }
+.haube-bild svg { display: block; width: 100%; height: auto; overflow: visible; }
+.hb-sockel { fill: var(--tx3); opacity: .22; }
+.hb-glas { fill: var(--tx3); fill-opacity: .07; stroke: var(--tx3); stroke-width: 2.5; }
+.hb-frost { fill: var(--grund); opacity: 0; transition: opacity .8s; }
+.hb-gitter { fill: none; stroke: var(--tx3); stroke-width: 1; opacity: .25; }
+.hb-glanz { fill: none; stroke: #fff; stroke-width: 3.5; stroke-linecap: round; opacity: .35; }
+.hb-innen { transform-origin: 180px 160px; transition: opacity .8s, transform .8s; }
+svg.zu .hb-frost { opacity: .88; }
+svg.zu .hb-innen { opacity: .2; transform: scale(.9); }
+.zahnrad { fill: var(--tx3); fill-opacity: .55; transform-box: fill-box; transform-origin: center; animation: drehen 9s linear infinite; }
+.zahnrad.b { animation-duration: 7.2s; animation-direction: reverse; }
+.zahnrad.c { animation-duration: 6.3s; }
+@keyframes drehen { to { transform: rotate(360deg); } }
+.hb-umlauf { transform-origin: 180px 158px; animation: drehen 22s linear infinite; }
+.hb-umlauf .s { fill: none; stroke: var(--kz); stroke-width: 2; }
+.hb-umlauf .f { fill: none; stroke: var(--neon); stroke-width: 1.4; stroke-linecap: round; }
+.hb-umlauf .k { fill: none; stroke: #e0a040; stroke-width: 2.2; stroke-linecap: round; }
+.hb-umlauf .p { fill: var(--neon); }
+.hb-umlauf .l { fill: none; stroke: var(--tx); stroke-width: 2; }
+.hb-wort { font: 700 10.5px ui-monospace, monospace; fill: var(--tx2); text-anchor: middle; animation: wabern 4.5s ease-in-out infinite alternate; }
+@keyframes wabern { to { transform: translate(5px, -6px); } }
+.hb-ding { opacity: 0; transform-box: fill-box; transform-origin: center; transform: translateY(14px) scale(.6);
+  transition: opacity .4s, transform .55s cubic-bezier(.3, 1.5, .5, 1); }
+svg.zu .hb-ding { opacity: 1; transform: none; }
+.hb-ding circle.rund { fill: var(--grund); stroke: var(--neon); stroke-width: 3; filter: drop-shadow(0 0 6px var(--neon-glut)); }
+.hb-ding text { fill: var(--tx); font-size: 14px; font-weight: 800; text-anchor: middle; }
+.hb-ding text.klein { font-size: 11px; font-weight: 600; fill: var(--tx2); }
+.hb-ding .linie { fill: none; stroke: var(--tx); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.hb-ding .neon { fill: none; stroke: var(--neon); stroke-width: 2.2; stroke-linecap: round; }
+.hb-ding .stengel { fill: none; stroke: var(--blatt2); stroke-width: 2.6; stroke-linecap: round; }
+.haube-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
+.haube-text.gut { color: var(--gut); }
+
 /* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist */
 .dock { position: fixed; z-index: 20; right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
   display: flex; align-items: center; gap: 8px; padding: 5px 16px 5px 5px; border-radius: 999px; cursor: pointer; text-align: left;
@@ -876,6 +912,46 @@ svg.netz .wb-netz { stroke: var(--schild, #6f9bff); opacity: .3; }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
+  <!-- ═════ Alles unter einer Haube ═════ -->
+  <section class="abschnitt anker" aria-labelledby="a-haube">
+    <h2 class="kicker" id="a-haube">Alles unter einer Haube</h2>
+    <div class="je-sicht">
+      <div data-sicht="anwender"><h3>Klingt kompliziert? Für dich sind es drei Dinge.</h3>
+        <p>Die App auf dem Handy hält deine Ausweise. Auf jedem Gerät wartet ein Myrling, bis man ihn braucht. Und dein Finger sagt Ja oder Nein. Alles andere passiert unter der Haube.</p></div>
+      <div data-sicht="bastler"><h3>Unter der Haube: ein Paketmanager und ein Agent je Gerät.</h3>
+        <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Auf jedem Gerät läuft ein Myrling, der schläft, bis ihn ein Gerät mit gültigem Ausweis anspricht.</p></div>
+      <div data-sicht="sicherheit"><h3>Unter der Haube: eine Wurzel, zwei Ausweise, ein Finger.</h3>
+        <p>Alle Schlüssel stammen von der Wurzel des Space ab. Jedes Gerät trägt zwei Ausweise: den Myrtag für den Alltag und das Myrsiegel für alles, was etwas verändert.</p></div>
+    </div>
+    <figure class="haube-bild">
+      <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Unter einer Glaskuppel drehen sich Zahnräder, Ausweise, Schilde und Fachwörter. Schließt sich die Haube, bleiben drei Dinge: die App, ein Myrling je Gerät und dein Finger."></svg>
+      <div class="schalter-reihe">
+        <button type="button" class="lbl" data-modus="zu">Für dich</button>
+        <button type="button" class="schalter" role="switch" aria-checked="true" aria-label="Unter die Haube schauen"></button>
+        <button type="button" class="lbl an" data-modus="auf">Unter der Haube</button>
+      </div>
+      <figcaption class="haube-text">Unter der Haube: Wurzel, Ausweise, Schlüssel im Chip, Myrlinge, Umwege, Schilde …</figcaption>
+    </figure>
+    <details class="mehr">
+      <summary>Mehr erfahren</summary>
+      <div class="je-sicht">
+        <div data-sicht="anwender">
+          <p><b>Den Admin macht die KI.</b> Sie richtet Geräte ein, repariert und pflegt. Bevor sie etwas verändert, siehst du auf dem Handy, was sie vorhat, und besiegelst es mit dem Finger. Später kannst du alles nachlesen.</p>
+          <p>Ein neues Gerät dazu? QR-Code zeigen, Finger drauf, fertig.</p>
+        </div>
+        <div data-sicht="bastler">
+          <p><b>Jede App für sich.</b> Eigener Name, eigene Herkunft im Browser, eigener Wegwerf-Benutzer, kein Netz. Myrten sprechen über den Myrtag miteinander, ohne Konten und ohne API-Schlüssel.</p>
+          <p>Mit KI gebaut, für KI bedienbar: Ein Agent findet die Funktionen aller Myrten über einen gemeinsamen Index und darf nur, was vereinbart ist.</p>
+        </div>
+        <div data-sicht="sicherheit">
+          <p><b>Das Siegel bleibt im Chip.</b> Das Myrsiegel unterschreibt jeden Auftrag einzeln und gibt seinen Schlüssel nur frei, wenn du zustimmst: am Handy mit dem Fingerabdruck, den der Sicherheitschip selbst prüft, am PC mit der TPM-PIN.</p>
+          <p>Eine KI ist ein eigener Teilnehmer, keine Person, und nur Personen besiegeln. Standardmäßig ist alles zu, und jeder Eingriff steht im Laufbuch.</p>
+        </div>
+      </div>
+    </details>
+    <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
+  </section>
+
   <!-- ═════ Platzhalter ═════ -->
   <section class="abschnitt anker" aria-labelledby="a-netz">
     <span class="platzhalter-marke">Platzhalter</span>
@@ -892,7 +968,7 @@ svg.netz .wb-netz { stroke: var(--schild, #6f9bff); opacity: .3; }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
-  <p class="fuss"><span>Prototyp · erster Bildschirm, „Warum dezentral“ und ein Platzhalter · im Aufbau</span></p>
+  <p class="fuss"><span>Prototyp · erster Bildschirm, „Warum dezentral“, „Alles unter einer Haube“ und ein Platzhalter · im Aufbau</span></p>
 </main>
 
 <button class="dock" type="button" aria-label="Sicht weiterdrehen" tabindex="-1">
@@ -1176,7 +1252,7 @@ svg.netz .wb-netz { stroke: var(--schild, #6f9bff); opacity: .3; }
   function duellPlanen() {
     clearTimeout(duellUhr);
     if (sicht !== 2 || ruhig.matches || !Element.prototype.animate) return;
-    duellUhr = setTimeout(() => { angriff(); duellPlanen(); }, 5500);
+    duellUhr = setTimeout(() => { angriff(); duellPlanen(); }, 10000);
   }
 
   function sichtSetzen(neu, richtung, sofort) { verankert(() => sichtSetzenJetzt(neu, richtung, sofort)); }
@@ -1623,6 +1699,88 @@ svg.netz .wb-netz { stroke: var(--schild, #6f9bff); opacity: .3; }
     // Wechselt im Revolver Konzerner und Cyberpunk, tauschen hier Angreifer und Verteidiger die Farben
     new MutationObserver(rollen).observe(document.body, { attributes: true, attributeFilter: ['data-wer'] });
     rollen(); zeige();
+  }
+
+  /* ── Alles unter einer Haube: auf zeigt das Getriebe, zu nur drei Dinge ── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const fig = $('.haube-bild'), svg = $('svg', fig), schalter = $('.schalter', fig), text = $('.haube-text'), lbls = [...fig.querySelectorAll('.lbl')];
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    const KUPPEL = 'M40 236 A140 180 0 0 1 320 236 Z';
+    el('ellipse', { cx: 180, cy: 238, rx: 156, ry: 12, class: 'hb-sockel' }, svg);
+    el('path', { d: KUPPEL, class: 'hb-glas' }, svg);
+    const innen = el('g', { class: 'hb-innen' }, svg);
+    function zahnrad(cx, cy, ro, n, art) {
+      const ri = ro * .78, st = 2 * Math.PI / n; let d = '';
+      for (let i = 0; i < n; i++) {
+        const a = i * st;
+        [[ri, a], [ro, a + st * .18], [ro, a + st * .45], [ri, a + st * .62]].forEach(([r, w], k) =>
+          d += (i === 0 && k === 0 ? 'M' : 'L') + (cx + r * Math.cos(w)).toFixed(1) + ' ' + (cy + r * Math.sin(w)).toFixed(1));
+      }
+      const h = ro * .3;
+      d += `Z M${cx + h} ${cy}a${h} ${h} 0 1 0 ${-2 * h} 0a${h} ${h} 0 1 0 ${2 * h} 0Z`;
+      el('path', { d, class: 'zahnrad ' + art, 'fill-rule': 'evenodd' }, innen);
+    }
+    zahnrad(150, 178, 36, 10, 'a'); zahnrad(205, 146, 26, 8, 'b'); zahnrad(238, 196, 19, 7, 'c');
+    const umlauf = el('g', { class: 'hb-umlauf' }, innen);
+    const DINGE = [
+      ['path', { class: 's', d: 'M0 -9L7.8 -4.5V4.5L0 9L-7.8 4.5V-4.5Z' }],
+      ['path', { class: 'f', d: 'M-6 1.5a6 6 0 0 1 12 0M-3.5 3.5a3.5 3.5 0 0 1 7 0M-8 -1a8 8 0 0 1 16 0' }],
+      ['path', { class: 'k', d: 'M-8 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0M-1 0H9M5 0v4M8 0v3' }],
+      ['circle', { class: 'p', r: 5 }],
+      ['path', { class: 'l', d: 'M-5 -1h10v8h-10zM-3 -1v-3a3 3 0 0 1 6 0v3' }]
+    ];
+    DINGE.forEach(([name, attr], i) => {
+      const w = i * 2 * Math.PI / DINGE.length - Math.PI / 2;
+      const g = el('g', { transform: `translate(${(180 + 84 * Math.cos(w)).toFixed(1)} ${(158 + 84 * Math.sin(w)).toFixed(1)})` }, umlauf);
+      el(name, attr, g);
+    });
+    [['Zertifikat', 180, 80], ['TPM', 128, 102], ['ff02::1', 232, 102], ['Wurzel', 106, 130], ['Myrtag', 256, 130],
+     ['Laufbuch', 82, 172], ['Myrsiegel', 280, 172], ['mTLS', 82, 212], ['myrapp.json', 150, 226], ['Umweg', 226, 226], ['QR', 284, 212]]
+      .forEach(([w, x, y], i) => { const t = el('text', { x, y, class: 'hb-wort', style: `animation-delay:-${(i * .7).toFixed(1)}s` }, innen); t.textContent = w; });
+    el('path', { d: KUPPEL, class: 'hb-frost' }, svg);
+    const gitter = el('g', { class: 'hb-gitter' }, svg);
+    [70, 112].forEach(rx => el('path', { d: `M${180 - rx} 236 A${rx} 180 0 0 1 ${180 + rx} 236` }, gitter));
+    el('path', { d: 'M180 56 V236' }, gitter);
+    [120, 175].forEach(y => { const hw = 140 * Math.sqrt(1 - ((236 - y) / 180) ** 2); el('path', { d: `M${(180 - hw).toFixed(1)} ${y} H${(180 + hw).toFixed(1)}` }, gitter); });
+    el('path', { d: KUPPEL, class: 'hb-glas', style: 'fill:none' }, svg);
+    el('path', { d: 'M78 150 A110 140 0 0 1 132 86', class: 'hb-glanz' }, svg);
+    // Vor der geschlossenen Haube: App, Myrling, Finger
+    const vorn = el('g', {}, svg);
+    // Position außen, Animation innen: eine CSS-transform würde sonst das translate überschreiben
+    let nr = 0;
+    function ding(x, titel, unter, zeichne) {
+      const aussen = el('g', { transform: `translate(${x} 146)` }, vorn);
+      const g = el('g', { class: 'hb-ding', style: `transition-delay:${(nr++ * .15).toFixed(2)}s` }, aussen);
+      el('circle', { class: 'rund', r: 30 }, g); zeichne(g);
+      const a = el('text', { y: 50 }, g); a.textContent = titel;
+      const b = el('text', { y: 65, class: 'klein' }, g); b.textContent = unter;
+    }
+    ding(92, 'App', 'hält Ausweise', g => { el('rect', { x: -9, y: -15, width: 18, height: 30, rx: 4, class: 'linie' }, g); el('path', { d: 'M-3 10h6', class: 'linie' }, g); });
+    ding(180, 'Myrling', 'je Gerät', g => {
+      el('path', { d: 'M0 14V-1', class: 'stengel' }, g);
+      el('use', { href: '#blatt', class: 'bl1', transform: 'translate(0 0) rotate(-35) scale(.3)' }, g);
+      el('use', { href: '#blatt', class: 'bl3', transform: 'translate(0 3) rotate(-150) scale(.26)' }, g);
+    });
+    ding(268, 'Finger', 'sagt Ja', g => el('path', { class: 'neon', d: 'M-8 4a8 8 0 0 1 16 0M-5 7a5 5 0 0 1 10 0M-11 0a11 11 0 0 1 22 0M0 5v10M-13.5 -4a13.5 13.5 0 0 1 27 0' }, g));
+
+    let zu = false, uhr = 0, selbst = false;
+    function zeige() {
+      svg.classList.toggle('zu', zu);
+      schalter.setAttribute('aria-checked', !zu);
+      lbls.forEach(l => l.classList.toggle('an', l.dataset.modus === (zu ? 'zu' : 'auf')));
+      text.textContent = zu ? 'Für dich: eine App, ein Myrling auf jedem Gerät, dein Finger. Den Rest erledigt die KI, und du besiegelst.'
+                            : 'Unter der Haube: Wurzel, Ausweise, Schlüssel im Chip, Myrlinge, Umwege, Schilde …';
+      text.classList.toggle('gut', zu);
+    }
+    const setze = z => { selbst = true; clearTimeout(uhr); zu = z; zeige(); };
+    schalter.addEventListener('click', () => setze(!zu));
+    lbls.forEach(l => l.addEventListener('click', () => setze(l.dataset.modus === 'zu')));
+    let gestartet = false;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !gestartet) { gestartet = true; uhr = setTimeout(() => { if (!selbst) { zu = true; zeige(); } }, ruhig.matches ? 1500 : 3000); }
+    }, { threshold: .4 }).observe(svg);
+    zeige();
   }
 
   /* ── Parallaxe ────────────────────────────────────────────── */
