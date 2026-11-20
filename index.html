@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#17122a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
 <title>MyrSpace</title>
+<!-- Stand der Seite: vor jedem Hochladen auf den aktuellen Zeitpunkt setzen (README, „Pitch-Seite auf Netlify“) -->
+<meta name="myr-stand" content="2026-11-20T18:40">
 <meta name="description" content="Dein eigener Raum für Geräte, Apps und KI: Die KI darf helfen, wo immer sie läuft. Besiegeln tust du, mit dem Finger, und dein Space bleibt bei dir.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MyrSpace">
@@ -218,6 +220,13 @@ body[data-sicht="sicherheit"][data-wer="konzerner"] .s-blau { opacity: 1; }
 
 /* ── Bühne ─────────────────────────────────────────────────────── */
 main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; padding: 8px 16px 110px; }
+.besuch { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 12px; margin: 0 0 6px; font-size: 13px; color: var(--tx2); text-align: center; }
+.besuch-neu { display: inline-flex; align-items: center; gap: 7px; padding: 3px 12px; border-radius: 999px; background: var(--panel); border: 1px solid var(--panel-rand);
+  color: var(--tx); font-weight: 800; text-decoration: none; }
+.besuch-neu:hover { border-color: var(--neon); }
+.besuch-neu:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+.besuch-neu i { width: 8px; height: 8px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 6px var(--neon-glut); animation: blinkpunkt 1.6s ease-in-out infinite; }
+@keyframes blinkpunkt { 50% { opacity: .35; } }
 .buehne { display: grid; justify-items: center; gap: 14px; padding-top: 6px; }
 .anreisser { margin: 4px 0 0; font-size: clamp(22px, 6vw, 34px); font-weight: 800; letter-spacing: -.02em; text-align: center; }
 .anreisser span { color: var(--tx3); display: block; }
@@ -979,6 +988,9 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 </header>
 
 <main>
+  <!-- Stand und letzter Besuch; ohne JS nur der Stand -->
+  <p class="besuch"><span class="besuch-stand">Stand 20.11.2026, 18:40</span></p>
+
   <!-- ═════ 1 · Die Handy-Demo ═════ -->
   <section class="buehne" aria-label="Kennst du das?">
     <p class="anreisser">Kennst du das? <span>Ein Finger löst es.</span></p>
@@ -2313,6 +2325,33 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 })();
 </script>
 <script>
+// Stand und letzter Besuch. Der Besuch steht nur im eigenen Browser; ein Neuladen im selben Tab zählt nicht als neuer Besuch.
+(() => {
+  const zeile = document.querySelector('.besuch'), meta = document.querySelector('meta[name="myr-stand"]');
+  if (!zeile || !meta) return;
+  const stand = new Date(meta.content);
+  const datum = d => d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  let vorher = null;
+  try {
+    let v = sessionStorage.getItem('myr-pitch-vorher');
+    if (v === null) { v = localStorage.getItem('myr-pitch-besuch') || ''; sessionStorage.setItem('myr-pitch-vorher', v); }
+    localStorage.setItem('myr-pitch-besuch', new Date().toISOString());
+    if (v) vorher = new Date(v);
+  } catch (e) {}
+  if (isNaN(stand)) return;
+  zeile.querySelector('.besuch-stand').textContent = 'Stand ' + datum(stand);
+  if (!vorher || isNaN(vorher)) return;
+  const b = document.createElement('span'); b.textContent = 'Dein letzter Besuch: ' + datum(vorher);
+  zeile.append(b);
+  if (stand > vorher) {
+    const a = document.createElement('a'); a.className = 'besuch-neu'; a.href = '#bautafel';
+    a.innerHTML = '<i aria-hidden="true"></i>Seitdem hat sich etwas verändert →';
+    zeile.append(a);
+  } else {
+    const u = document.createElement('span'); u.textContent = '· seitdem unverändert'; zeile.append(u);
+  }
+})();
+
 // Bautafel: Schublade oben, Zähler je Gruppe, Zettel per Tippen auf und zu, Zettel klappt nach unten, wenn oben kein Platz ist.
 (() => {
   const ruhig = window.myrRuhig;
