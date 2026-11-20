@@ -1046,6 +1046,20 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 .akd-fuss button { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--panel-rand); background: var(--panel); color: var(--tx); font: 600 13.5px system-ui, sans-serif; cursor: pointer; }
 .akd-fuss .akd-fertig { background: var(--knopf); color: var(--knopf-tx); border-color: transparent; }
 
+/* ── Schluss: eine Botschaft an alle ───────────────────────────── */
+.schluss { text-align: center; padding-top: 28px; }
+.schluss > h3 { margin: 10px 0 0; font-size: clamp(23px, 6vw, 32px); line-height: 1.15; letter-spacing: -.015em; }
+.schluss > p { margin: 10px auto 0; max-width: 32em; font-size: 16.5px; }
+.schluss-myrte { display: block; margin: 0 auto 6px; width: 56px; height: 56px; transform-origin: 50% 95%;
+  animation: myrte-wiegen 5s ease-in-out infinite; filter: drop-shadow(0 0 10px var(--neon-glut)); }
+@keyframes myrte-wiegen { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.schluss-knopf-reihe { margin-top: 18px !important; }
+.schluss-knopf { display: inline-block; text-decoration: none; font-size: 16px; padding: 10px 22px; animation: schluss-glimmen 2.8s ease-in-out infinite; }
+.schluss-knopf:hover { background: var(--neon); color: var(--grund); }
+@keyframes schluss-glimmen { 50% { box-shadow: 0 0 22px var(--neon-glut); } }
+.schluss-klein { font-size: 13.5px !important; color: var(--tx2); }
+.schluss-vision { margin-top: 22px !important; font-size: clamp(18px, 4.6vw, 22px) !important; font-weight: 800; line-height: 1.3; color: var(--gut); }
+
 /* ── Bewegung reduzieren: alles steht still ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
@@ -1200,6 +1214,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <details class="neu-box" open>
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
+    <li data-wann="neu">Am Ende steht jetzt der <a href="#schluss">Schluss</a>: Fragen und Kommentare gern auf GitHub, bis die erste Fassung erscheint.</li>
     <li data-wann="neu">Wo <span class="beide">Konzerner und Cyberpunk</span> beide gemeint sind, verläuft die Schrift von Blau nach Rot.</li>
     <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer bis zum Ende der Seite keins angetippt hat, bekommt den Zug dort einmal von selbst. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C. An einer Zeile steht eine Frage an den Agenten, abschicken musst du sie selbst. Drehst du den Revolver, während der Bahnhof offen ist, wird der Waggon neu beladen.</li>
     <li data-wann="neu">Im äußersten Ring, Sicht <span class="beide">Konzerner/Cyberpunk</span>: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
@@ -1581,14 +1596,25 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z32"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Was MyrSpace nicht behauptet</span><span class="bau-zettel" role="tooltip" id="bau-z32">Ehrliche Grenzen statt Superlativen, aufklappbar unter „Sicher? Das sagen alle.“, dazu ein fremder Dienst, der nur Verschlüsseltes sieht.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Fünf Ringe, vom Taschen-Space bis zur Föderation. Erst ist nur das Handy offen, jeder Klick öffnet einen Ring mehr. Darin ist auch „Ein Netz aus Myrten“ aufgegangen.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Der merge-train fährt ein</span><span class="bau-zettel" role="tooltip" id="bau-z21">Hinter „Kontrolliere“ im äußersten Ring (Sicht <span class="beide">Konzerner/Cyberpunk</span>): Der Bahnhof klappt herunter, ein Zug fährt ein, und im Waggon steckt ein Diff, an dem Mensch und Agent ein Gespräch führen. Je nach Sicht ist es eine Konfiguration, Python oder TPM2 in C.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Die drei Türen noch einmal nebeneinander, darunter derselbe Revolver. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Schluss: Und jetzt du</span><span class="bau-zettel" role="tooltip" id="bau-z22">Eine Botschaft an alle Sichten: Fragen und Kommentare auf GitHub, bis die erste Fassung erscheint. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
       </ul>
     </div>
   </section>
 
 
-  <p class="fuss"><span>Prototyp, noch im Bau · <a class="nach-oben" href="#anfang">↑ zurück zum Anfang</a></span></p>
+  <!-- ═════ Schluss: eine Botschaft an alle Sichten, Fragen und Kommentare auf GitHub bis zur ersten Fassung ═════ -->
+  <section class="abschnitt anker schluss" id="schluss" aria-labelledby="a-schluss">
+    <img class="schluss-myrte" src="myrte.svg" alt="" width="64" height="64">
+    <h2 class="kicker" id="a-schluss">Und jetzt du</h2>
+    <h3>Noch ist MyrSpace ein Plan. Red mit.</h3>
+    <p>Bis die erste Fassung erscheint, sammeln wir Fragen und Kommentare auf GitHub. Was ist unklar, was fehlt, wo hält es nicht? Ob Anwender, Bastler, Konzerner oder Cyberpunk: Jede Frage hilft, und jeder Einwand macht es besser.</p>
+    <p class="schluss-knopf-reihe"><a class="mitmach-knopf schluss-knopf" href="https://github.com/Myricaulus/myrspace-pitch/issues">Fragen und Kommentare auf GitHub →</a></p>
+    <p class="schluss-klein">Lesen geht ohne Anmeldung, zum Schreiben brauchst du ein GitHub-Konto.</p>
+    <p class="schluss-vision">Dann fangen wir zusammen an, die Vision von MyrSpace Wirklichkeit werden zu lassen.</p>
+  </section>
+
+  <p class="fuss"><span>Prototyp, noch im Bau ·<a class="nach-oben" href="#anfang">↑ zurück zum Anfang</a></span></p>
 </main>
 
 <button class="dock" type="button" aria-label="Sicht weiterdrehen" tabindex="-1">
