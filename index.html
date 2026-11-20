@@ -488,9 +488,53 @@ svg.netz.ausgefallen .knoten:not(.nas) circle { animation: leuchten 1.4s ease-in
 .mehr[open] summary::after { transform: rotate(180deg); }
 .mehr .je-sicht p { margin: 10px 0 0; }
 .quellen { font-size: 13.5px; color: var(--tx2); }
-html:not(.js) .ausfall, html:not(.js) .geraete { display: none; }
-.geraete, .ausfall { display: none; }
-body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[data-sicht="sicherheit"] .ausfall { display: block; animation: auftauchen .45s ease both; }
+html:not(.js) .ausfall, html:not(.js) .geraete, html:not(.js) .wurzel-bild { display: none; }
+.geraete, .ausfall, .wurzel-bild { display: none; }
+body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[data-sicht="sicherheit"] .wurzel-bild { display: block; animation: auftauchen .45s ease both; }
+/* Anwender: gekappte Leitung und Umweg */
+.gk-treffer { stroke: transparent; stroke-width: 18; }
+.gk.gekappt { stroke: var(--cp); stroke-dasharray: 3 6; opacity: .75; }
+.gk.umweg { stroke: var(--neon); stroke-width: 3.2; opacity: .95; }
+.paket.ueber { fill: #ffd27a; filter: drop-shadow(0 0 4px rgba(255, 200, 100, .8)); }
+/* Sicherheit: zentrale Anmeldung gegen eigene Wurzel */
+.wurzel-bild { margin: 12px 0 0; }
+.wurzel-bild svg { display: block; width: 100%; height: auto; overflow: visible; }
+.wb-kante { stroke: var(--tx3); stroke-width: 1.6; opacity: .35; transition: opacity .5s, stroke .4s; }
+.wb-stern { stroke: #7fb8ff; stroke-width: 2.2; opacity: .7; }
+svg.netz .wb-stern, svg.stern .wb-netz { opacity: 0; }
+svg.stern.ausgefallen .wb-stern { stroke: #8a8399; stroke-dasharray: 4 5; opacity: .4; }
+.wb-geraet .koerper { fill: var(--grund); stroke: var(--neon); stroke-width: 3; transform-box: fill-box; transform-origin: center; transition: fill .3s, stroke .3s, opacity .3s, stroke-width .15s; }
+svg.stern .wb-geraet .koerper { stroke: #7fb8ff; }
+.wb-geraet .licht { fill: var(--neon); transition: opacity .3s; }
+svg.stern .wb-geraet .licht { fill: #7fb8ff; }
+.wb-geraet .schloss { opacity: 0; transition: opacity .3s; }
+.wb-geraet .schloss rect { fill: #fff; } .wb-geraet .schloss path { fill: none; stroke: #fff; stroke-width: 2; }
+.wb-geraet text, .wb-wurzel text, .wb-fremd text { fill: var(--tx); font-size: 12px; font-weight: 800; text-anchor: middle; }
+.wb-geraet.ok .koerper { stroke-width: 5.5; }
+svg.stern.ausgefallen .wb-geraet .koerper { fill: #8a8399; stroke: #8a8399; opacity: .65; }
+svg.stern.ausgefallen .wb-geraet .licht { opacity: 0; }
+svg.stern.ausgefallen .wb-geraet .schloss { opacity: 1; }
+.wb-zentrum { transform-origin: 180px 150px; transition: transform .6s cubic-bezier(.3, 1.4, .5, 1), opacity .4s; }
+.wb-zentrum circle { fill: #7fb8ff; transition: fill .3s; filter: drop-shadow(0 0 8px rgba(127, 184, 255, .6)); }
+.wb-zentrum .innen { fill: #0d2a52; font-size: 11px; font-weight: 800; text-anchor: middle; transition: opacity .3s; }
+.wb-zentrum .unter { fill: var(--tx2); font-size: 11px; font-weight: 700; text-anchor: middle; }
+.wb-zentrum .x { fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; opacity: 0; transition: opacity .3s; }
+svg.stern.ausgefallen .wb-zentrum circle { fill: var(--cp); filter: drop-shadow(0 0 10px var(--cp)); }
+svg.stern.ausgefallen .wb-zentrum .x { opacity: 1; } svg.stern.ausgefallen .wb-zentrum .innen { opacity: 0; }
+svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
+.wb-wurzel, .wb-fremd { transition: opacity .5s; } svg.stern .wb-wurzel, svg.stern .wb-fremd { opacity: 0; }
+.wb-wurzel circle { fill: var(--grund); stroke: var(--neon); stroke-width: 2.5; stroke-dasharray: 4 4; }
+.wb-wurzel .fp, .wb-paket.eigen path { fill: none; stroke: var(--neon); stroke-width: 1.2; stroke-linecap: round; }
+.wb-wurzel text tspan { font-weight: 600; fill: var(--tx2); }
+.wb-fremd circle { fill: var(--angreifer, #ff5c8a); filter: drop-shadow(0 0 6px var(--angreifer, #ff5c8a)); }
+.wb-fremd .fp { fill: none; stroke: #fff; stroke-width: 1.2; stroke-linecap: round; }
+.wb-paket circle { fill: var(--grund); stroke-width: 2; }
+.wb-paket.eigen circle { stroke: var(--neon); filter: drop-shadow(0 0 3px var(--neon-glut)); }
+.wb-paket.auth circle { stroke: #7fb8ff; } .wb-paket.auth path { fill: none; stroke: #7fb8ff; stroke-width: 1.2; }
+.wb-paket.fremd circle { stroke: var(--angreifer, #ff5c8a); } .wb-paket.fremd path { fill: none; stroke: var(--angreifer, #ff5c8a); stroke-width: 1.2; stroke-linecap: round; }
+.wb-schild { fill: none; stroke: var(--schild, #6f9bff); stroke-width: 3; transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 0 6px var(--schild, #6f9bff)); }
+.wb-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
+.wb-text.schlecht { color: var(--cp); } .wb-text.gut { color: var(--gut); }
 .geraete { margin: 12px 0 0; }
 .geraete svg { display: block; width: 100%; height: auto; overflow: visible; }
 .gk { stroke: var(--tx3); stroke-width: 2; opacity: .5; transition: opacity .4s, stroke .4s; }
@@ -782,13 +826,22 @@ body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[
     <h2 class="kicker" id="a-dezentral">Warum dezentral</h2>
     <div class="je-sicht">
       <div data-sicht="anwender"><h3>Fällt eins aus, reden die anderen weiter.</h3>
-        <p>Deine Geräte sprechen direkt miteinander, ohne Umweg über ein fremdes Rechenzentrum. Tipp eins an und schalt es aus.</p></div>
+        <p>Deine Geräte sprechen direkt miteinander, ohne Umweg über ein fremdes Rechenzentrum. Tipp ein Gerät an und schalt es aus, oder kapp eine Leitung.</p></div>
       <div data-sicht="bastler"><h3>Stern gegen Netz.</h3></div>
       <div data-sicht="sicherheit"><h3>Kein Single Point of Failure.</h3></div>
     </div>
     <figure class="geraete">
       <svg viewBox="0 0 360 262" role="group" aria-label="Schaubild: Deine Geräte sprechen direkt miteinander. Jedes Gerät lässt sich antippen und aus- oder einschalten."></svg>
       <figcaption class="geraete-text">Alle Geräte reden direkt miteinander.</figcaption>
+    </figure>
+    <figure class="wurzel-bild">
+      <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zentral hängt jede Anmeldung an einem Dienst in der Cloud. Fällt er aus, kommt keiner mehr rein. In MyrSpace prüft jedes Gerät den Fingerabdruck selbst, auch wenn die Wurzel offline ist: Eigene Pakete kommen durch, fremde prallen ab."></svg>
+      <div class="schalter-reihe">
+        <button type="button" class="lbl an" data-modus="stern">Zentral</button>
+        <button type="button" class="schalter" role="switch" aria-checked="false" aria-label="MyrSpace einschalten"></button>
+        <button type="button" class="lbl" data-modus="netz">MyrSpace</button>
+      </div>
+      <figcaption class="wb-text">Zentral meldet sich jedes Gerät bei einer Anmeldung in der Cloud an.</figcaption>
     </figure>
     <figure class="ausfall">
       <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zentral hängen alle Geräte an einem Dienst. Fällt er aus, stehen alle. In MyrSpace sprechen die Geräte direkt miteinander. Fällt eines aus, sogar der NAS, läuft der Rest weiter."></svg>
@@ -1243,12 +1296,12 @@ body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[
   /* ── Warum dezentral: Stern gegen Netz ──────────────────── */
   {
     const NS = 'http://www.w3.org/2000/svg';
-    const svg = $('.ausfall svg'), schalter = $('.schalter'), text = $('.ausfall-text'), lbls = [...document.querySelectorAll('.schalter-reihe .lbl')];
+    const fig = $('.ausfall'), svg = $('svg', fig), schalter = $('.schalter', fig), text = $('.ausfall-text'), lbls = [...fig.querySelectorAll('.lbl')];
     const NAMEN_G = ['Handy', 'Laptop', 'Fernseher', 'NAS', 'Tablet', 'Spiel-PC', 'Drucker'], NAS = 3;
     const MX = 180, MY = 128;
     const pos = NAMEN_G.map((_, i) => { const w = -Math.PI / 2 + i * 2 * Math.PI / NAMEN_G.length; return [MX + 140 * Math.cos(w), MY + 96 * Math.sin(w)]; });
     const STERN = NAMEN_G.map((_, i) => [-1, i]);
-    const NETZ = [...NAMEN_G.map((_, i) => [i, (i + 1) % NAMEN_G.length]), [0, 3], [1, 5], [2, 6]];
+    const NETZ = [...NAMEN_G.map((_, i) => [i, (i + 1) % NAMEN_G.length]), [0, 3], [0, 2], [2, 5]];
     const ort = i => i < 0 ? [MX, MY] : pos[i];
     const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
     const kanten = el('g', {}, svg), pakete = el('g', {}, svg), knoten = el('g', {}, svg);
@@ -1326,80 +1379,108 @@ body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[
     zeige();
   }
 
-  /* ── Warum dezentral für Anwender: deine Geräte, eins fällt aus ── */
+  /* ── Warum dezentral für Anwender: deine Geräte, eins fällt aus, eine Leitung reißt ── */
   {
     const NS = 'http://www.w3.org/2000/svg';
     const svg = $('.geraete svg'), text = $('.geraete-text');
     const G = [
-      { n: 'Handy', art: 'Das Handy', p: [58, 158] },
-      { n: 'Laptop', art: 'Der Laptop', p: [104, 54] },
-      { n: 'PC', art: 'Der PC', p: [242, 46] },
-      { n: 'Fernseher', art: 'Der Fernseher', p: [304, 152] },
-      { n: 'NAS', art: 'Der NAS', p: [182, 214] }
+      { n: 'Handy', art: 'Das Handy', akk: 'das Handy', p: [58, 158] },
+      { n: 'Laptop', art: 'Der Laptop', akk: 'den Laptop', p: [104, 54] },
+      { n: 'PC', art: 'Der PC', akk: 'den PC', p: [242, 46] },
+      { n: 'Fernseher', art: 'Der Fernseher', akk: 'den Fernseher', p: [304, 152] },
+      { n: 'NAS', art: 'Der NAS', akk: 'den NAS', p: [182, 214] }
     ];
     const ZAHL = ['keins', 'eins', 'zwei', 'drei', 'vier', 'fünf'];
     const KANTEN = [];
     for (let a = 0; a < G.length; a++) for (let b = a + 1; b < G.length; b++) KANTEN.push([a, b]);
+    const kante = (a, b) => KANTEN.findIndex(([x, y]) => (x === a && y === b) || (x === b && y === a));
     const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
-    const kg = el('g', {}, svg), pg = el('g', {}, svg), ng = el('g', {}, svg);
-    const linien = KANTEN.map(([a, b]) => el('line', { x1: G[a].p[0], y1: G[a].p[1], x2: G[b].p[0], y2: G[b].p[1], class: 'gk' }, kg));
+    const kg = el('g', {}, svg), tg = el('g', {}, svg), pg = el('g', {}, svg), ng = el('g', {}, svg);
+    const linie = ([a, b], klasse, eltern) => el('line', { x1: G[a].p[0], y1: G[a].p[1], x2: G[b].p[0], y2: G[b].p[1], class: klasse }, eltern);
+    const linien = KANTEN.map(k => linie(k, 'gk', kg));
+    const treffer = KANTEN.map(k => linie(k, 'gk-treffer geraet', tg));
     const knoten = G.map((g, i) => {
-      const k = el('g', { class: 'geraet', transform: `translate(${g.p[0]} ${g.p[1]})`, tabindex: 0, role: 'button', 'aria-pressed': 'false', 'aria-label': g.n + ' ausschalten' }, ng);
+      const k = el('g', { class: 'geraet', transform: `translate(${g.p[0]} ${g.p[1]})`, tabindex: 0, role: 'button', 'aria-label': g.n + ' ausschalten' }, ng);
       el('circle', { r: 19, class: 'koerper' }, k);
       el('circle', { r: 5, class: 'licht' }, k);
       el('path', { class: 'power', d: 'M-5.2 -3.8 A7.2 7.2 0 1 0 5.2 -3.8 M0 -8.5 V-1.5' }, k);
       const t = el('text', { y: g.p[1] > 130 ? 38 : -28 }, k); t.textContent = g.n;
       return k;
     });
-    const aus = new Set();
+    const aus = new Set(), gekappt = new Set();
+    let letzteKappe = -1;
+    const lebt = j => !gekappt.has(j) && !aus.has(KANTEN[j][0]) && !aus.has(KANTEN[j][1]);
+    // Umweg über einen anderen Myrling (FORMATE 7.10): ein drittes Gerät, das beide noch erreicht
+    const helfer = (a, b) => G.findIndex((_, c) => c !== a && c !== b && !aus.has(c) && lebt(kante(a, c)) && lebt(kante(c, b)));
     function zeige() {
       knoten.forEach((k, i) => { k.classList.toggle('aus', aus.has(i)); k.setAttribute('aria-label', G[i].n + (aus.has(i) ? ' einschalten' : ' ausschalten')); });
-      linien.forEach((l, j) => l.classList.toggle('tot', aus.has(KANTEN[j][0]) || aus.has(KANTEN[j][1])));
+      linien.forEach((l, j) => { l.classList.toggle('tot', aus.has(KANTEN[j][0]) || aus.has(KANTEN[j][1])); l.classList.toggle('gekappt', gekappt.has(j)); });
       const an = G.filter((_, i) => !aus.has(i));
       let s;
-      if (!aus.size) s = 'Alle Geräte reden direkt miteinander.';
+      const kappe = gekappt.has(letzteKappe) ? letzteKappe : [...gekappt][0];
+      if (kappe !== undefined && kappe >= 0 && !aus.has(KANTEN[kappe][0]) && !aus.has(KANTEN[kappe][1])) {
+        const [a, b] = KANTEN[kappe], c = helfer(a, b);
+        s = c >= 0 ? `Die Leitung ${G[a].n}–${G[b].n} ist gestört. Die beiden erreichen sich über ${G[c].akk}.`
+                   : `${G[a].n} und ${G[b].n} finden gerade keinen Weg zueinander.`;
+      }
+      else if (!aus.size) s = 'Alle Geräte reden direkt miteinander.';
       else if (aus.size === 1) s = `${G[[...aus][0]].art} ist aus. Die anderen reden einfach weiter.`;
       else if (an.length >= 2) s = `${ZAHL[aus.size][0].toUpperCase() + ZAHL[aus.size].slice(1)} Geräte sind aus, die anderen ${ZAHL[an.length]} reden weiter.`;
       else if (an.length === 1) s = `Nur noch ${an[0].art.replace(/^D/, 'd')}, und das läuft trotzdem.`;
       else s = 'Alles aus. Tipp ein Gerät an, dann geht es wieder.';
       text.textContent = s;
-      text.classList.toggle('gut', aus.size > 0 && an.length > 0);
+      text.classList.toggle('gut', (aus.size > 0 || gekappt.size > 0) && an.length > 0);
+    }
+    const hopsen = el2 => { if (!ruhig.matches) el2.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], 320); };
+    function schalte(i) { aus.has(i) ? aus.delete(i) : aus.add(i); zeige(); hopsen(knoten[i].querySelector('.koerper')); }
+    function kappe(j) {
+      if (gekappt.has(j)) gekappt.delete(j); else { gekappt.add(j); letzteKappe = j; }
+      zeige();
+      if (!ruhig.matches && gekappt.has(j)) linien[j].animate([{ strokeWidth: 7 }, { strokeWidth: 2 }], 350);
     }
     let selbst = false, demoUhr = 0, phase = 0;
-    function schalte(i) {
-      aus.has(i) ? aus.delete(i) : aus.add(i); zeige();
-      if (!ruhig.matches) knoten[i].querySelector('.koerper').animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], 320);
-    }
+    const selbstGemacht = () => { selbst = true; clearTimeout(demoUhr); };
     knoten.forEach((k, i) => {
-      const tippen = () => { selbst = true; clearTimeout(demoUhr); schalte(i); };
-      k.addEventListener('click', tippen);
-      k.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tippen(); } });
+      k.addEventListener('click', () => { selbstGemacht(); schalte(i); });
+      k.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selbstGemacht(); schalte(i); } });
     });
-    // Bis zum ersten Antippen spielt das Bild selbst vor: NAS aus und an, dann PC, Fernseher, Laptop
-    const FOLGE = [4, 2, 3, 1];
+    treffer.forEach((l, j) => l.addEventListener('click', () => { selbstGemacht(); kappe(j); }));
+    // Bis zum ersten Antippen spielt das Bild selbst vor
+    const FOLGE = [() => schalte(4), () => kappe(kante(0, 2)), () => schalte(2), () => schalte(3)];
     function demo() {
       if (selbst) return;
-      const i = FOLGE[Math.floor(phase / 2) % FOLGE.length], ausmachen = phase % 2 === 0;
-      if (ausmachen !== aus.has(i)) schalte(i);
+      const schritt = FOLGE[Math.floor(phase / 2) % FOLGE.length];
+      schritt();  // erst aus bzw. kappen, beim nächsten Mal wieder an bzw. heilen
+      demoUhr = setTimeout(demo, phase % 2 === 0 ? 3600 : 1500);
       phase++;
-      demoUhr = setTimeout(demo, ausmachen ? 3200 : 1500);
     }
-    // Datenpakete fliegen zwischen allen Geräten, die an sind
+    // Datenpakete: direkt, wenn die Leitung lebt, sonst über ein drittes Gerät
     let sichtbar = false, gestartet = false, liste = [], letzte = 0;
+    function neuesPaket() {
+      const an = G.map((_, i) => i).filter(i => !aus.has(i));
+      if (an.length < 2) return;
+      let a, b;
+      const gestoert = [...gekappt].filter(j => !aus.has(KANTEN[j][0]) && !aus.has(KANTEN[j][1]));
+      if (gestoert.length && Math.random() < .45) [a, b] = KANTEN[gestoert[Math.floor(Math.random() * gestoert.length)]];
+      else { a = an[Math.floor(Math.random() * an.length)]; do b = an[Math.floor(Math.random() * an.length)]; while (b === a); }
+      if (Math.random() < .5) [a, b] = [b, a];
+      let weg = [a, b];
+      if (gekappt.has(kante(a, b))) {
+        const c = helfer(a, b); if (c < 0) return;
+        weg = [a, c, b];
+        for (const j of [kante(a, c), kante(c, b)]) { linien[j].classList.add('umweg'); setTimeout(() => linien[j].classList.remove('umweg'), 1700); }
+      }
+      liste.push({ weg, t0: performance.now(), el: el('circle', { r: 3.6, class: 'paket' + (weg.length > 2 ? ' ueber' : '') }, pg) });
+    }
     function tick(jetzt) {
       if (!sichtbar || ruhig.matches) return;
-      const offen = KANTEN.filter(([a, b]) => !aus.has(a) && !aus.has(b));
-      if (jetzt - letzte > 220 && offen.length) {
-        let [a, b] = offen[Math.floor(Math.random() * offen.length)];
-        if (Math.random() < .5) [a, b] = [b, a];
-        liste.push({ a, b, t0: jetzt, el: el('circle', { r: 3.4, class: 'paket' }, pg) });
-        letzte = jetzt;
-      }
+      if (jetzt - letzte > 240) { neuesPaket(); letzte = jetzt; }
       liste = liste.filter(q => {
-        const t = (jetzt - q.t0) / 800;
-        if (t >= 1 || aus.has(q.a) || aus.has(q.b)) { q.el.remove(); return false; }
-        q.el.setAttribute('cx', (G[q.a].p[0] + (G[q.b].p[0] - G[q.a].p[0]) * t).toFixed(1));
-        q.el.setAttribute('cy', (G[q.a].p[1] + (G[q.b].p[1] - G[q.a].p[1]) * t).toFixed(1));
+        const t = (jetzt - q.t0) / 800, s = Math.floor(t);
+        if (s >= q.weg.length - 1 || q.weg.some(i => aus.has(i))) { q.el.remove(); return false; }
+        const von = G[q.weg[s]].p, nach = G[q.weg[s + 1]].p, f = t - s;
+        q.el.setAttribute('cx', (von[0] + (nach[0] - von[0]) * f).toFixed(1));
+        q.el.setAttribute('cy', (von[1] + (nach[1] - von[1]) * f).toFixed(1));
         return true;
       });
       requestAnimationFrame(tick);
@@ -1410,6 +1491,129 @@ body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[
       if (sichtbar && !war) requestAnimationFrame(tick);
     }, { threshold: .35 }).observe(svg);
     zeige();
+  }
+
+  /* ── Warum dezentral für Sicherheit: zentrale Anmeldung gegen eigene Wurzel ── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const fig = $('.wurzel-bild'), svg = $('svg', fig), schalter = $('.schalter', fig), text = $('.wb-text'), lbls = [...fig.querySelectorAll('.lbl')];
+    const D = [['Handy', [64, 124]], ['Laptop', [104, 214]], ['PC', [256, 214]], ['Server', [296, 124]], ['Tablet', [180, 72]]];
+    const MITTE = [180, 150], WURZEL = [40, 36], FREMD = [322, 36];
+    const FP_EIGEN = 'M-4.5 1a4.5 4.5 0 0 1 9 0 M-2.6 2.6a2.6 2.6 0 0 1 5.2 0 M-5.6 -1.4a6 6 0 0 1 11.2 0';
+    const FP_FREMD = 'M-5 2.5c1-6 9-6 10 0 M-3 3.5l6-6 M-4 -1.5c2-2 6-2 8 0';
+    const FARBE = { cyberpunk: '#ff5c8a', konzerner: '#6f9bff' };
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    const kg = el('g', {}, svg), pg = el('g', {}, svg), og = el('g', {}, svg);
+    D.forEach(([, p]) => el('line', { x1: p[0], y1: p[1], x2: MITTE[0], y2: MITTE[1], class: 'wb-kante wb-stern' }, kg));
+    for (let a = 0; a < D.length; a++) for (let b = a + 1; b < D.length; b++)
+      el('line', { x1: D[a][1][0], y1: D[a][1][1], x2: D[b][1][0], y2: D[b][1][1], class: 'wb-kante wb-netz' }, kg);
+    const w = el('g', { class: 'wb-wurzel', transform: `translate(${WURZEL[0]} ${WURZEL[1]})` }, og);
+    el('circle', { r: 17 }, w); el('path', { class: 'fp', d: FP_EIGEN, transform: 'scale(1.7)' }, w);
+    const wt = el('text', { y: 34 }, w); wt.textContent = 'Wurzel';
+    const wt2 = el('text', { y: 48 }, w); wt2.innerHTML = '<tspan>offline</tspan>';
+    const f = el('g', { class: 'wb-fremd', transform: `translate(${FREMD[0]} ${FREMD[1]})` }, og);
+    el('circle', { r: 15 }, f); el('path', { class: 'fp', d: FP_FREMD, transform: 'scale(1.5)' }, f);
+    const ft = el('text', { y: 34 }, f);
+    const z = el('g', { class: 'wb-zentrum' }, og);
+    el('circle', { cx: MITTE[0], cy: MITTE[1], r: 31 }, z);
+    const zt = el('text', { x: MITTE[0], y: MITTE[1] + 4, class: 'innen' }, z); zt.textContent = 'Anmeldung';
+    const zu = el('text', { x: MITTE[0], y: MITTE[1] + 47, class: 'unter' }, z); zu.textContent = 'zentral, in der Cloud';
+    el('path', { class: 'x', d: `M${MITTE[0] - 9} ${MITTE[1] - 9}L${MITTE[0] + 9} ${MITTE[1] + 9}M${MITTE[0] + 9} ${MITTE[1] - 9}L${MITTE[0] - 9} ${MITTE[1] + 9}` }, z);
+    const knoten = D.map(([n, p]) => {
+      const g = el('g', { class: 'wb-geraet', transform: `translate(${p[0]} ${p[1]})` }, og);
+      el('circle', { r: 16, class: 'koerper' }, g); el('circle', { r: 4, class: 'licht' }, g);
+      const s = el('g', { class: 'schloss' }, g); el('rect', { x: -5, y: -1, width: 10, height: 8, rx: 1.5 }, s); el('path', { d: 'M-3 -1v-3a3 3 0 0 1 6 0v3' }, s);
+      const t = el('text', { y: p[1] > MITTE[1] ? 34 : -24 }, g); t.textContent = n;
+      return g;
+    });
+
+    // Wer angreift, ist die andere Seite: Liest der Konzerner, kommt der Cyberpunk, und umgekehrt
+    function rollen() {
+      const verteidiger = document.body.dataset.wer === 'cyberpunk' ? 'cyberpunk' : 'konzerner';
+      const angreifer = verteidiger === 'cyberpunk' ? 'konzerner' : 'cyberpunk';
+      svg.style.setProperty('--angreifer', FARBE[angreifer]); svg.style.setProperty('--schild', FARBE[verteidiger]);
+      ft.textContent = angreifer === 'cyberpunk' ? 'Cyberpunk' : 'Konzern';
+    }
+    let modus = 'stern', ausgefallen = false, uhr = 0, selbst = false;
+    const TEXTE = {
+      stern: ['Zentral meldet sich jedes Gerät bei einer Anmeldung in der Cloud an …', 'Die zentrale Anmeldung ist weg, und keiner kommt mehr rein. Auch die eigenen Leute nicht.'],
+      netz: ['Jedes Paket trägt den Fingerabdruck seines Space …', 'Die Wurzel ist offline, und trotzdem prüft jedes Gerät selbst: Eigene Pakete kommen durch, fremde prallen ab.']
+    };
+    function zeige() {
+      svg.classList.toggle('stern', modus === 'stern'); svg.classList.toggle('netz', modus === 'netz');
+      svg.classList.toggle('ausgefallen', ausgefallen);
+      schalter.setAttribute('aria-checked', modus === 'netz');
+      lbls.forEach(l => l.classList.toggle('an', l.dataset.modus === modus));
+      text.textContent = TEXTE[modus][ausgefallen || modus === 'netz' ? 1 : 0];
+      text.classList.toggle('schlecht', ausgefallen && modus === 'stern'); text.classList.toggle('gut', modus === 'netz');
+    }
+    function starte(m) {
+      clearTimeout(uhr); modus = m; ausgefallen = false; rollen(); zeige();
+      if (m !== 'stern') return;
+      uhr = setTimeout(() => {
+        ausgefallen = true; zeige();
+        if (!ruhig.matches) svg.animate([{ transform: 'none' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(4px)' }, { transform: 'none' }], 260);
+        if (!selbst) uhr = setTimeout(() => { if (!selbst) starte('netz'); }, 2800);
+      }, ruhig.matches ? 0 : 2600);
+    }
+    const waehle = m => { selbst = true; verankert(() => starte(m)); };
+    schalter.addEventListener('click', () => waehle(modus === 'stern' ? 'netz' : 'stern'));
+    lbls.forEach(l => l.addEventListener('click', () => waehle(l.dataset.modus)));
+
+    // Pakete mit Fingerabdruck
+    let sichtbar = false, gestartet = false, liste = [], tAuth = 0, tEigen = 0, tFremd = 0;
+    const zufall = n => Math.floor(Math.random() * n);
+    function paket(art, von, nach, dauer, fertig) {
+      const g = el('g', { class: 'wb-paket ' + art }, pg);
+      el('circle', { r: 7.5 }, g); el('path', { d: art === 'fremd' ? FP_FREMD : FP_EIGEN }, g);
+      liste.push({ g, von, nach, t0: performance.now(), dauer, fertig, m: modus, verblassen: art === 'fremd' && !fertig });
+    }
+    function blitz(i) { const k = knoten[i]; k.classList.add('ok'); setTimeout(() => k.classList.remove('ok'), 300); }
+    function schild(i) {
+      const [x, y] = D[i][1], r = 27;
+      const d = Array.from({ length: 6 }, (_, k) => { const a = Math.PI / 6 + k * Math.PI / 3; return `${k ? 'L' : 'M'}${(x + r * Math.cos(a)).toFixed(1)} ${(y + r * Math.sin(a)).toFixed(1)}`; }).join('') + 'Z';
+      const s = el('path', { class: 'wb-schild', d }, og);
+      s.animate([{ opacity: 0, transform: 'scale(.6)' }, { opacity: 1, transform: 'scale(1.08)', offset: .3 }, { opacity: 0, transform: 'scale(1.25)' }], { duration: 750, easing: 'ease-out' });
+      setTimeout(() => s.remove(), 800);
+    }
+    function tick(jetzt) {
+      if (!sichtbar || ruhig.matches) return;
+      if (modus === 'stern' && !ausgefallen && jetzt - tAuth > 420) {
+        const i = zufall(D.length);
+        paket('auth', D[i][1], MITTE, 600, () => { if (modus === 'stern' && !ausgefallen) paket('auth', MITTE, D[i][1], 600, () => blitz(i)); });
+        tAuth = jetzt;
+      }
+      if (modus === 'netz') {
+        if (jetzt - tEigen > 480) {
+          const a = zufall(D.length); let b = zufall(D.length - 1); if (b >= a) b++;
+          paket('eigen', D[a][1], D[b][1], 900, () => blitz(b)); tEigen = jetzt;
+        }
+        if (jetzt - tFremd > 1600) {
+          rollen();
+          const i = zufall(D.length), [tx, ty] = D[i][1], dx = tx - FREMD[0], dy = ty - FREMD[1], l = Math.hypot(dx, dy);
+          const vor = [tx - dx / l * 31, ty - dy / l * 31], zurueck = [vor[0] - dx / l * 55, vor[1] - dy / l * 55];
+          paket('fremd', FREMD, vor, 1000, () => { schild(i); paket('fremd', vor, zurueck, 500); });
+          tFremd = jetzt;
+        }
+      }
+      const fertig = [];
+      liste = liste.filter(q => {
+        const t = (jetzt - q.t0) / q.dauer;
+        if (q.m !== modus) { q.g.remove(); return false; }
+        if (t >= 1) { q.g.remove(); if (q.fertig) fertig.push(q.fertig); return false; }
+        q.g.setAttribute('transform', `translate(${(q.von[0] + (q.nach[0] - q.von[0]) * t).toFixed(1)} ${(q.von[1] + (q.nach[1] - q.von[1]) * t).toFixed(1)})`);
+        if (q.verblassen) q.g.style.opacity = (1 - t).toFixed(2);
+        return true;
+      });
+      fertig.forEach(fn => fn());
+      requestAnimationFrame(tick);
+    }
+    new IntersectionObserver(([e]) => {
+      const war = sichtbar; sichtbar = e.isIntersecting;
+      if (sichtbar && !gestartet) { gestartet = true; starte('stern'); }
+      if (sichtbar && !war) requestAnimationFrame(tick);
+    }, { threshold: .35 }).observe(svg);
+    rollen(); zeige();
   }
 
   /* ── Parallaxe ────────────────────────────────────────────── */
