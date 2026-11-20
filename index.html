@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#17122a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
 <title>MyrSpace</title>
-<meta name="description" content="Dein eigener Raum für Geräte, Apps und KI: Die KI darf arbeiten, du besiegelst mit dem Finger, und nichts davon hängt an fremden Rechenzentren.">
+<meta name="description" content="Dein eigener Raum für Geräte, Apps und KI: Die KI darf helfen, wo immer sie läuft. Besiegeln tust du, mit dem Finger, und dein Space bleibt bei dir.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MyrSpace">
 <meta property="og:title" content="MyrSpace">
-<meta property="og:description" content="Dein eigener Raum für Geräte, Apps und KI. Die KI darf arbeiten, du besiegelst mit dem Finger.">
+<meta property="og:description" content="Dein eigener Raum für Geräte, Apps und KI. Die KI darf helfen, wo immer sie läuft. Besiegeln tust du, mit dem Finger.">
 <meta property="og:url" content="%MYR_URL%/">
 <meta property="og:image" content="%MYR_URL%/vorschau.png">
 <meta property="og:image:width" content="1024">
@@ -232,8 +232,8 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
   transform: rotate(-4deg); animation: schaukeln 6s ease-in-out infinite alternate;
 }
 @keyframes schaukeln { from { transform: rotate(-4deg) translateY(0); } to { transform: rotate(-2deg) translateY(-8px); } }
-/* Über dem Handy wird der Mauszeiger zum Finger: man soll drauftippen */
-.handy, .handy *, .geraet { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='4.5' r='3.6' fill='%2386f08a' opacity='.45'/%3E%3Cpath d='M13 2.5c-1.4 0-2.5 1.1-2.5 2.5v11.2l-1.6-1.6c-1-1-2.6-1-3.5 0-.9.9-.9 2.3-.1 3.3l5.2 6.6c1.3 1.6 3.2 2.5 5.3 2.5h4.2c3.6 0 6.5-2.9 6.5-6.5v-5.6c0-1.3-1.1-2.4-2.4-2.4-.5 0-1 .2-1.4.4-.3-1-1.2-1.7-2.3-1.7-.6 0-1.1.2-1.5.5-.4-.8-1.2-1.4-2.2-1.4-.4 0-.8.1-1.2.3V5c0-1.4-1.1-2.5-2.5-2.5z' fill='%23f5f3ee' stroke='%232f2552' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 13 3, pointer; }
+/* Über dem Fingerfeld wird der Mauszeiger zum Finger: nur dort löst ein Tippen */
+.finger, .finger *, .geraet { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='4.5' r='3.6' fill='%2386f08a' opacity='.45'/%3E%3Cpath d='M13 2.5c-1.4 0-2.5 1.1-2.5 2.5v11.2l-1.6-1.6c-1-1-2.6-1-3.5 0-.9.9-.9 2.3-.1 3.3l5.2 6.6c1.3 1.6 3.2 2.5 5.3 2.5h4.2c3.6 0 6.5-2.9 6.5-6.5v-5.6c0-1.3-1.1-2.4-2.4-2.4-.5 0-1 .2-1.4.4-.3-1-1.2-1.7-2.3-1.7-.6 0-1.1.2-1.5.5-.4-.8-1.2-1.4-2.2-1.4-.4 0-.8.1-1.2.3V5c0-1.4-1.1-2.5-2.5-2.5z' fill='%23f5f3ee' stroke='%232f2552' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 13 3, pointer; }
 /* Für Touch (kein Mauszeiger): eine Hand zeigt, wohin man tippt */
 .tipp-hand { position: absolute; left: 50%; top: 41px; width: 46px; height: 46px; margin: -4px 0 0 -19px; pointer-events: none; z-index: 2;
   opacity: 0; transition: opacity .4s; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .45)); }
@@ -269,7 +269,7 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
 /* Siegel: der Finger */
 .siegel { position: relative; display: grid; justify-items: center; gap: 6px; }
 .finger {
-  position: relative; width: 82px; height: 82px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+  position: relative; width: 82px; height: 82px; border-radius: 50%; border: 0; padding: 0;
   background: radial-gradient(circle, rgba(134, 240, 138, .14), rgba(134, 240, 138, .03) 65%, transparent 70%);
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
@@ -304,6 +304,20 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
 .klein { font-size: 11.5px; color: #c7bde8; margin-top: 10px; text-align: center; transition: color .3s; }
 .klein.ok { color: #86f08a; font-weight: 700; }
 .mitte-stapel { display: grid; justify-items: center; }
+
+/* Szene: Agent will Updates */
+.anfrage { width: 100%; max-width: 214px; background: rgba(245, 243, 238, .07); border: 1.5px solid rgba(184, 168, 238, .35); border-radius: 12px;
+  padding: 9px 10px 10px; transition: border-color .3s; }
+.anfrage .anf-kopf { display: flex; gap: 6px; align-items: center; font-size: 11.5px; font-weight: 800; color: #d9cff0; }
+.anfrage .anf-wo { font-size: 10.5px; color: #c7bde8; margin: 2px 0 7px; }
+.anf-paket { display: flex; justify-content: space-between; gap: 8px; font: 600 10.5px/1.65 ui-monospace, monospace; color: #f5f3ee; }
+.anf-paket span { color: #c7bde8; transition: color .3s; }
+.anf-paket.ok span { color: #86f08a; }
+.anf-lauf { height: 5px; border-radius: 3px; background: rgba(184, 168, 238, .2); margin-top: 8px; overflow: hidden; }
+.anf-lauf i { display: block; height: 100%; width: 0; background: #86f08a; border-radius: 3px; transition: width 1s linear; }
+.anfrage.laeuft .anf-lauf i { width: 100%; }
+.anfrage.ok { border-color: #86f08a; }
+.anfrage .klein { margin-top: 7px; }
 
 /* Szene 2: WLAN */
 .wlan-karte { display: grid; justify-items: center; gap: 8px; }
@@ -975,7 +989,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <!-- ═════ Kernbotschaft ═════ -->
   <section class="kern">
     <h1>Dein eigener Raum für Geräte, Apps und KI.</h1>
-    <p>Die KI darf arbeiten, du besiegelst <mark>mit dem Finger</mark>, und nichts davon hängt an fremden Rechenzentren.</p>
+    <p>Die KI darf helfen, wo immer sie läuft. Besiegeln tust du, <mark>mit dem Finger</mark>, und dein Space bleibt bei dir.</p>
   </section>
 
   <!-- ═════ 2 · Die Weiche als Revolver ═════ -->
@@ -1195,7 +1209,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       <ul class="bau-liste">
         <li class="fertig" tabindex="0" aria-describedby="bau-z12"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Konzept und Erzählbogen</span><span class="bau-zettel" role="tooltip" id="bau-z12">Drei Versprechen: eigen, besiegelt, offen. Drei Sichten: Anwender, Bastler, Sicherheit.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z13"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Nacht und Morgen im Hain</span><span class="bau-zettel" role="tooltip" id="bau-z13">Farben aus den Moodboards, Hintergrund in SVG-Ebenen. Die Fenster leuchten auch morgens noch.</span></span></li>
-        <li class="fertig" tabindex="0" aria-describedby="bau-z14"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Handy-Demo „Kennst du das?“</span><span class="bau-zettel" role="tooltip" id="bau-z14">2FA-Code, Gäste-WLAN, fremder Rechner, „Komm essen“. Jedes Mal löst es ein Finger.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z14"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Handy-Demo „Kennst du das?“</span><span class="bau-zettel" role="tooltip" id="bau-z14">2FA-Code, Updates vom Agenten, Gäste-WLAN, Rechner oben, „Komm essen“. Jedes Mal löst es ein Finger.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z15"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Weiche als Revolver</span><span class="bau-zettel" role="tooltip" id="bau-z15">Anwender, Bastler, Konzerner. Ab und zu stößt ihn der Cyberpunk hinaus. Die Sicht steht im Link.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z16"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Warum dezentral</span><span class="bau-zettel" role="tooltip" id="bau-z16">Je Sicht ein eigenes Bild: deine Geräte, Stern gegen Netz, Schilde gegen fremde Pakete.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z17"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Alles unter einer Haube</span><span class="bau-zettel" role="tooltip" id="bau-z17">Kuppel auf: Zahnräder und Fachwörter. Kuppel zu: Für dich bleiben App, Myrling und Finger.</span></span></li>
@@ -1249,7 +1263,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 
   /* ── Handy-Demo ───────────────────────────────────────────── */
   const szeneEl = $('.szene'), ortText = $('.ort-text'), frageEl = $('.frage'), bildEl = $('.bild');
-  const handy = $('.handy'), tippHand = $('.tipp-hand');
+  const tippHand = $('.tipp-hand');
   const finger = $('.finger'), fingerText = $('.finger-text'), nerv = $('.nerv'), nochEins = $('.noch-eins'), kern = $('.kern');
 
   const zufall = n => Array.from({ length: n }, () => Math.floor(Math.random() * 10));
@@ -1281,6 +1295,22 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       }
     },
     {
+      ort: 'NAS im Keller', frage: 'Dein Agent schlägt Updates vor.',
+      nerv: 'Ihm dafür das root-Passwort geben? Oder doch selbst ran, heute Nacht noch?',
+      fertig: 'Gesehen, was er vorhat, und erlaubt. Dein Passwort kennt er nicht.',
+      bild: () => `<div class="anfrage"><div class="anf-kopf">🤖 Anfrage vom Agenten</div><div class="anf-wo">apt upgrade · NAS im Keller</div>`
+        + [['openssl', '3.0.14 → 3.0.15'], ['samba', '4.17.12 → 4.17.13'], ['linux', '6.1.115 → 6.1.119']]
+          .map(([n, v]) => `<div class="anf-paket"><b>${n}</b><span>${v}</span></div>`).join('')
+        + `<div class="anf-lauf"><i></i></div><div class="klein">3 Pakete · danach Neustart</div></div>`,
+      async loesen() {
+        const a = $('.anfrage', bildEl), k = $('.klein', a);
+        a.classList.add('laeuft'); k.textContent = 'läuft …';
+        for (const p of a.querySelectorAll('.anf-paket')) { await warte(320); p.classList.add('ok'); p.querySelector('span').textContent = '✓ ' + p.querySelector('span').textContent.split('→ ').pop(); }
+        await warte(100);
+        a.classList.add('ok'); k.textContent = '✓ Aktuell, steht im Laufbuch'; k.classList.add('ok');
+      }
+    },
+    {
       ort: 'Zuhause · WLAN', frage: 'Besuch will ins WLAN.',
       nerv: 'Wie war noch mal das Passwort? Das auf dem Zettel unterm Router?',
       fertig: 'QR zeigen, Besuch ist drin. Dein Passwort bleibt geheim.',
@@ -1291,8 +1321,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       }
     },
     {
-      ort: 'Rechner in der Bibliothek', frage: 'Anmelden am fremden Rechner.',
-      nerv: 'Dein Passwort in eine fremde Tastatur tippen? Lieber nicht.',
+      ort: 'Zuhause · Obergeschoss', frage: 'Anmelden am Rechner im Obergeschoss.',
+      nerv: 'Das lange Passwort tippen, und beim dritten Versuch stimmt es endlich.',
       fertig: 'Angemeldet. Getippt hast du nichts.',
       bild: () => `<div class="rechner"><div class="schirm"><div class="titel">Anmelden</div><div class="feld">du@zuhause</div><div class="feld"><span class="punkte"></span><i class="cursor"></i></div><div class="anmelden">Anmelden</div></div><div class="fuss"></div></div>`,
       async loesen() {
@@ -1318,8 +1348,6 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     clearTimeout(handUhr); tippHand.classList.remove('zeigt');
     handUhr = setTimeout(() => { if (!geloest && !beschaeftigt) tippHand.classList.add('zeigt'); }, schonGetippt ? 5000 : 2200);
   }
-  // Das ganze Handy ist Tippfläche, nicht nur der Fingerabdruck.
-  handy.addEventListener('click', e => { if (!e.target.closest('.finger')) finger.click(); });
 
   function zeigeSzene(i) {
     const s = SZENEN[i];
