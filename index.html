@@ -425,6 +425,8 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
   background: var(--panel); border: 1px solid var(--panel-rand); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .sicht-name { position: relative; display: inline-grid; vertical-align: bottom; font-weight: 900; font-size: 28px; letter-spacing: -.02em; color: var(--tx); }
 .sicht-name > .wer { grid-area: 1 / 1; white-space: nowrap; }
+/* Still stehen beide Namen da; das passt nicht in eine Zeile eines schmalen Handys */
+.sicht-name > .wer.beide { white-space: normal; text-align: center; }
 .wer.konzerner, .anriss b.kz { color: var(--kz); }
 .wer.cyberpunk, .anriss b.cp { color: var(--cp); text-shadow: 0 0 16px var(--cp-glut); }
 .blitz { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; pointer-events: none; opacity: 0;
@@ -448,6 +450,8 @@ body[data-wer="cyberpunk"] .ik-kz { opacity: 0; }
 .js .duell-text { display: grid; }
 .js .duell-text > p { grid-area: 1 / 1; margin: 0; transition: opacity .45s, visibility .45s; }
 .js .duell-text > p:not(.aktiv) { opacity: 0; visibility: hidden; }
+/* Still sind beide aktiv: dann untereinander statt übereinander */
+.js .duell-text > p.aktiv ~ p.aktiv { grid-area: 2 / 1; margin-top: 8px; }
 .anriss p { margin: 0; }
 .anriss p + p { margin-top: 8px; }
 .js .anriss p + p { margin-top: 0; }
@@ -667,6 +671,41 @@ svg.gross .ml-spross { opacity: 1; transform: none; }
 .ml-beere { filter: drop-shadow(0 0 2.5px var(--tx2)); }
 .ml-tausch { filter: drop-shadow(0 0 5px var(--neon-glut)); }
 .myrling-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; }
+
+/* Zu schön, um wahr zu sein? Ein Netz ohne Mitte, getragen von allen */
+html:not(.js) .traeger-bild, html:not(.js) .mitmach-knopf { display: none; }
+.traeger-bild { margin: 12px 0 0; }
+.traeger-bild svg { display: block; width: 100%; height: auto; overflow: visible; }
+.tr-kante { fill: none; stroke: var(--tx3); stroke-width: 1.6; opacity: .4; }
+.tr-kante.du { stroke: var(--neon); stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .85; transition: stroke-dashoffset .9s ease-out; }
+svg.dabei .tr-kante.du { stroke-dashoffset: 0; }
+.tr-space circle { fill: var(--grund); stroke: var(--neon); stroke-width: 2.2; filter: drop-shadow(0 0 3px var(--neon-glut)); transition: stroke-width .3s; }
+.tr-space.kriegt circle { stroke-width: 3.6; }
+.tr-du circle { fill: none; stroke: var(--tx2); stroke-width: 2; stroke-dasharray: 4 4; transition: fill .4s, stroke .4s; }
+.tr-du .tr-ring { transform-box: fill-box; transform-origin: center; animation: duRuft 1.8s ease-out infinite; }
+@keyframes duRuft { from { opacity: .7; transform: scale(1); } to { opacity: 0; transform: scale(1.9); } }
+svg.dabei .tr-du circle { fill: var(--grund); stroke: var(--neon); stroke-dasharray: none; stroke-width: 2.6; filter: drop-shadow(0 0 5px var(--neon-glut)); }
+svg.dabei .tr-du .tr-ring { display: none; }
+.tr-du { cursor: pointer; }
+.tr-du .tr-zweig { opacity: 0; transition: opacity .4s .3s; }
+svg.dabei .tr-du .tr-zweig { opacity: 1; }
+.tr-du text { font-size: 12px; font-weight: 800; fill: var(--tx); text-anchor: middle; }
+.tr-du:focus-visible { outline: none; }
+.tr-du:focus-visible circle { stroke: var(--neon); stroke-width: 3.5; }
+.tr-stern { fill: #f2c14e; filter: drop-shadow(0 0 3px rgba(242, 193, 78, .7)); }
+.tr-hinweis circle { fill: var(--kz); }
+.tr-hinweis text { font-size: 11px; font-weight: 900; fill: #fff; text-anchor: middle; dominant-baseline: central; }
+.tr-legende text { font-size: 11.5px; font-weight: 700; fill: var(--tx2); dominant-baseline: central; }
+.mitmach-knopf { margin-top: 4px; border: 2px solid var(--neon); border-radius: 999px; padding: 8px 18px; background: none; color: var(--tx); cursor: pointer;
+  font-weight: 800; font-size: 15px; box-shadow: 0 0 10px var(--neon-glut); }
+.mitmach-knopf[aria-pressed="true"] { background: var(--neon); color: var(--grund); }
+.mitmach-knopf:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+.traeger-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
+.traeger-text.gut { color: var(--gut); }
+.mitmachen { margin-top: 6px; }
+.mitmachen b.kz { color: var(--kz); } .mitmachen b.cp { color: var(--cp); text-shadow: 0 0 16px var(--cp-glut); }
+.mitmachen .duell-text { margin-top: 8px; }
+.mitmachen .duell-text p { font-size: 16.5px; }
 
 /* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist. Links unten, weil rechts unten gern Hoster
    und Browser etwas einblenden (Netlify, PO 20.11.); sie rollt von links herein. */
@@ -1220,6 +1259,37 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
+  <!-- ═════ Zu schön, um wahr zu sein? Ehrliche Antwort je Sicht, dann Mitmachen ═════ -->
+  <section class="abschnitt anker" aria-labelledby="a-haken">
+    <h2 class="kicker" id="a-haken">Zu schön, um wahr zu sein?</h2>
+    <div class="je-sicht">
+      <div data-sicht="anwender"><h3>Praktisch, aber wo ist der Haken?</h3>
+        <p>Du brauchst ein Handy mit der App, mehr nicht. Ein NAS macht es bequemer, nötig ist er nicht. Neue Geräte koppelst du per QR, und niemand verdient an deinen Daten. Der Haken: Vieles ist noch im Bau. Was schon steht, zeigt die <a href="#bautafel">Bautafel</a>.</p></div>
+      <div data-sicht="bastler"><h3>Erweiterbar? So weit, wie du baust.</h3>
+        <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Was andere bauen, findest du in ihren Spaces statt in einem Store, und Gutes übernimmst du als Fork mit Abstammung. Der Haken: Die Formate ändern sich noch.</p></div>
+      <div data-sicht="sicherheit"><h3>Sicher? Das sagen alle.</h3>
+        <p>Darum zählt nur, was sich nachprüfen lässt: Die Wurzel bleibt offline, das Siegel verlässt den Chip nicht, nur Menschen besiegeln, und jeder Eingriff steht im Laufbuch. Wo es offene Bausteine gibt, baut MyrSpace auf ihnen auf. Der Haken: Von außen geprüft hat das noch niemand.</p></div>
+    </div>
+    <figure class="traeger-bild">
+      <svg viewBox="0 0 360 280" role="img" aria-label="Schaubild: Ein Netz aus Spaces ohne Mitte. Zwischen ihnen wandern Myrten, Empfehlungen und Hinweise hin und her. Ein Platz ist noch frei und gestrichelt: Du. Wer mitmacht, hängt seinen Space dort ins Netz und trägt mit."></svg>
+      <div class="schalter-reihe"><button type="button" class="mitmach-knopf" aria-pressed="false">Häng deinen Space dazu</button></div>
+      <figcaption class="traeger-text">In der Mitte steht kein Rechenzentrum. Das Netz tragen alle, die mitmachen.</figcaption>
+    </figure>
+    <div class="je-sicht mitmachen">
+      <div data-sicht="anwender"><h3>Mitmachen, ganz ohne Programmieren.</h3>
+        <p>Sag Bescheid, wenn etwas hakt, jeder Hinweis macht es für alle besser. Oder lass deine PC-Probleme vom Agenten lösen: Er schaut nach, schlägt vor, und du besiegelst.</p></div>
+      <div data-sicht="bastler"><h3>Mitmachen heißt bauen und zeigen.</h3>
+        <p>Klick dir deinen Space zusammen, stöbere in den Spaces anderer nach guten Myrten und zeig deine eigenen her. Empfehlungen sammeln sich bei dir und am Strang deiner Myrte.</p></div>
+      <div data-sicht="sicherheit"><h3>Mitmachen heißt prüfen.</h3>
+        <div class="duell-text">
+          <p data-sicht="sicherheit" data-wer="konzerner"><b class="kz">Konzerner:</b> Fang mit einer Abteilung als Pilot an, mit eigenen Kreisen für Kollegen, Partner und Kunden. Agenten fragen an, statt Admin zu sein, und über die Mitarbeiter wird nichts gesammelt.</p>
+          <p data-sicht="sicherheit" data-wer="cyberpunk"><b class="cp">Cyberpunk:</b> Schreib MyrDogs, eigene Wächter für deine Geräte, und rede mit deinen Leuten nur Space zu Space.</p>
+        </div>
+        <p>Und für beide: Such die Lücken, bevor es andere tun.</p></div>
+    </div>
+    <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
+  </section>
+
   <!-- ═════ Platzhalter ═════ -->
   <section class="abschnitt anker" aria-labelledby="a-netz">
     <span class="platzhalter-marke">Platzhalter</span>
@@ -1285,12 +1355,12 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z16"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Warum dezentral</span><span class="bau-zettel" role="tooltip" id="bau-z16">Je Sicht ein eigenes Bild: deine Geräte, Stern gegen Netz, Schilde gegen fremde Pakete.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z17"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Alles unter einer Haube</span><span class="bau-zettel" role="tooltip" id="bau-z17">Kuppel auf: Zahnräder und Fachwörter. Kuppel zu: Für dich bleiben App, Myrling und Finger.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z31"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Myrling und Myrtag</span><span class="bau-zettel" role="tooltip" id="bau-z31">Zwei Keimlinge unter Wabenschilden tauschen Myrten aus: signiert, im eigenen Schild, hinein erst mit dem Finger.</span></span></li>
-        <li class="dran" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Die Frage nach der Kuppel, je Sicht eigen: praktisch? erweiterbar? sicher? Dazu, wie alle zusammen das Netz tragen. Darum kommt Mitmachen wohl gleich danach.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Je Sicht eine ehrliche Antwort mit Haken: praktisch, erweiterbar, sicher. Dazu ein Netz ohne Mitte, in das du deinen Space hängst, und gleich danach Mitmachen.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z18"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Ein Netz aus Myrten</span><span class="bau-zettel" role="tooltip" id="bau-z18">Die Texte stehen, das Bild fehlt noch: MyrTube antippen, seine Verbindungen leuchten.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der merge-train fährt vorbei</span><span class="bau-zettel" role="tooltip" id="bau-z21">Eine Dampflok mit Papierwagen am unteren Rand. Antippen erzählt von KI, Anfrage und Siegel.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Für jede Sicht ein eigener Weg. Unten steht derselbe Revolver noch einmal.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Die drei Türen noch einmal nebeneinander, darunter derselbe Revolver. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
       </ul>
     </div>
@@ -1507,7 +1577,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   kopie.querySelector('defs').remove(); kopie.querySelector('.kreisel-dreh').remove();
   $('.dock-trommel').append(kopie);
   const trommel = $('.trommel'), drehteile = [...document.querySelectorAll('.drehteil')], ikonen = [...document.querySelectorAll('.ikon')];
-  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss [data-sicht]')];
+  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss [data-sicht], .duell-text [data-wer]')];
 
   let ziel = 0, winkel = 0, sicht = 0, anim = 0, wer = 'konzerner', duellUhr = 0;
   const mod = (a, n) => ((a % n) + n) % n;
@@ -1600,7 +1670,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   }
   // Bewegung an oder aus: dritte Kammer neu beschriften (still „Konzerner oder Cyberpunk“), Duell neu takten
   ruhig.addEventListener('change', () => {
-    if (sicht === 2) verankert(() => { if (ruhig.matches) { nameZeigen('Konzerner oder Cyberpunk'); werSetzen(''); } else { nameZeigen(WER[wer], wer); werSetzen(wer); } });
+    if (sicht === 2) verankert(() => { if (ruhig.matches) { nameZeigen('Konzerner oder Cyberpunk', 'beide'); werSetzen(''); } else { nameZeigen(WER[wer], wer); werSetzen(wer); } });
     else dockNameSetzen();
     duellPlanen();
   });
@@ -1610,7 +1680,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     const alt = sicht; sicht = neu;
     document.body.dataset.sicht = SICHTEN[neu];
     if (neu !== 2 && location.hash !== '#cyberpunk') wer = 'konzerner';
-    if (neu === 2 && ruhig.matches) { nameZeigen('Konzerner oder Cyberpunk'); werSetzen(''); }
+    if (neu === 2 && ruhig.matches) { nameZeigen('Konzerner oder Cyberpunk', 'beide'); werSetzen(''); }
     else if (neu === 2) { nameZeigen(WER[wer], wer); werSetzen(wer); }
     else { nameZeigen(NAMEN[SICHTEN[neu]]); werSetzen(wer); }
     if (!sofort && alt !== neu) {
@@ -2310,6 +2380,150 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     }, { threshold: .35 }).observe(svg);
     // Bewegung an oder aus: neu aufbauen (still als Standbild) und die Schleife wieder anstoßen
     ruhig.addEventListener('change', () => { if (gestartet) bauen(); if (sichtbar && !ruhig.matches) requestAnimationFrame(tick); });
+  }
+
+  /* ── Zu schön, um wahr zu sein? Ein Netz ohne Mitte, getragen von allen ── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const fig = $('.traeger-bild'), svg = $('svg', fig), knopf = $('.mitmach-knopf', fig), text = $('.traeger-text', fig);
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    // Die Spaces im Netz, ohne Mitte. Der freie Platz unten schließt die Lücke, sobald du mitmachst.
+    const SPACES = [[34, 58], [112, 26], [204, 44], [296, 30], [334, 112], [262, 118], [164, 110], [78, 132], [30, 206], [118, 214], [236, 222], [322, 198]];
+    const DU = [196, 178], NAH = 108;
+    const ARTEN = ['myrte', 'stern', 'hinweis'];
+    let knoten = [], kanten = [], fluege = [], ebeneK, ebeneF, duG, duText;
+    let sichtbar = false, gestartet = false, dabei = false, letzte = 0;
+
+    const zweig = g => {
+      el('use', { href: '#blatt', class: 'bl1', transform: 'translate(0 -1) rotate(-140) scale(.15)' }, g);
+      el('use', { href: '#blatt', class: 'bl3', transform: 'translate(0 -1) rotate(-40) scale(.15)' }, g);
+      el('use', { href: '#beere', class: 'ml-beere', transform: 'translate(0 2) scale(.34)' }, g);
+    };
+    function ding(art, eltern) {
+      const g = el('g', { class: 'tr-' + art }, eltern);
+      if (art === 'myrte') el('use', { href: '#beere', class: 'ml-beere', transform: 'scale(.5)' }, g);
+      else if (art === 'stern') el('path', { d: Array.from({ length: 10 }, (_, k) => { const a = -Math.PI / 2 + k * Math.PI / 5, r = k % 2 ? 2.8 : 7; return `${k ? 'L' : 'M'}${(r * Math.cos(a)).toFixed(1)} ${(r * Math.sin(a)).toFixed(1)}`; }).join('') + 'Z' }, g);
+      else { el('circle', { r: 6.5 }, g); el('text', { y: .5 }, g).textContent = '!'; }
+      return g;
+    }
+
+    function bauen() {
+      svg.textContent = '';
+      ebeneK = el('g', {}, svg); ebeneF = el('g', {}, svg);
+      knoten = SPACES.map(([x, y], i) => ({ x0: x, y0: y, x, y, ph: i * 1.7 }));
+      knoten.push({ x0: DU[0], y0: DU[1], x: DU[0], y: DU[1], ph: 0, du: true });
+      const du = knoten.length - 1;
+      kanten = [];
+      for (let i = 0; i < du; i++) for (let j = i + 1; j < du; j++)
+        if (Math.hypot(SPACES[i][0] - SPACES[j][0], SPACES[i][1] - SPACES[j][1]) < NAH) kanten.push({ a: i, b: j });
+      SPACES.map((p, i) => [Math.hypot(p[0] - DU[0], p[1] - DU[1]), i]).sort((m, n) => m[0] - n[0]).slice(0, 4)
+        .forEach(([, i]) => kanten.push({ a: du, b: i, du: true }));
+      kanten.forEach(k => k.l = el('line', k.du ? { class: 'tr-kante du', pathLength: 1 } : { class: 'tr-kante' }, ebeneK));
+      knoten.forEach((k, i) => {
+        if (k.du) return;
+        k.g = el('g', { class: 'tr-space' }, ebeneK);
+        el('circle', { r: 12 }, k.g); zweig(k.g);
+      });
+      // Dein Platz: gestrichelt, ruft, bis du ihn antippst
+      const d = knoten[du];
+      d.g = duG = el('g', { class: 'tr-du', tabindex: 0, role: 'button', 'aria-label': 'Mitmachen: deinen Space ins Netz hängen' }, ebeneK);
+      el('circle', { r: 14, class: 'tr-ring' }, duG); el('circle', { r: 14 }, duG);
+      zweig(el('g', { class: 'tr-zweig' }, duG));
+      duText = el('text', { y: 30 }, duG);
+      duG.addEventListener('click', umschalten);
+      duG.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); umschalten(); } });
+      // Legende
+      const leg = el('g', { class: 'tr-legende', transform: 'translate(0 264)' }, svg);
+      [['myrte', 76, 'Myrte'], ['stern', 141, 'Empfehlung'], ['hinweis', 238, 'Hinweis']].forEach(([art, x, wort]) => {
+        ding(art, el('g', { transform: `translate(${x} 0) scale(.85)` }, leg));
+        el('text', { x: x + 11 }, leg).textContent = wort;
+      });
+      fluege = [];
+      zeigen(); stellen(0);
+      if (ruhig.matches) standbild();
+    }
+
+    function zeigen() {
+      svg.classList.toggle('dabei', dabei);
+      duText.textContent = dabei ? 'Du' : 'Du?';
+      duG.setAttribute('aria-pressed', dabei);
+      knopf.setAttribute('aria-pressed', dabei);
+      knopf.textContent = dabei ? 'Du trägst mit ✓' : 'Häng deinen Space dazu';
+      text.classList.toggle('gut', dabei);
+      text.textContent = dabei ? 'Jetzt trägst du mit: Was du teilst, hilft allen, und was andere teilen, hilft dir.'
+        : 'In der Mitte steht kein Rechenzentrum. Das Netz tragen alle, die mitmachen.';
+    }
+    function umschalten() {
+      dabei = !dabei;
+      if (!gestartet) { gestartet = true; bauen(); }
+      verankert(zeigen);
+      fluege = fluege.filter(f => { if (!dabei && f.k.du) { f.g.remove(); return false; } return true; });
+      if (ruhig.matches) { standbild(); return; }
+      // Zum Einstand schicken dir die Nachbarn Myrten, und du gibst eine Empfehlung zurück
+      if (dabei) setTimeout(() => { if (!dabei) return;
+        kanten.filter(k => k.du).forEach((k, i) => setTimeout(() => dabei && fliegen(k, i === 3 ? 'stern' : 'myrte', i === 3), i * 260));
+      }, 800);
+    }
+    knopf.addEventListener('click', umschalten);
+
+    function stellen(t) {
+      knoten.forEach(k => {
+        if (!ruhig.matches && t) { k.x = k.x0 + 3 * Math.sin(t / 1400 + k.ph); k.y = k.y0 + 3 * Math.cos(t / 1700 + k.ph * 1.3); }
+        else { k.x = k.x0; k.y = k.y0; }
+        k.g.setAttribute('transform', `translate(${k.x.toFixed(1)} ${k.y.toFixed(1)})`);
+      });
+      kanten.forEach(({ a, b, l }) => {
+        l.setAttribute('x1', knoten[a].x.toFixed(1)); l.setAttribute('y1', knoten[a].y.toFixed(1));
+        l.setAttribute('x2', knoten[b].x.toFixed(1)); l.setAttribute('y2', knoten[b].y.toFixed(1));
+      });
+    }
+    // vonA: läuft von a nach b (sonst umgekehrt); bei Kanten zu dir läuft a immer bei dir los
+    function fliegen(k, art, vonA, jetzt = performance.now()) {
+      if (ruhig.matches) return;  // ein verspäteter Einstand bliebe sonst im Standbild hängen
+      fluege.push({ k, g: ding(art, ebeneF), von: vonA ? k.a : k.b, nach: vonA ? k.b : k.a, t0: jetzt, dauer: 1500 });
+    }
+    function standbild() {
+      ebeneF.textContent = ''; fluege = [];
+      [[0, 'myrte', .5], [5, 'stern', .45], [9, 'hinweis', .55], [14, 'myrte', .4]].forEach(([i, art, u]) => {
+        const k = kanten.filter(k => !k.du)[i % kanten.length], g = ding(art, ebeneF), a = knoten[k.a], b = knoten[k.b];
+        g.setAttribute('transform', `translate(${(a.x + (b.x - a.x) * u).toFixed(1)} ${(a.y + (b.y - a.y) * u).toFixed(1)})`);
+      });
+      if (dabei) {
+        const k = kanten.find(k => k.du), a = knoten[k.a], b = knoten[k.b];
+        ding('myrte', ebeneF).setAttribute('transform', `translate(${((a.x + b.x) / 2).toFixed(1)} ${((a.y + b.y) / 2).toFixed(1)})`);
+      }
+    }
+
+    function tick(jetzt) {
+      if (!sichtbar || ruhig.matches) return;
+      stellen(jetzt);
+      if (jetzt - letzte > 420 && fluege.length < 10) {
+        const wahl = kanten.filter(k => dabei || !k.du), duWahl = wahl.filter(k => k.du);
+        const k = duWahl.length && Math.random() < .3 ? duWahl[Math.floor(Math.random() * duWahl.length)] : wahl[Math.floor(Math.random() * wahl.length)];
+        fliegen(k, ARTEN[Math.floor(Math.random() * ARTEN.length)], Math.random() < .5, jetzt);
+        letzte = jetzt;
+      }
+      fluege = fluege.filter(f => {
+        const u = Math.min(1, (jetzt - f.t0) / f.dauer), e = u < .5 ? 2 * u * u : 1 - (2 - 2 * u) ** 2 / 2;
+        const a = knoten[f.von], b = knoten[f.nach];
+        f.g.setAttribute('transform', `translate(${(a.x + (b.x - a.x) * e).toFixed(1)} ${(a.y + (b.y - a.y) * e).toFixed(1)})`);
+        if (u < 1) return true;
+        f.g.remove();
+        if (b.g) { b.g.classList.add('kriegt'); setTimeout(() => b.g.classList.remove('kriegt'), 300); }
+        return false;
+      });
+      requestAnimationFrame(tick);
+    }
+
+    new IntersectionObserver(([e]) => {
+      const war = sichtbar; sichtbar = e.isIntersecting;
+      if (sichtbar && !gestartet) { gestartet = true; bauen(); }
+      if (sichtbar && !war) requestAnimationFrame(tick);
+    }, { threshold: .35 }).observe(svg);
+    ruhig.addEventListener('change', () => {
+      if (!gestartet) return;
+      if (ruhig.matches) { stellen(0); standbild(); } else { ebeneF.textContent = ''; fluege = []; if (sichtbar) requestAnimationFrame(tick); }
+    });
   }
 
   /* ── Parallaxe ────────────────────────────────────────────── */
