@@ -636,10 +636,7 @@ svg.gross .ml-spross { opacity: 1; transform: none; }
 .ml-tafel-text { font-size: 9px; font-weight: 800; fill: var(--tx); text-anchor: middle; }
 .ml-element { transition: opacity .6s; }
 .ml-element.prallt { opacity: 0; }
-.ml-feuer { fill: #ff7a3d; filter: drop-shadow(0 0 4px rgba(255, 122, 61, .7)); }
-.ml-wasser { fill: #5fa8ff; }
-.ml-erde { fill: #a07f52; }
-.ml-luft { fill: none; stroke: var(--tx2); stroke-width: 2; stroke-linecap: round; }
+.ml-boese { font-size: 19px; text-anchor: middle; dominant-baseline: central; filter: drop-shadow(0 0 3px rgba(255, 70, 110, .75)); }
 .ml-treffer { fill: none; stroke: var(--neon); stroke-width: 2.4; transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 0 5px var(--neon-glut)); }
 .ml-blase { fill: var(--neon); fill-opacity: .12; stroke: var(--neon); stroke-width: 1.6; opacity: 0; transform-box: fill-box; transform-origin: center;
   filter: drop-shadow(0 0 4px var(--neon-glut)); transition: opacity .25s, transform .35s; }
@@ -1205,8 +1202,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <p>Der Myrling prüft jeden Ausweis selbst gegen den Fingerabdruck der Wurzel und fragt dabei niemanden. Fremden antwortet er nicht. Sein root-Helfer kennt keine freien Befehle, nur beschriebene Läufe, und die nur mit dem Myrsiegel, also mit einem Finger.</p></div>
     </div>
     <figure class="myrling-bild">
-      <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zwei Keimlinge, die Myrlinge, wachsen je unter einem Wabenschild. Aus ihnen sprießen Myrten-Beeren, daneben steckt je ein Schildchen mit der Aufschrift Myrtag. Eine Beere reist signiert und unter einem eigenen kleinen Schild zum anderen Myrling. Dort wartet sie vor dem Schild, bis ein kleines Handy beim Empfänger den Finger liest, dann kommt sie hinein. Feuer, Wasser, Erde und Luft fliegen von allen Seiten heran und prallen an den Schilden ab."></svg>
-      <figcaption class="myrling-text">Signiert und unter eigenem Schild reist eine Myrte zum anderen Myrling. Hinein kommt sie erst, wenn dort jemand mit dem Finger besiegelt. Feuer, Wasser, Erde und Luft prallen ab.</figcaption>
+      <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zwei Keimlinge, die Myrlinge, wachsen je unter einem Wabenschild. Aus ihnen sprießen Myrten-Beeren, daneben steckt je ein Schildchen mit der Aufschrift Myrtag. Eine Beere reist signiert und unter einem eigenen kleinen Schild zum anderen Myrling. Dort wartet sie vor dem Schild, bis ein kleines Handy beim Empfänger den Finger liest, dann kommt sie hinein. Bomben, Viren, Bugs, Fremde und Phishing-Haken fliegen von allen Seiten heran und prallen an den Schilden ab."></svg>
+      <figcaption class="myrling-text">Signiert und unter eigenem Schild reist eine Myrte zum anderen Myrling. Hinein kommt sie erst, wenn dort jemand mit dem Finger besiegelt. Alles Fremde prallt ab.</figcaption>
     </figure>
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
@@ -2142,13 +2139,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     const BODEN = 234;
     // Zwei Schilde: Mitte, Halbachsen, Größe der Pflanze darin; das Handy steht außen daneben
     const SCHILDE = [{ cx: 100, rx: 74, ry: 116, s: .86, hx: 12 }, { cx: 260, rx: 74, ry: 116, s: .86, hx: 348 }];
-    const ELEMENTE = {
-      feuer: ['path', { d: 'M0 -9C4 -4 7 -1 6 3A6 6 0 0 1 -6 3C-7 -1 -3 -2 -2 -6C-1 -3 1 -2 0 -9Z', class: 'ml-feuer' }],
-      wasser: ['path', { d: 'M0 -9C4 -3 6 0 6 3A6 6 0 0 1 -6 3C-6 0 -4 -3 0 -9Z', class: 'ml-wasser' }],
-      erde: ['path', { d: 'M-7 3L-4 -5L3 -7L8 -1L5 6L-3 7Z', class: 'ml-erde' }],
-      luft: ['path', { d: 'M-8 -3H4A3 3 0 1 0 1 -6M-8 2H7A3 3 0 1 1 4 5', class: 'ml-luft' }]
-    };
-    const ARTEN = Object.keys(ELEMENTE);
+    // Was von außen kommt und abprallt: Bombe, Virus, Bug, Fremder, Phishing
+    const ARTEN = ['💣', '🦠', '🐛', '👾', '🎣'];
     const STARTS = [[8, 40], [352, 48], [10, 150], [350, 150], [180, 4], [70, 8], [292, 10]];
     let ebene = null, flug = null, handys = [], sichtbar = false, gestartet = false;
     let liste = [], letzte = 0, reifAb = 0, reise = null, pause = 0, hin = true;
@@ -2200,7 +2192,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     }
     function element(art, x, y) {
       const g = el('g', { class: 'ml-element', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})` }, flug);
-      const [n, a] = ELEMENTE[art]; el(n, a, g); return g;
+      el('text', { class: 'ml-boese' }, g).textContent = art; return g;
     }
     function wabe(x, y, bleibt) {
       const s = el('path', { class: 'ml-treffer', d: sechseck(x, y, 9) }, flug);
@@ -2256,10 +2248,10 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 
     // Steht alles still: Die Elemente warten an den Schilden, eine Myrte wartet vor dem fremden Schild, das Handy liest
     function standbild() {
-      [[4, 150], [70, 4], [330, 30], [356, 190]].forEach((st, i) => {
+      [[4, 150], [70, 4], [330, 30], [358, 120]].forEach((st, i) => {
         const sc = naechstes(st[0]), [tx, ty] = treffpunkt(sc, st), [zx, zy] = ziel(sc), l = Math.hypot(zx - tx, zy - ty);
         wabe(tx, ty, true);
-        element(ARTEN[i], tx - (zx - tx) / l * 16, ty - (zy - ty) / l * 16);
+        element(ARTEN[i], tx - (zx - tx) / l * 19, ty - (zy - ty) / l * 19);
       });
       const r = reiseBauen(SCHILDE[0], SCHILDE[1]);
       setzen(r, r.uWarte); r.h.classList.add('liest'); r.funk.classList.add('an');
