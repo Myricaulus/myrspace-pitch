@@ -761,8 +761,9 @@ html:not(.js) .ring-reihe { display: none; }
 .grenzen li { margin: 8px 0 0; font-size: 16px; }
 .grenzen li::marker { color: var(--tx3); }
 .mitmachen b.kz { color: var(--kz); } .mitmachen b.cp { color: var(--cp); text-shadow: 0 0 16px var(--cp-glut); }
-.mitmachen .duell-text { margin-top: 8px; }
-.mitmachen .duell-text p { font-size: 16.5px; }
+.mitmachen .beide-text p { font-size: 16.5px; }
+/* „beide“ verläuft von Konzerner-Blau nach Cyberpunk-Rot */
+.mitmachen b.beide { background: linear-gradient(90deg, var(--kz), var(--cp)); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 
 /* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist. Links unten, weil rechts unten gern Hoster
    und Browser etwas einblenden (Netlify, PO 20.11.); sie rollt von links herein. */
@@ -1091,6 +1092,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <details class="neu-box" open>
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
+    <li data-wann="neu">Konzerner und Cyberpunk wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
     <li data-wann="neu">Der Platzhalter „Ein Netz aus Myrten“ ist weg. Was nur dort stand, steht jetzt in den Ringen.</li>
     <li data-wann="neu">In jedem Abschnitt mit mehreren Sichten stehen oben kleine Reiter. So siehst du, dass es mehr gibt, und kannst alle durchschauen.</li>
@@ -1365,11 +1367,11 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       <div data-sicht="bastler"><h3>Mitmachen heißt bauen und zeigen.</h3>
         <p>Klick dir deinen Space zusammen, stöbere in den Spaces anderer nach guten Myrten und zeig deine eigenen her. Empfehlungen sammeln sich bei dir und am Strang deiner Myrte.</p></div>
       <div data-sicht="sicherheit"><h3>Mitmachen heißt prüfen.</h3>
-        <div class="duell-text">
-          <p data-sicht="sicherheit" data-wer="konzerner"><b class="kz">Konzerner:</b> Fang mit einer Abteilung als Pilot an, mit eigenen Kreisen für Kollegen, Partner und Kunden. Agenten fragen an, statt Admin zu sein, und über die Mitarbeiter wird nichts gesammelt.</p>
-          <p data-sicht="sicherheit" data-wer="cyberpunk"><b class="cp">Cyberpunk:</b> Schreib MyrDogs, eigene Wächter für deine Geräte, und rede mit deinen Leuten nur Space zu Space.</p>
+        <div class="beide-text">
+          <p><b class="kz">Konzerner:</b> Fang mit einer Abteilung als Pilot an, mit eigenen Kreisen für Kollegen, Partner und Kunden. Agenten fragen an, statt Admin zu sein, und über die Mitarbeiter wird nichts gesammelt.</p>
+          <p><b class="cp">Cyberpunk:</b> Schreib MyrDogs, eigene Wächter für deine Geräte, und rede mit deinen Leuten nur Space zu Space.</p>
         </div>
-        <p>Und für beide: Such die Lücken, bevor es andere tun.</p></div>
+        <p>Und für <b class="beide">beide</b>: Such die Lücken, bevor es andere tun.</p></div>
     </div>
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
@@ -1694,7 +1696,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     nav.innerHTML = '<a href="#anwender" data-sicht="anwender">Anwender</a><a href="#bastler" data-sicht="bastler">Bastler</a><a href="#konzerner" data-sicht="sicherheit">Konzerner/Cyberpunk</a>';
     sec.querySelector('.kicker').after(nav);
   });
-  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss [data-sicht], .duell-text [data-wer]')];
+  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss [data-sicht], .anriss [data-wer]')];
 
   let ziel = 0, winkel = 0, sicht = 0, anim = 0, wer = 'konzerner', duellUhr = 0;
   const mod = (a, n) => ((a % n) + n) % n;
@@ -2148,10 +2150,10 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       return g;
     });
 
-    // Wer angreift, ist die andere Seite: Liest der Konzerner, kommt der Cyberpunk, und umgekehrt
+    // Wer angreift, ist fest der Cyberpunk, der Konzern verteidigt, wie bei „Bewegung aus“
     let rolle = '';
     function rollen() {
-      const verteidiger = document.body.dataset.wer === 'cyberpunk' ? 'cyberpunk' : 'konzerner';
+      const verteidiger = 'konzerner';
       if (verteidiger === rolle) return;
       rolle = verteidiger;
       const angreifer = verteidiger === 'cyberpunk' ? 'konzerner' : 'cyberpunk';
@@ -2239,8 +2241,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     }, { threshold: .35 }).observe(svg);
     // Bewegung wieder an: Die Schleife hatte sich beendet, also neu anstoßen
     ruhig.addEventListener('change', () => { if (sichtbar && !ruhig.matches) requestAnimationFrame(tick); });
-    // Wechselt im Revolver Konzerner und Cyberpunk, tauschen hier Angreifer und Verteidiger die Farben
-    new MutationObserver(rollen).observe(document.body, { attributes: true, attributeFilter: ['data-wer'] });
+    // Ab „Warum dezentral“ wechselt nichts mehr mit dem Revolver (PO 20.11.): fest wie bei „Bewegung aus“
     rollen(); zeige();
   }
 
