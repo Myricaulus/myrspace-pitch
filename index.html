@@ -703,6 +703,9 @@ svg.dabei .tr-du .tr-zweig { opacity: 1; }
 .traeger-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
 .traeger-text.gut { color: var(--gut); }
 .mitmachen { margin-top: 6px; }
+.grenzen ul { margin: 10px 0 0; padding-left: 1.2em; }
+.grenzen li { margin: 8px 0 0; font-size: 16px; }
+.grenzen li::marker { color: var(--tx3); }
 .mitmachen b.kz { color: var(--kz); } .mitmachen b.cp { color: var(--cp); text-shadow: 0 0 16px var(--cp-glut); }
 .mitmachen .duell-text { margin-top: 8px; }
 .mitmachen .duell-text p { font-size: 16.5px; }
@@ -1268,7 +1271,18 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       <div data-sicht="bastler"><h3>Erweiterbar? So weit, wie du baust.</h3>
         <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Was andere bauen, findest du in ihren Spaces statt in einem Store, und Gutes übernimmst du als Fork mit Abstammung. Der Haken: Die Formate ändern sich noch.</p></div>
       <div data-sicht="sicherheit"><h3>Sicher? Das sagen alle.</h3>
-        <p>Darum zählt nur, was sich nachprüfen lässt: Die Wurzel bleibt offline, das Siegel verlässt den Chip nicht, nur Menschen besiegeln, und jeder Eingriff steht im Laufbuch. Wo es offene Bausteine gibt, baut MyrSpace auf ihnen auf. Der Haken: Von außen geprüft hat das noch niemand.</p></div>
+        <p>Darum zählt nur, was sich nachprüfen lässt: Die Wurzel bleibt offline, das Siegel verlässt den Chip nicht, nur Menschen besiegeln, und jeder Eingriff steht im Laufbuch. Wo es offene Bausteine gibt, baut MyrSpace auf ihnen auf. Der Haken: Von außen geprüft hat das noch niemand.</p>
+        <details class="mehr grenzen">
+          <summary>Was MyrSpace nicht behauptet</summary>
+          <ul>
+            <li><b>Nicht unknackbar.</b> Die Mathematik ist bewährt, der Code drumherum ist neu und kann Fehler haben.</li>
+            <li><b>Nicht gegen dich selbst.</b> Was du besiegelst, läuft. Darum zeigt das Handy vorher, was genau passieren soll, und danach steht es im Laufbuch.</li>
+            <li><b>Nicht, dass die KI keine Fehler macht.</b> Nur, dass sie ohne deinen Finger nichts verändert.</li>
+            <li><b>Keine Heilung für einen übernommenen Rechner.</b> Wer dort schon root ist, bleibt es. Ohne dein Siegel verändert er aber deine anderen Geräte nicht.</li>
+            <li><b>Nicht nur mit Handy, aber am besten damit.</b> Es geht auch mit einem USB-Sicherheitsschlüssel oder der PIN des Sicherheitschips am PC, für den Notfall gibt es ein Notfallblatt. Das ist unbequemer: Nur das Handy zeigt an, was du gerade besiegelst, und ohne Handy gibt es kein sudo per Finger. Auch alte Handys können nicht alles, manche Chips unterschreiben nur und entschlüsseln nicht.</li>
+          </ul>
+          <p><b>Und fremd heißt nicht verboten.</b> Ein fremder Dienst darf Daten aufbewahren, wenn er nur Verschlüsseltes sieht, etwa eine Sicherung außer Haus. Er hält die Bytes, lesen kann er sie nicht, und dein Space hängt nicht an ihm. Das ist geplant, noch nicht gebaut.</p>
+        </details></div>
     </div>
     <figure class="traeger-bild">
       <svg viewBox="0 0 360 280" role="img" aria-label="Schaubild: Ein Netz aus Spaces ohne Mitte. Zwischen ihnen wandern Myrten, Empfehlungen und Hinweise hin und her. Ein Platz ist noch frei und gestrichelt: Du. Wer mitmacht, hängt seinen Space dort ins Netz und trägt mit."></svg>
@@ -1356,6 +1370,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z17"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Alles unter einer Haube</span><span class="bau-zettel" role="tooltip" id="bau-z17">Kuppel auf: Zahnräder und Fachwörter. Kuppel zu: Für dich bleiben App, Myrling und Finger.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z31"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Myrling und Myrtag</span><span class="bau-zettel" role="tooltip" id="bau-z31">Zwei Keimlinge unter Wabenschilden tauschen Myrten aus: signiert, im eigenen Schild, hinein erst mit dem Finger.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Je Sicht eine ehrliche Antwort mit Haken: praktisch, erweiterbar, sicher. Dazu ein Netz ohne Mitte, in das du deinen Space hängst, und gleich danach Mitmachen.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z32"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Was MyrSpace nicht behauptet</span><span class="bau-zettel" role="tooltip" id="bau-z32">Ehrliche Grenzen statt Superlativen, aufklappbar unter „Sicher? Das sagen alle.“, dazu ein fremder Dienst, der nur Verschlüsseltes sieht.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z18"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Ein Netz aus Myrten</span><span class="bau-zettel" role="tooltip" id="bau-z18">Die Texte stehen, das Bild fehlt noch: MyrTube antippen, seine Verbindungen leuchten.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
