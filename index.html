@@ -218,7 +218,7 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
 }
 @keyframes schaukeln { from { transform: rotate(-4deg) translateY(0); } to { transform: rotate(-2deg) translateY(-8px); } }
 /* Über dem Handy wird der Mauszeiger zum Finger: man soll drauftippen */
-.handy, .handy * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='4.5' r='3.6' fill='%2386f08a' opacity='.45'/%3E%3Cpath d='M13 2.5c-1.4 0-2.5 1.1-2.5 2.5v11.2l-1.6-1.6c-1-1-2.6-1-3.5 0-.9.9-.9 2.3-.1 3.3l5.2 6.6c1.3 1.6 3.2 2.5 5.3 2.5h4.2c3.6 0 6.5-2.9 6.5-6.5v-5.6c0-1.3-1.1-2.4-2.4-2.4-.5 0-1 .2-1.4.4-.3-1-1.2-1.7-2.3-1.7-.6 0-1.1.2-1.5.5-.4-.8-1.2-1.4-2.2-1.4-.4 0-.8.1-1.2.3V5c0-1.4-1.1-2.5-2.5-2.5z' fill='%23f5f3ee' stroke='%232f2552' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 13 3, pointer; }
+.handy, .handy *, .geraet { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='4.5' r='3.6' fill='%2386f08a' opacity='.45'/%3E%3Cpath d='M13 2.5c-1.4 0-2.5 1.1-2.5 2.5v11.2l-1.6-1.6c-1-1-2.6-1-3.5 0-.9.9-.9 2.3-.1 3.3l5.2 6.6c1.3 1.6 3.2 2.5 5.3 2.5h4.2c3.6 0 6.5-2.9 6.5-6.5v-5.6c0-1.3-1.1-2.4-2.4-2.4-.5 0-1 .2-1.4.4-.3-1-1.2-1.7-2.3-1.7-.6 0-1.1.2-1.5.5-.4-.8-1.2-1.4-2.2-1.4-.4 0-.8.1-1.2.3V5c0-1.4-1.1-2.5-2.5-2.5z' fill='%23f5f3ee' stroke='%232f2552' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 13 3, pointer; }
 /* Für Touch (kein Mauszeiger): eine Hand zeigt, wohin man tippt */
 .tipp-hand { position: absolute; left: 50%; top: 41px; width: 46px; height: 46px; margin: -4px 0 0 -19px; pointer-events: none; z-index: 2;
   opacity: 0; transition: opacity .4s; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .45)); }
@@ -406,11 +406,14 @@ body[data-wer="cyberpunk"] .ik-kz { opacity: 0; }
 .reiter a[aria-current="true"] { background: var(--knopf); color: var(--knopf-tx); border-color: transparent; }
 .anriss { margin: 14px 0 0; padding: 12px 16px; border-radius: 16px; background: var(--panel); border: 1px solid var(--panel-rand);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 16.5px; }
-.js .anriss > p:not(.aktiv) { display: none; }
+.js .anriss > :not(.aktiv) { display: none; }
+.js .duell-text { display: grid; }
+.js .duell-text > p { grid-area: 1 / 1; margin: 0; transition: opacity .45s, visibility .45s; }
+.js .duell-text > p:not(.aktiv) { opacity: 0; visibility: hidden; }
 .anriss p { margin: 0; }
 .anriss p + p { margin-top: 8px; }
 .js .anriss p + p { margin-top: 0; }
-.js .anriss p.aktiv ~ p.aktiv { margin-top: 6px; }
+.js .anriss > .aktiv ~ .aktiv { margin-top: 8px; }
 .anriss b { color: var(--tx2); }
 .weiter { display: inline-block; margin-top: 16px; font-size: 14px; color: var(--tx2); text-decoration: none; font-weight: 600; }
 .weiter span { display: inline-block; animation: nicken 2s ease-in-out infinite; }
@@ -485,7 +488,24 @@ svg.netz.ausgefallen .knoten:not(.nas) circle { animation: leuchten 1.4s ease-in
 .mehr[open] summary::after { transform: rotate(180deg); }
 .mehr .je-sicht p { margin: 10px 0 0; }
 .quellen { font-size: 13.5px; color: var(--tx2); }
-html:not(.js) .ausfall { display: none; }
+html:not(.js) .ausfall, html:not(.js) .geraete { display: none; }
+.geraete, .ausfall { display: none; }
+body[data-sicht="anwender"] .geraete, body[data-sicht="bastler"] .ausfall, body[data-sicht="sicherheit"] .ausfall { display: block; animation: auftauchen .45s ease both; }
+.geraete { margin: 12px 0 0; }
+.geraete svg { display: block; width: 100%; height: auto; overflow: visible; }
+.gk { stroke: var(--tx3); stroke-width: 2; opacity: .5; transition: opacity .4s, stroke .4s; }
+.gk.tot { stroke: #8a8399; stroke-dasharray: 4 5; opacity: .3; }
+.geraet { outline: none; }
+.geraet .koerper { fill: var(--grund); stroke: var(--neon); stroke-width: 3; filter: drop-shadow(0 0 5px var(--neon-glut));
+  transform-box: fill-box; transform-origin: center; transition: fill .3s, stroke .3s, opacity .3s, stroke-width .2s; }
+.geraet .licht { fill: var(--neon); transition: opacity .3s; }
+.geraet .power { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; opacity: 0; transition: opacity .3s; }
+.geraet text { fill: var(--tx); font-size: 12.5px; font-weight: 800; text-anchor: middle; pointer-events: none; transition: opacity .3s; }
+.geraet:hover .koerper, .geraet:focus-visible .koerper { stroke-width: 5; }
+.geraet.aus .koerper { fill: #8a8399; stroke: #8a8399; filter: none; opacity: .6; }
+.geraet.aus .licht { opacity: 0; } .geraet.aus .power { opacity: 1; } .geraet.aus text { opacity: .5; }
+.geraete-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
+.geraete-text.gut { color: var(--gut); }
 
 /* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist */
 .dock { position: fixed; z-index: 20; right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
@@ -748,8 +768,10 @@ html:not(.js) .ausfall { display: none; }
     <div class="anriss">
       <p data-sicht="anwender" class="aktiv"><b>Anwender:</b> Ein Finger statt vieler Passwörter. Deine Geräte kennen sich, auch ohne Internet.</p>
       <p data-sicht="bastler"><b>Bastler:</b> Eine Myrte ist ein Git-Projekt mit ein paar Metadaten. Ein Befehl, und sie läuft.</p>
+      <div class="duell-text" data-sicht="sicherheit">
       <p data-sicht="sicherheit" data-wer="konzerner"><b class="kz">Konzerner:</b> Kontrolle im eigenen Haus, kein Fremder drin. KI-Agenten fragen an, statt Admin zu sein, und jeder Eingriff steht im Laufbuch.</p>
       <p data-sicht="sicherheit" data-wer="cyberpunk"><b class="cp">Cyberpunk:</b> Eigene Wurzel, offline. Kein Konzern dazwischen, und nur Menschen besiegeln.</p>
+      </div>
       <p data-sicht="sicherheit">Dieselbe Mathematik schützt beide, auch voreinander.</p>
     </div>
     <a class="weiter" href="#">einfach weiterlesen <span>↓</span></a>
@@ -759,10 +781,15 @@ html:not(.js) .ausfall { display: none; }
   <section class="abschnitt anker" aria-labelledby="a-dezentral">
     <h2 class="kicker" id="a-dezentral">Warum dezentral</h2>
     <div class="je-sicht">
-      <div data-sicht="anwender"><h3>Wenn Outlook ausfällt, läuft deins weiter.</h3></div>
+      <div data-sicht="anwender"><h3>Fällt eins aus, reden die anderen weiter.</h3>
+        <p>Deine Geräte sprechen direkt miteinander, ohne Umweg über ein fremdes Rechenzentrum. Tipp eins an und schalt es aus.</p></div>
       <div data-sicht="bastler"><h3>Stern gegen Netz.</h3></div>
       <div data-sicht="sicherheit"><h3>Kein Single Point of Failure.</h3></div>
     </div>
+    <figure class="geraete">
+      <svg viewBox="0 0 360 262" role="group" aria-label="Schaubild: Deine Geräte sprechen direkt miteinander. Jedes Gerät lässt sich antippen und aus- oder einschalten."></svg>
+      <figcaption class="geraete-text">Alle Geräte reden direkt miteinander.</figcaption>
+    </figure>
     <figure class="ausfall">
       <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zentral hängen alle Geräte an einem Dienst. Fällt er aus, stehen alle. In MyrSpace sprechen die Geräte direkt miteinander. Fällt eines aus, sogar der NAS, läuft der Rest weiter."></svg>
       <div class="schalter-reihe">
@@ -776,7 +803,7 @@ html:not(.js) .ausfall { display: none; }
       <summary>Mehr erfahren</summary>
       <div class="je-sicht">
         <div data-sicht="anwender">
-          <p><b>Ein Handgriff an einer Stelle, und alle stehen.</b> Am Abend des 12. November 2026 fiel Exchange Online aus, Outlook blieb bis zum nächsten Tag gestört, weltweit kamen über 130.000 Störungsmeldungen zusammen. Die Ursache laut Microsoft: ein zuvor durchgeführtes Upgrade der Netzkapazität. Die Geräte der Leute liefen die ganze Zeit einwandfrei.</p>
+          <p><b>Zentral ist es umgekehrt: Fällt der eine Dienst aus, stehen alle.</b> Am Abend des 12. November 2026 fiel Exchange Online aus, Outlook blieb bis zum nächsten Tag gestört, weltweit kamen über 130.000 Störungsmeldungen zusammen. Die Ursache laut Microsoft: ein zuvor durchgeführtes Upgrade der Netzkapazität. Die Geräte der Leute liefen die ganze Zeit einwandfrei.</p>
           <p>Zentral ist bequem, aber zerbrechlich. Selbst hosten war robust, aber mühsam, denn man musste selbst Admin sein. Mit KI ändert sich das: Die KI pflegt, repariert und richtet ein, und du siehst, was sie vorhat, und besiegelst mit dem Finger.</p>
           <p class="quellen">Quellen: <a href="https://www.zdfheute.de/wirtschaft/stoerung-outlook-teams-microsoft-100.html" rel="noopener">zdfheute</a> · <a href="https://www.pcwelt.de/article/3284443/microsoft-dienste-funktionieren-wieder-das-war-der-grund-fur-den-ausfall.html" rel="noopener">PC-Welt</a> · <a href="https://www.computerwoche.de/article/4248360/exchange-online-stoerung-legt-microsoft-365-dienste-lahm.html" rel="noopener">Computerwoche</a></p>
         </div>
@@ -1005,7 +1032,7 @@ html:not(.js) .ausfall { display: none; }
   kopie.querySelector('defs').remove(); kopie.querySelector('.kreisel-dreh').remove();
   $('.dock-trommel').append(kopie);
   const trommel = $('.trommel'), drehteile = [...document.querySelectorAll('.drehteil')], ikonen = [...document.querySelectorAll('.ikon')];
-  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss p')];
+  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss [data-sicht]')];
 
   let ziel = 0, winkel = 0, sicht = 0, anim = 0, wer = 'konzerner', duellUhr = 0;
   const mod = (a, n) => ((a % n) + n) % n;
@@ -1294,6 +1321,92 @@ html:not(.js) .ausfall { display: none; }
     new IntersectionObserver(([e]) => {
       const war = sichtbar; sichtbar = e.isIntersecting;
       if (sichtbar && !gestartet) { gestartet = true; starte('stern'); }
+      if (sichtbar && !war) requestAnimationFrame(tick);
+    }, { threshold: .35 }).observe(svg);
+    zeige();
+  }
+
+  /* ── Warum dezentral für Anwender: deine Geräte, eins fällt aus ── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = $('.geraete svg'), text = $('.geraete-text');
+    const G = [
+      { n: 'Handy', art: 'Das Handy', p: [58, 158] },
+      { n: 'Laptop', art: 'Der Laptop', p: [104, 54] },
+      { n: 'PC', art: 'Der PC', p: [242, 46] },
+      { n: 'Fernseher', art: 'Der Fernseher', p: [304, 152] },
+      { n: 'NAS', art: 'Der NAS', p: [182, 214] }
+    ];
+    const ZAHL = ['keins', 'eins', 'zwei', 'drei', 'vier', 'fünf'];
+    const KANTEN = [];
+    for (let a = 0; a < G.length; a++) for (let b = a + 1; b < G.length; b++) KANTEN.push([a, b]);
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    const kg = el('g', {}, svg), pg = el('g', {}, svg), ng = el('g', {}, svg);
+    const linien = KANTEN.map(([a, b]) => el('line', { x1: G[a].p[0], y1: G[a].p[1], x2: G[b].p[0], y2: G[b].p[1], class: 'gk' }, kg));
+    const knoten = G.map((g, i) => {
+      const k = el('g', { class: 'geraet', transform: `translate(${g.p[0]} ${g.p[1]})`, tabindex: 0, role: 'button', 'aria-pressed': 'false', 'aria-label': g.n + ' ausschalten' }, ng);
+      el('circle', { r: 19, class: 'koerper' }, k);
+      el('circle', { r: 5, class: 'licht' }, k);
+      el('path', { class: 'power', d: 'M-5.2 -3.8 A7.2 7.2 0 1 0 5.2 -3.8 M0 -8.5 V-1.5' }, k);
+      const t = el('text', { y: g.p[1] > 130 ? 38 : -28 }, k); t.textContent = g.n;
+      return k;
+    });
+    const aus = new Set();
+    function zeige() {
+      knoten.forEach((k, i) => { k.classList.toggle('aus', aus.has(i)); k.setAttribute('aria-label', G[i].n + (aus.has(i) ? ' einschalten' : ' ausschalten')); });
+      linien.forEach((l, j) => l.classList.toggle('tot', aus.has(KANTEN[j][0]) || aus.has(KANTEN[j][1])));
+      const an = G.filter((_, i) => !aus.has(i));
+      let s;
+      if (!aus.size) s = 'Alle Geräte reden direkt miteinander.';
+      else if (aus.size === 1) s = `${G[[...aus][0]].art} ist aus. Die anderen reden einfach weiter.`;
+      else if (an.length >= 2) s = `${ZAHL[aus.size][0].toUpperCase() + ZAHL[aus.size].slice(1)} Geräte sind aus, die anderen ${ZAHL[an.length]} reden weiter.`;
+      else if (an.length === 1) s = `Nur noch ${an[0].art.replace(/^D/, 'd')}, und das läuft trotzdem.`;
+      else s = 'Alles aus. Tipp ein Gerät an, dann geht es wieder.';
+      text.textContent = s;
+      text.classList.toggle('gut', aus.size > 0 && an.length > 0);
+    }
+    let selbst = false, demoUhr = 0, phase = 0;
+    function schalte(i) {
+      aus.has(i) ? aus.delete(i) : aus.add(i); zeige();
+      if (!ruhig.matches) knoten[i].querySelector('.koerper').animate([{ transform: 'scale(1)' }, { transform: 'scale(1.3)' }, { transform: 'scale(1)' }], 320);
+    }
+    knoten.forEach((k, i) => {
+      const tippen = () => { selbst = true; clearTimeout(demoUhr); schalte(i); };
+      k.addEventListener('click', tippen);
+      k.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tippen(); } });
+    });
+    // Bis zum ersten Antippen spielt das Bild selbst vor: NAS aus und an, dann PC, Fernseher, Laptop
+    const FOLGE = [4, 2, 3, 1];
+    function demo() {
+      if (selbst) return;
+      const i = FOLGE[Math.floor(phase / 2) % FOLGE.length], ausmachen = phase % 2 === 0;
+      if (ausmachen !== aus.has(i)) schalte(i);
+      phase++;
+      demoUhr = setTimeout(demo, ausmachen ? 3200 : 1500);
+    }
+    // Datenpakete fliegen zwischen allen Geräten, die an sind
+    let sichtbar = false, gestartet = false, liste = [], letzte = 0;
+    function tick(jetzt) {
+      if (!sichtbar || ruhig.matches) return;
+      const offen = KANTEN.filter(([a, b]) => !aus.has(a) && !aus.has(b));
+      if (jetzt - letzte > 220 && offen.length) {
+        let [a, b] = offen[Math.floor(Math.random() * offen.length)];
+        if (Math.random() < .5) [a, b] = [b, a];
+        liste.push({ a, b, t0: jetzt, el: el('circle', { r: 3.4, class: 'paket' }, pg) });
+        letzte = jetzt;
+      }
+      liste = liste.filter(q => {
+        const t = (jetzt - q.t0) / 800;
+        if (t >= 1 || aus.has(q.a) || aus.has(q.b)) { q.el.remove(); return false; }
+        q.el.setAttribute('cx', (G[q.a].p[0] + (G[q.b].p[0] - G[q.a].p[0]) * t).toFixed(1));
+        q.el.setAttribute('cy', (G[q.a].p[1] + (G[q.b].p[1] - G[q.a].p[1]) * t).toFixed(1));
+        return true;
+      });
+      requestAnimationFrame(tick);
+    }
+    new IntersectionObserver(([e]) => {
+      const war = sichtbar; sichtbar = e.isIntersecting;
+      if (sichtbar && !gestartet) { gestartet = true; demoUhr = setTimeout(demo, 1600); }
       if (sichtbar && !war) requestAnimationFrame(tick);
     }, { threshold: .35 }).observe(svg);
     zeige();
