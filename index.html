@@ -1032,11 +1032,14 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 .akd-denkt { margin: 0 0 7px; color: var(--tx3); font-style: italic; } .akd-denkt i { animation: ak-punkt 1s infinite; font-style: normal; }
 .akd-denkt i:nth-child(2) { animation-delay: .2s; } .akd-denkt i:nth-child(3) { animation-delay: .4s; }
 @keyframes ak-punkt { 50% { opacity: .2; } }
-.akd-eingabe { display: flex; gap: 6px; }
+.akd-eingabe { display: flex; align-items: flex-end; gap: 6px; }
 .akd-feld { flex: 1; min-height: 2.2em; padding: 5px 8px; border: 1px solid var(--panel-rand); border-radius: 6px; background: var(--grund); }
 .akd-feld:empty::before { content: attr(data-leer); color: var(--tx3); opacity: .7; }
 .akd-senden { padding: 4px 12px; border: 0; border-radius: 6px; background: var(--knopf); color: var(--knopf-tx); font: 600 13px system-ui, sans-serif; transition: transform .15s; }
-.akd-senden.druck { transform: scale(.9); }
+.akd-senden:not(:disabled) { cursor: pointer; } .akd-senden:active:not(:disabled) { transform: scale(.92); }
+.akd-senden:disabled { opacity: .55; }
+.akd-senden.bereit { box-shadow: 0 0 0 2px var(--neon), 0 0 12px var(--neon-glut); animation: ak-senden 1.2s ease-in-out infinite alternate; }
+@keyframes ak-senden { from { box-shadow: 0 0 0 1px var(--neon), 0 0 4px var(--neon-glut); } to { box-shadow: 0 0 0 3px var(--neon), 0 0 16px var(--neon); } }
 .akd-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; padding: 10px 14px 12px;
   border-top: 1px solid var(--panel-rand); font-size: 13.5px; color: var(--tx3); }
 .akd-fuss p { margin: 0; flex: 1 1 16em; } .akd-fuss div { display: flex; gap: 8px; }
@@ -1198,7 +1201,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
     <li data-wann="neu">Wo <span class="beide">Konzerner und Cyberpunk</span> beide gemeint sind, verläuft die Schrift von Blau nach Rot.</li>
-    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer bis zum Ende der Seite keins angetippt hat, bekommt den Zug dort einmal von selbst. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C, und jemand fragt an einer Zeile den Agenten.</li>
+    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer bis zum Ende der Seite keins angetippt hat, bekommt den Zug dort einmal von selbst. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C. An einer Zeile steht eine Frage an den Agenten, abschicken musst du sie selbst. Drehst du den Revolver, während der Bahnhof offen ist, wird der Waggon neu beladen.</li>
     <li data-wann="neu">Im äußersten Ring, Sicht <span class="beide">Konzerner/Cyberpunk</span>: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
     <li data-wann="neu"><span class="beide">Konzerner und Cyberpunk</span> wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
@@ -2875,7 +2878,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         frage: 'Warum NODA? Dann darf man die PIN beliebig oft raten.',
         antwort: 'Stimmt, mit NODA zählt der Chip keine Fehlversuche. Ohne sperrt er nach zu vielen falschen PINs eine Weile.' },
     };
-    const bsp = () => BSP[(zurueck && zurueck.closest('[data-sicht]') || document.body).dataset.sicht] || BSP.anwender;
+    // Immer die gewählte Sicht, nicht die des angetippten Worts: Wer bei offenem Bahnhof dreht, bekommt den passenden Waggon
+    const bsp = () => BSP[document.body.dataset.sicht] || BSP.anwender;
     const zaehl = (b, art) => b.zeilen.filter(z => art === '-' ? z[2] === '-' : z[2] === '+' || z[2] === 'ziel').length;
     // Kleine Syntaxfarben: Kommentar, Text, Zahl/Wert, Schlüsselwort/Konstante/Abschnitt, Funktion/Schlüssel
     const MUSTER = {
@@ -2966,26 +2970,36 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       // Zug: ein Waggon nach Art von merge-train, dahinter (rechts) die Lok
       const wy = gl - WH - 10;
       stopp = cx + 4 - W / 2;
-      const b = bsp(), plus = zaehl(b, '+'), minus = zaehl(b, '-'), bp = Math.round(150 * plus / (plus + minus));
       s += `<g class="ak-zug" style="transform: translateX(${x == null ? -(W + 14 + LOK + 20) : x === 'stopp' ? stopp : x}px)">
-  <g class="ak-wagen" tabindex="0" role="button" aria-label="Waggon „${b.wagen}“, plus ${plus}, minus ${minus}: Diff ansehen">
+  <g class="ak-wagen" tabindex="0" role="button">
    <rect class="ak-kasten" x="0" y="${wy}" width="${W}" height="${WH}" rx="5"/>
    <rect class="ak-fuell" x="1.5" y="${wy + 26}" width="${W - 3}" height="${WH - 27.5}" rx="3.5"/>
-   <text x="10" y="${wy + 17}" class="ak-tx ak-fett">${b.wagen}</text>
-   <text x="10" y="${wy + 35}" class="ak-tx"><tspan class="ak-p">+${plus}</tspan> <tspan class="ak-m">−${minus}</tspan> <tspan class="ak-klein">1 Dat.</tspan></text>
+   <text x="10" y="${wy + 17}" class="ak-tx ak-fett ak-name"></text>
+   <text x="10" y="${wy + 35}" class="ak-tx"><tspan class="ak-p ak-plus"></tspan> <tspan class="ak-m ak-minus"></tspan> <tspan class="ak-klein">1 Dat.</tspan></text>
    <text x="${W - 10}" y="${wy + 35}" text-anchor="end" class="ak-tx ak-fett ak-marke">● offen</text>
-   <rect x="10" y="${wy + 43}" width="${bp}" height="4" class="ak-p"/><rect x="${10 + bp}" y="${wy + 43}" width="${150 - bp}" height="4" class="ak-m"/>
+   <rect x="10" y="${wy + 43}" height="4" class="ak-p ak-bp"/><rect y="${wy + 43}" height="4" class="ak-m ak-bm"/>
    <circle cx="24" cy="${wy + WH + 4}" r="6" class="ak-radw"/><circle cx="${W - 24}" cy="${wy + WH + 4}" r="6" class="ak-radw"/></g>
   <line x1="${W}" y1="${wy + WH - 8}" x2="${W + 14}" y2="${wy + WH - 8}" stroke="var(--ak-rand)" stroke-width="2"/>
   <g class="ak-lok" tabindex="0" role="button" aria-label="Lok: weiterfahren und Bahnhof zuklappen"><g transform="translate(${W + 14},${gl - 70})">${lok()}</g></g></g>`;
       sv.innerHTML = s;
       zugEl = $('.ak-zug', sv); wagenEl = $('.ak-wagen', sv); markeEl = $('.ak-marke', sv);
+      beschriften();
       const tun = (g, fn) => {
         g.addEventListener('click', fn);
         g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
       };
       tun(wagenEl, () => { if (ak.classList.contains('steht')) diffZeigen(); });
       tun($('.ak-lok', sv), abfahrt);
+    }
+    // Waggon nach der gewählten Sicht beschriften: Name, +/−, Balken
+    function beschriften() {
+      const b = bsp(), plus = zaehl(b, '+'), minus = zaehl(b, '-'), bp = Math.round(150 * plus / (plus + minus));
+      wagenEl.setAttribute('aria-label', `Waggon „${b.wagen}“, plus ${plus}, minus ${minus}: Diff ansehen`);
+      $('.ak-name', sv).textContent = b.wagen;
+      $('.ak-plus', sv).textContent = '+' + plus; $('.ak-minus', sv).textContent = '−' + minus;
+      $('.ak-bp', sv).setAttribute('width', bp);
+      const bm = $('.ak-bm', sv); bm.setAttribute('x', 10 + bp); bm.setAttribute('width', 150 - bp);
+      markeEl.textContent = '● offen';
     }
     const fahren = x => { zugEl.style.transform = `translateX(${x}px)`; };
 
@@ -3023,8 +3037,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     }
     ausloeser.forEach(a => {
       a.setAttribute('role', 'button');
-      a.addEventListener('click', () => { zurueck = a; ankunft(); });
-      a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); zurueck = a; ankunft(); } });
+      a.addEventListener('click', () => { if (!offen) zurueck = a; ankunft(); });
+      a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!offen) zurueck = a; ankunft(); } });
     });
     $('.ak-zu', ak).addEventListener('click', abfahrt);
     // Zettel am Rand (etwa im zentrierten Text unter dem Myrling) ins Bild schieben
@@ -3038,6 +3052,17 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       };
       t.addEventListener('pointerenter', schieben); t.addEventListener('focus', schieben);
     });
+    // Dreht man den Revolver, während der Bahnhof offen ist: Waggon neu beladen, offenes Diff zeigt die neue Sicht
+    let umladen = 0;
+    new MutationObserver(async () => {
+      if (!offen || !wagenEl || ak.classList.contains('weg')) return;
+      beschriften();
+      if (dlg.open) szene();
+      if (!ak.classList.contains('steht')) return;
+      const n = ++umladen;
+      ak.classList.remove('voll'); void ak.offsetWidth; ak.classList.add('laedt', 'voll');
+      await warte(1300); if (n === umladen) ak.classList.remove('laedt');
+    }).observe(document.body, { attributes: true, attributeFilter: ['data-sicht'] });
     const ende = $('p.fuss');
     if (ende && 'IntersectionObserver' in window) {
       const beobachter = new IntersectionObserver(eintraege => {
@@ -3064,7 +3089,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     const kopf = $('.akd-kopf', dlg), code = $('.akd-code', dlg);
     const zeile = (a, b, art, text, spr) => `<div class="akd-z${art === '-' ? ' minus' : art ? ' plus' : ''}${art === 'ziel' ? ' akd-ziel' : ''}"><i>${a}</i><i>${b}</i><b>${art === '-' ? '−' : art ? '+' : ''}</b><span>${farbe(text, spr)}</span></div>`;
     const FADEN = `<div class="akd-faden" aria-live="polite"><div class="akd-msgs"></div><p class="akd-denkt" hidden>Agent arbeitet<i>.</i><i>.</i><i>.</i></p>
-    <div class="akd-eingabe"><div class="akd-feld" data-leer="Frag an dieser Zeile …"></div><span class="akd-senden" aria-hidden="true">Senden</span></div></div>`;
+    <div class="akd-eingabe"><div class="akd-feld" data-leer="Frag an dieser Zeile …"></div><button type="button" class="akd-senden" disabled>Senden</button></div></div>`;
     let spiel = 0;
     async function szene() {
       const n = ++spiel, weiter = () => n === spiel && dlg.open, b = bsp();
@@ -3080,8 +3105,12 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       await warte(900); if (!weiter()) return;
       if (ruhig.matches) feld.textContent = b.frage;
       else for (const ch of b.frage) { feld.textContent += ch; await warte(42); if (!weiter()) return; }
-      await warte(400); senden.classList.add('druck');
-      await warte(180); senden.classList.remove('druck'); if (!weiter()) return;
+      // Abschicken muss man selbst: Der Knopf glimmt, bis man ihn antippt
+      senden.disabled = false; senden.classList.add('bereit');
+      senden.focus({ preventScroll: true });
+      await new Promise(los => senden.addEventListener('click', los, { once: true }));
+      if (!weiter()) return;
+      senden.classList.remove('bereit'); senden.disabled = true;
       feld.textContent = ''; nachricht('Du', b.frage);
       await warte(500); denkt.hidden = false;
       await warte(1700); if (!weiter()) return;
