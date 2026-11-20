@@ -21,6 +21,21 @@
   // Vor dem ersten Bild: JS-Klasse und gemerktes Thema setzen, damit nichts flackert.
   document.documentElement.classList.add('js');
   try { var t = localStorage.getItem('myr-pitch-thema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+  // Bewegung: aus, wenn das System „Bewegung reduzieren“ meldet oder der Schalter auf dem Absperrband es sagt (gemerkt).
+  (function () {
+    var mq = matchMedia('(prefers-reduced-motion: reduce)'), d = document.documentElement, hoerer = [];
+    try { if (localStorage.getItem('myr-pitch-ruhig') === 'an') d.dataset.ruhig = 'an'; } catch (e) {}
+    window.myrRuhig = {
+      get matches() { return mq.matches || d.dataset.ruhig === 'an'; },
+      get system() { return mq.matches; },
+      addEventListener: function (typ, f) { hoerer.push(f); mq.addEventListener('change', f); },
+      setzen: function (an) {
+        if (an) d.dataset.ruhig = 'an'; else delete d.dataset.ruhig;
+        try { localStorage.setItem('myr-pitch-ruhig', an ? 'an' : 'aus'); } catch (e) {}
+        hoerer.forEach(function (f) { f(); });
+      }
+    };
+  })();
 </script>
 <style>
 /* ── Farben: Morgen im Hain (hell) ─────────────────────────────── */
@@ -628,6 +643,16 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
 .band-lauf span { flex: none; margin: 0 22px; padding: 2px 12px; border-radius: 3px; background: var(--fenster); color: #17122a;
   font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
 @keyframes bandlauf { to { transform: translateX(-50%); } }
+/* Schalter für Bewegung: steht fest auf dem laufenden Band */
+.ruhe-knopf { position: absolute; top: 50%; left: calc(3vw + 12px); transform: translateY(-50%); display: none; cursor: pointer;
+  padding: 3px 12px; border-radius: 999px; border: 2px solid #17122a; background: #f5f3ee; color: #17122a;
+  font-size: 12.5px; font-weight: 600; white-space: nowrap; box-shadow: 0 2px 10px rgba(0, 0, 0, .3); }
+html.js .ruhe-knopf { display: inline-block; }
+html.js .ruhe-knopf[hidden] { display: none; }
+.ruhe-knopf b { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+.ruhe-knopf:focus-visible { outline: 3px solid var(--neon); outline-offset: 2px; }
+.ruhe-knopf .kurz { display: none; font-weight: 800; }
+@media (max-width: 520px) { .ruhe-knopf .lang { display: none; } .ruhe-knopf .kurz { display: inline; } }
 
 .kopf-rechts { display: inline-flex; align-items: center; gap: 8px; }
 .bauschild { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--panel-rand); background: var(--panel);
@@ -757,6 +782,9 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
   .handy { transform: rotate(-3deg); }
 }
+html[data-ruhig="an"] *, html[data-ruhig="an"] *::before, html[data-ruhig="an"] *::after {
+  animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
+html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 </style>
 </head>
 <body data-sicht="anwender">
@@ -860,6 +888,7 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
     <span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span><span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span>
     <span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span><span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span>
   </div>
+  <button class="ruhe-knopf" type="button" aria-pressed="false"><span class="lang">Zu viel Bewegung? <b>Hier ausschalten</b></span><span class="kurz">Bewegung aus</span></button>
 </div>
 
 <!-- ═════ Kopfzeile ═════ -->
@@ -1130,15 +1159,15 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
     <ul class="bau-legende" aria-label="Zeichen">
       <li class="fertig"><i class="kasten" aria-hidden="true"></i>fertig</li>
       <li class="dran"><i class="kasten" aria-hidden="true"></i>als Nächstes</li>
-      <li class="idee"><i class="kasten" aria-hidden="true"></i>noch Idee</li>
+      <li class="idee"><i class="kasten" aria-hidden="true"></i>geplant</li>
     </ul>
     <div class="bau-gruppe" data-fertig="0" data-beschrieben="9" data-alle="15" data-einheit="Use Cases">
       <h4>MyrSpace selbst <small>in vier Phasen</small></h4>
       <ol class="bau-pfad">
       <li class="fertig" tabindex="0" aria-describedby="bau-p1"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel"><small>Phase 1</small>Myrthen&shy;hain</span><span class="bau-zettel" role="tooltip" id="bau-p1">Abgeschlossen, das war der erste Test: Apps auf dem NAS, jede mit eigenem Namen und https. Neue Apps kommen mit <code>myr-deploy</code>.</span></span></li>
       <li class="dran" tabindex="0" aria-describedby="bau-p2"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">läuft: </span><span class="bau-titel"><small>Phase 2</small>Ausweise</span><span class="bau-zettel" role="tooltip" id="bau-p2">Läuft gerade. Jedes Gerät bekommt Ausweise, und was etwas ändert, besiegelst du mit dem Finger. Erst Fassung 1, dann Fassung 2.</span></span></li>
-      <li class="idee" tabindex="0" aria-describedby="bau-p3"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel"><small>Phase 3</small>Contai&shy;ner</span><span class="bau-zettel" role="tooltip" id="bau-p3">MyrSpace als Container mit Einrichtungsbefehl, damit Freunde es selbst aufsetzen. Erst wenn Phase 2 bei dir stabil läuft.</span></span></li>
-      <li class="idee" tabindex="0" aria-describedby="bau-p4"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel"><small>Phase 4</small>Föde&shy;ration</span><span class="bau-zettel" role="tooltip" id="bau-p4">Gerät zu Gerät und Spaces untereinander: Fenster zum Fernseher, Bildschirm teilen, Freundschaft schließen.</span></span></li>
+      <li class="idee" tabindex="0" aria-describedby="bau-p3"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel"><small>Phase 3</small>Contai&shy;ner</span><span class="bau-zettel" role="tooltip" id="bau-p3">MyrSpace als Container mit Einrichtungsbefehl, damit Freunde es selbst aufsetzen. Erst wenn Phase 2 bei dir stabil läuft. Teils noch Idee, vieles schon gut durchdacht.</span></span></li>
+      <li class="idee" tabindex="0" aria-describedby="bau-p4"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel"><small>Phase 4</small>Föde&shy;ration</span><span class="bau-zettel" role="tooltip" id="bau-p4">Gerät zu Gerät und Spaces untereinander: Fenster zum Fernseher, Bildschirm teilen, Freundschaft schließen. Teils noch Idee, vieles schon gut durchdacht.</span></span></li>
       </ol>
       <h5 class="bau-unter">Phase 2, Fassung 1 „AGAP“<span class="bau-zahl"></span></h5>
       <span class="bau-balken" aria-hidden="true"><i></i><b></b></span>
@@ -1150,14 +1179,15 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
         <li class="fertig" tabindex="0" aria-describedby="bau-z4"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Ausweis-Formate als Entwurf abgenickt</span><span class="bau-zettel" role="tooltip" id="bau-z4">Entwurf 5 vom 19.11.: Ausweise und Briefe, wer was unterschreiben darf, sudo über das Handy. Festgeschrieben wird erst mit Fassung 1.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z5"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Zwei offene Fragen zur Fassung 1</span><span class="bau-zettel" role="tooltip" id="bau-z5">Wie Argumente in einen Lauf kommen und was ins Protokoll gehört. Vorschläge liegen, der PO schaut noch.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z6"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Prüfung und Testsatz</span><span class="bau-zettel" role="tooltip" id="bau-z6">Eine Prüfung in Python, eine in Kotlin. Beide müssen denselben Satz guter und absichtlich falscher Ausweise bestehen.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z0"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Schnittstellen für Fassung 1</span><span class="bau-zettel" role="tooltip" id="bau-z0">Neun kurze Dokumente: wie sudo, Myrling, App, NAS und die Werkzeuge miteinander reden. Erst dann lassen sich Tests schreiben.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z7"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Wurzel, Ausgabestelle, Koppeln per QR</span><span class="bau-zettel" role="tooltip" id="bau-z7">Die Wurzel bleibt offline. Der NAS stellt Ausweise aus, das Handy koppelt per QR, Sperrbriefe ziehen zurück.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z8"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Myrling auf dem Rechner</span><span class="bau-zettel" role="tooltip" id="bau-z8">Lauscht im Heimnetz. Ein root-Helfer lässt sudo nur zu, wenn vom Handy eine Erlaubnis kommt.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z9"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">MyrSpace-App fürs Handy</span><span class="bau-zettel" role="tooltip" id="bau-z9">Zeigt dir, was gleich passieren soll. Finger drauf, die Erlaubnis geht zurück an den Rechner.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z10"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Der Test: sudo mit dem Finger</span><span class="bau-zettel" role="tooltip" id="bau-z10">Ein Skript läuft per sudo, du bestätigst am Handy, und danach steht der Lauf im Laufbuch.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z0"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schnittstellen für Fassung 1</span><span class="bau-zettel" role="tooltip" id="bau-z0">Neun kurze Dokumente: wie sudo, Myrling, App, NAS und die Werkzeuge miteinander reden. Erst dann lassen sich Tests schreiben.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z7"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Wurzel, Ausgabestelle, Koppeln per QR</span><span class="bau-zettel" role="tooltip" id="bau-z7">Die Wurzel bleibt offline. Der NAS stellt Ausweise aus, das Handy koppelt per QR, Sperrbriefe ziehen zurück.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z8"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Myrling auf dem Rechner</span><span class="bau-zettel" role="tooltip" id="bau-z8">Lauscht im Heimnetz. Ein root-Helfer lässt sudo nur zu, wenn vom Handy eine Erlaubnis kommt.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z9"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">MyrSpace-App fürs Handy</span><span class="bau-zettel" role="tooltip" id="bau-z9">Zeigt dir, was gleich passieren soll. Finger drauf, die Erlaubnis geht zurück an den Rechner.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z10"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der Test: sudo mit dem Finger</span><span class="bau-zettel" role="tooltip" id="bau-z10">Ein Skript läuft per sudo, du bestätigst am Handy, und danach steht der Lauf im Laufbuch.</span></span></li>
       </ul>
       <p class="bau-danach"><b>Danach</b> kommen noch 39 Use Cases, die für Fassung 1 keine Rolle spielen: <b>Fassung 2</b> mit 6 (säen ohne NAS, signierte Bündel, Ersatz-Handy),
-        <b>Myrten, die einziehen</b> mit 18 (Spielzeit-Wächter, MyrPass, MyrDrive …) und <b>spätere Phasen</b> mit 15 (Familie, Freunde, Firma, Föderation).</p>
+        <b>Myrten, die einziehen</b> mit 18 (Spielzeit-Wächter, MyrPass, MyrDrive …) und <b>spätere Phasen</b> mit 15 (Familie, Freunde, Firma, Föderation).
+        Darunter sind noch Ideen, viele sind aber schon gut durchdacht und geplant.</p>
     </div>
     <div class="bau-gruppe">
       <h4>Diese Seite <small>Pitch, Prototyp</small><span class="bau-zahl"></span></h4>
@@ -1171,11 +1201,11 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
         <li class="fertig" tabindex="0" aria-describedby="bau-z17"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Alles unter einer Haube</span><span class="bau-zettel" role="tooltip" id="bau-z17">Kuppel auf: Zahnräder und Fachwörter. Kuppel zu: Für dich bleiben App, Myrling und Finger.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Die Frage nach der Kuppel, je Sicht eigen: praktisch? erweiterbar? sicher? Dazu, wie alle zusammen das Netz tragen. Darum kommt Mitmachen wohl gleich danach.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z18"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Ein Netz aus Myrten</span><span class="bau-zettel" role="tooltip" id="bau-z18">Die Texte stehen, das Bild fehlt noch: MyrTube antippen, seine Verbindungen leuchten.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Der merge-train fährt vorbei</span><span class="bau-zettel" role="tooltip" id="bau-z21">Eine Dampflok mit Papierwagen am unteren Rand. Antippen erzählt von KI, Anfrage und Siegel.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Für jede Sicht ein eigener Weg. Unten steht derselbe Revolver noch einmal.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">noch Idee: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der merge-train fährt vorbei</span><span class="bau-zettel" role="tooltip" id="bau-z21">Eine Dampflok mit Papierwagen am unteren Rand. Antippen erzählt von KI, Anfrage und Siegel.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Für jede Sicht ein eigener Weg. Unten steht derselbe Revolver noch einmal.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
       </ul>
     </div>
   </section>
@@ -1194,7 +1224,7 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 (() => {
   'use strict';
   const html = document.documentElement;
-  const ruhig = matchMedia('(prefers-reduced-motion: reduce)');
+  const ruhig = window.myrRuhig;
   const dunkelMq = matchMedia('(prefers-color-scheme: dark)');
   const warte = ms => new Promise(r => setTimeout(r, ruhig.matches ? Math.min(ms, 40) : ms));
   const $ = (s, el = document) => el.querySelector(s);
@@ -2011,7 +2041,7 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 <script>
 // Bautafel: Schublade oben, Zähler je Gruppe, Zettel per Tippen auf und zu, Zettel klappt nach unten, wenn oben kein Platz ist.
 (() => {
-  const ruhig = matchMedia('(prefers-reduced-motion: reduce)');
+  const ruhig = window.myrRuhig;
   const tafel = document.getElementById('bautafel'), kopf = document.querySelector('.kopf'), schild = document.querySelector('.bauschild');
 
   // Die Schublade ist eine Kopie der Tafel unten (ids mit „s-“ davor). Sie hängt am Kopf, scrollt also normal mit weg.
@@ -2034,6 +2064,19 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
   zuKnopf.addEventListener('click', () => schublade(false));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && lade.classList.contains('offen') && !(e.target instanceof Element && e.target.closest('.bau-liste li, .bau-pfad li'))) schublade(false); });
   document.addEventListener('click', e => { if (lade.classList.contains('offen') && !lade.contains(e.target) && !schild.contains(e.target)) schublade(false); });
+
+  // Schalter auf dem Absperrband: Bewegung aus und wieder an. Bei der Systemeinstellung ist sie ohnehin aus.
+  const ruheKnopf = document.querySelector('.ruhe-knopf');
+  const ruheZeigen = () => {
+    const aus = ruhig.matches;
+    ruheKnopf.hidden = ruhig.system;
+    ruheKnopf.setAttribute('aria-pressed', String(aus));
+    ruheKnopf.querySelector('.lang').innerHTML = aus ? 'Bewegung ist aus. <b>Wieder einschalten</b>' : 'Zu viel Bewegung? <b>Hier ausschalten</b>';
+    ruheKnopf.querySelector('.kurz').textContent = aus ? 'Bewegung an' : 'Bewegung aus';
+  };
+  ruheKnopf.addEventListener('click', () => { ruhig.setzen(!ruhig.matches); ruheZeigen(); });
+  ruhig.addEventListener('change', ruheZeigen);
+  ruheZeigen();
 
   // Zurück zum Anfang, sanft, außer bei „Bewegung reduzieren“
   document.querySelectorAll('.nach-oben').forEach(a => a.addEventListener('click', e => {
