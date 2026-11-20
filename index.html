@@ -227,6 +227,17 @@ main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; paddin
 .besuch-neu:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
 .besuch-neu i { width: 8px; height: 8px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 6px var(--neon-glut); animation: blinkpunkt 1.6s ease-in-out infinite; }
 @keyframes blinkpunkt { 50% { opacity: .35; } }
+.neu-box { max-width: 30em; margin: 0 auto 8px; font-size: 14px; color: var(--tx2); text-align: center; }
+.neu-box summary { cursor: pointer; list-style: none; }
+.neu-box summary::-webkit-details-marker { display: none; }
+.neu-box summary::after { content: "▾"; transition: transform .3s; }
+.neu-box[open] summary::after { transform: rotate(180deg); }
+.neu-box summary:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+.neu-box ul { margin: 8px 0 0; padding: 10px 14px 10px 30px; border-radius: 14px; background: var(--panel); border: 1px solid var(--panel-rand); text-align: left; }
+.neu-box li { margin: 4px 0; color: var(--tx); }
+.neu-box li::marker { color: var(--neon); }
+.neu-box a { color: var(--gut); font-weight: 800; }
+.neu-box .neu-bau { display: inline-block; margin-top: 6px; font-size: 13px; }
 .buehne { display: grid; justify-items: center; gap: 14px; padding-top: 6px; }
 .anreisser { margin: 4px 0 0; font-size: clamp(22px, 6vw, 34px); font-weight: 800; letter-spacing: -.02em; text-align: center; }
 .anreisser span { color: var(--tx3); display: block; }
@@ -1032,6 +1043,14 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
 <main>
   <!-- Stand und letzter Besuch; ohne JS nur der Stand -->
   <p class="besuch"><span class="besuch-stand">Stand 20.11.2026, 20:59</span></p>
+  <!-- Was ist neu: wer seit seinem letzten Besuch etwas verpasst hat, sieht diese Einträge oben.
+       Neue Einträge mit data-wann="neu" oben anfügen, der Befehl im README setzt beim Hochladen die Zeit. -->
+  <ol class="neuigkeiten" hidden>
+    <li data-wann="neu">Diese Liste: Wer wiederkommt, sieht hier, was seit seinem letzten Besuch neu ist.</li>
+    <li data-wann="2026-11-20T20:59"><a href="#a-haken">Zu schön, um wahr zu sein?</a> Je Sicht eine ehrliche Antwort samt Haken, dazu ein Netz, in das du deinen Space hängen kannst.</li>
+    <li data-wann="2026-11-20T20:59"><a href="#a-haken">Was MyrSpace nicht behauptet</a>: ehrliche Grenzen in der Sicht Konzerner und Cyberpunk.</li>
+    <li data-wann="2026-11-20T20:59">Mit „Bewegung aus“ stehen Konzerner und Cyberpunk jetzt lesbar untereinander.</li>
+  </ol>
 
   <!-- ═════ 1 · Die Handy-Demo ═════ -->
   <section class="buehne" aria-label="Kennst du das?">
@@ -2573,7 +2592,19 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   if (!vorher || isNaN(vorher)) return;
   const b = document.createElement('span'); b.textContent = 'Dein letzter Besuch: ' + datum(vorher);
   zeile.append(b);
-  if (stand > vorher) {
+  const neu = [...document.querySelectorAll('.neuigkeiten > li')].filter(li => new Date(li.dataset.wann) > vorher);
+  if (neu.length) {
+    // Aufgeklappt: Wer wiederkommt, soll gleich sehen, was neu ist
+    const box = document.createElement('details'); box.className = 'neu-box'; box.open = true;
+    const sum = document.createElement('summary'); sum.className = 'besuch-neu';
+    sum.innerHTML = '<i aria-hidden="true"></i>';
+    sum.append(neu.length === 1 ? 'Seitdem ist eines neu' : `Seitdem sind ${neu.length} Dinge neu`);
+    const liste = document.createElement('ul');
+    neu.forEach(li => liste.append(li.cloneNode(true)));
+    const bau = document.createElement('a'); bau.href = '#bautafel'; bau.className = 'neu-bau'; bau.textContent = 'Was noch kommt, steht auf der Bautafel →';
+    box.append(sum, liste, bau);
+    zeile.after(box);
+  } else if (stand > vorher) {
     const a = document.createElement('a'); a.className = 'besuch-neu'; a.href = '#bautafel';
     a.innerHTML = '<i aria-hidden="true"></i>Seitdem hat sich etwas verändert →';
     zeile.append(a);
