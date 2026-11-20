@@ -505,7 +505,7 @@ svg.netz .wb-stern, svg.stern .wb-netz { opacity: 0; }
 svg.stern.ausgefallen .wb-stern { stroke: #8a8399; stroke-dasharray: 4 5; opacity: .4; }
 .wb-geraet .koerper { fill: var(--grund); stroke: var(--neon); stroke-width: 3; transform-box: fill-box; transform-origin: center; transition: fill .3s, stroke .3s, opacity .3s, stroke-width .15s; }
 svg.stern .wb-geraet .koerper { stroke: #7fb8ff; }
-.wb-geraet .licht { fill: var(--neon); transition: opacity .3s; }
+.wb-geraet .licht { fill: var(--neon); transition: opacity .3s, fill .5s; }
 svg.stern .wb-geraet .licht { fill: #7fb8ff; }
 .wb-geraet .schloss { opacity: 0; transition: opacity .3s; }
 .wb-geraet .schloss rect { fill: #fff; } .wb-geraet .schloss path { fill: none; stroke: #fff; stroke-width: 2; }
@@ -523,13 +523,16 @@ svg.stern.ausgefallen .wb-zentrum circle { fill: var(--cp); filter: drop-shadow(
 svg.stern.ausgefallen .wb-zentrum .x { opacity: 1; } svg.stern.ausgefallen .wb-zentrum .innen { opacity: 0; }
 svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
 .wb-wurzel, .wb-fremd { transition: opacity .5s; } svg.stern .wb-wurzel, svg.stern .wb-fremd { opacity: 0; }
-.wb-wurzel circle { fill: var(--grund); stroke: var(--neon); stroke-width: 2.5; stroke-dasharray: 4 4; }
-.wb-wurzel .fp, .wb-paket.eigen path { fill: none; stroke: var(--neon); stroke-width: 1.2; stroke-linecap: round; }
+.wb-wurzel circle { fill: var(--grund); stroke: var(--schild, #6f9bff); stroke-width: 2.5; stroke-dasharray: 4 4; transition: stroke .5s; }
+.wb-wurzel .fp, .wb-paket.eigen path { fill: none; stroke: var(--schild, #6f9bff); stroke-width: 1.2; stroke-linecap: round; transition: stroke .5s; }
+svg.netz .wb-geraet .koerper { stroke: var(--schild, #6f9bff); filter: drop-shadow(0 0 5px var(--schild, #6f9bff)); }
+svg.netz .wb-geraet .licht { fill: var(--schild, #6f9bff); }
+svg.netz .wb-netz { stroke: var(--schild, #6f9bff); opacity: .3; }
 .wb-wurzel text tspan { font-weight: 600; fill: var(--tx2); }
 .wb-fremd circle { fill: var(--angreifer, #ff5c8a); filter: drop-shadow(0 0 6px var(--angreifer, #ff5c8a)); }
 .wb-fremd .fp { fill: none; stroke: #fff; stroke-width: 1.2; stroke-linecap: round; }
 .wb-paket circle { fill: var(--grund); stroke-width: 2; }
-.wb-paket.eigen circle { stroke: var(--neon); filter: drop-shadow(0 0 3px var(--neon-glut)); }
+.wb-paket.eigen circle { stroke: var(--schild, #6f9bff); filter: drop-shadow(0 0 3px var(--schild, #6f9bff)); }
 .wb-paket.auth circle { stroke: #7fb8ff; } .wb-paket.auth path { fill: none; stroke: #7fb8ff; stroke-width: 1.2; }
 .wb-paket.fremd circle { stroke: var(--angreifer, #ff5c8a); } .wb-paket.fremd path { fill: none; stroke: var(--angreifer, #ff5c8a); stroke-width: 1.2; stroke-linecap: round; }
 .wb-schild { fill: none; stroke: var(--schild, #6f9bff); stroke-width: 3; transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 0 6px var(--schild, #6f9bff)); }
@@ -1470,13 +1473,14 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
         weg = [a, c, b];
         for (const j of [kante(a, c), kante(c, b)]) { linien[j].classList.add('umweg'); setTimeout(() => linien[j].classList.remove('umweg'), 1700); }
       }
-      liste.push({ weg, t0: performance.now(), el: el('circle', { r: 3.6, class: 'paket' + (weg.length > 2 ? ' ueber' : '') }, pg) });
+      liste.push({ weg, t0: performance.now(), el: el('circle', { r: 3.6, cx: G[weg[0]].p[0], cy: G[weg[0]].p[1], class: 'paket' + (weg.length > 2 ? ' ueber' : '') }, pg) });
     }
     function tick(jetzt) {
       if (!sichtbar || ruhig.matches) return;
       if (jetzt - letzte > 240) { neuesPaket(); letzte = jetzt; }
       liste = liste.filter(q => {
-        const t = (jetzt - q.t0) / 800, s = Math.floor(t);
+        // Der Bild-Zeitstempel kann knapp vor dem Erzeugen liegen: nie negativ werden lassen
+        const t = Math.max(0, (jetzt - q.t0) / 800), s = Math.floor(t);
         if (s >= q.weg.length - 1 || q.weg.some(i => aus.has(i))) { q.el.remove(); return false; }
         const von = G[q.weg[s]].p, nach = G[q.weg[s + 1]].p, f = t - s;
         q.el.setAttribute('cx', (von[0] + (nach[0] - von[0]) * f).toFixed(1));
@@ -1528,8 +1532,11 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
     });
 
     // Wer angreift, ist die andere Seite: Liest der Konzerner, kommt der Cyberpunk, und umgekehrt
+    let rolle = '';
     function rollen() {
       const verteidiger = document.body.dataset.wer === 'cyberpunk' ? 'cyberpunk' : 'konzerner';
+      if (verteidiger === rolle) return;
+      rolle = verteidiger;
       const angreifer = verteidiger === 'cyberpunk' ? 'konzerner' : 'cyberpunk';
       svg.style.setProperty('--angreifer', FARBE[angreifer]); svg.style.setProperty('--schild', FARBE[verteidiger]);
       ft.textContent = angreifer === 'cyberpunk' ? 'Cyberpunk' : 'Konzern';
@@ -1564,7 +1571,7 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
     let sichtbar = false, gestartet = false, liste = [], tAuth = 0, tEigen = 0, tFremd = 0;
     const zufall = n => Math.floor(Math.random() * n);
     function paket(art, von, nach, dauer, fertig) {
-      const g = el('g', { class: 'wb-paket ' + art }, pg);
+      const g = el('g', { class: 'wb-paket ' + art, transform: `translate(${von[0].toFixed(1)} ${von[1].toFixed(1)})` }, pg);
       el('circle', { r: 7.5 }, g); el('path', { d: art === 'fremd' ? FP_FREMD : FP_EIGEN }, g);
       liste.push({ g, von, nach, t0: performance.now(), dauer, fertig, m: modus, verblassen: art === 'fremd' && !fertig });
     }
@@ -1578,6 +1585,7 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
     }
     function tick(jetzt) {
       if (!sichtbar || ruhig.matches) return;
+      rollen();
       if (modus === 'stern' && !ausgefallen && jetzt - tAuth > 420) {
         const i = zufall(D.length);
         paket('auth', D[i][1], MITTE, 600, () => { if (modus === 'stern' && !ausgefallen) paket('auth', MITTE, D[i][1], 600, () => blitz(i)); });
@@ -1589,7 +1597,6 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
           paket('eigen', D[a][1], D[b][1], 900, () => blitz(b)); tEigen = jetzt;
         }
         if (jetzt - tFremd > 1600) {
-          rollen();
           const i = zufall(D.length), [tx, ty] = D[i][1], dx = tx - FREMD[0], dy = ty - FREMD[1], l = Math.hypot(dx, dy);
           const vor = [tx - dx / l * 31, ty - dy / l * 31], zurueck = [vor[0] - dx / l * 55, vor[1] - dy / l * 55];
           paket('fremd', FREMD, vor, 1000, () => { schild(i); paket('fremd', vor, zurueck, 500); });
@@ -1598,7 +1605,7 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
       }
       const fertig = [];
       liste = liste.filter(q => {
-        const t = (jetzt - q.t0) / q.dauer;
+        const t = Math.max(0, (jetzt - q.t0) / q.dauer);
         if (q.m !== modus) { q.g.remove(); return false; }
         if (t >= 1) { q.g.remove(); if (q.fertig) fertig.push(q.fertig); return false; }
         q.g.setAttribute('transform', `translate(${(q.von[0] + (q.nach[0] - q.von[0]) * t).toFixed(1)} ${(q.von[1] + (q.nach[1] - q.von[1]) * t).toFixed(1)})`);
@@ -1613,6 +1620,8 @@ svg.netz .wb-zentrum { transform: scale(0); opacity: 0; }
       if (sichtbar && !gestartet) { gestartet = true; starte('stern'); }
       if (sichtbar && !war) requestAnimationFrame(tick);
     }, { threshold: .35 }).observe(svg);
+    // Wechselt im Revolver Konzerner und Cyberpunk, tauschen hier Angreifer und Verteidiger die Farben
+    new MutationObserver(rollen).observe(document.body, { attributes: true, attributeFilter: ['data-wer'] });
     rollen(); zeige();
   }
 
