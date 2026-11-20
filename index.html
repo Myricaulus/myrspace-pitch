@@ -110,7 +110,8 @@
 
 /* ── Grundgerüst ───────────────────────────────────────────────── */
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* clip statt hidden: Mobil-Chrome machte die Seite sonst 2× so breit, und fest stehende Teile (Bahnhof) ragten rechts hinaus */
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 body {
   margin: 0; min-height: 100vh; overflow-x: hidden;
   background: var(--grund); color: var(--tx);
@@ -976,6 +977,27 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 .ak-hinweis { position: absolute; top: 9px; right: 50px; left: 34%; margin: 0; text-align: right; font-size: 13px; line-height: 1.35; color: var(--tx);
   text-shadow: 0 0 6px var(--grund), 0 0 2px var(--grund); opacity: 0; transition: opacity .4s; pointer-events: none; }
 .ak.steht .ak-hinweis { opacity: 1; }
+/* Zugzielanzeiger: schmal eine Zeile über dem Bild, die weiterblättert; breit im Himmel rechts neben dem Bandturm */
+.ak-tafel { --t-grund: #12204a; --t-schrift: #f4f1ea; --t-gelb: #f2c45a;
+  display: flex; flex-direction: column; justify-content: center; gap: 1px; height: 46px; margin: 0; padding: 0 52px 0 12px; overflow: hidden; cursor: pointer;
+  background: var(--t-grund); color: var(--t-schrift); border-bottom: 2px solid #0a1430; font: 600 13.5px/1.3 system-ui, sans-serif; }
+.ak-tafel b { flex: none; color: var(--t-gelb); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; }
+.ak-tafel ul { position: relative; flex: none; height: 19px; margin: 0; padding: 0; list-style: none; perspective: 300px; }
+.ak-tafel li { position: absolute; inset: 0; display: block; font-size: 13.5px; line-height: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  opacity: 0; transform: rotateX(80deg); transform-origin: 50% 0; transition: opacity .35s, transform .45s cubic-bezier(.3, 1.4, .5, 1); }
+.ak-tafel li.an { opacity: 1; transform: none; }
+.ak-tafel li:not(.an) { visibility: hidden; transition: opacity .35s, transform .45s, visibility 0s .45s; }
+@media (max-width: 899px) { .ak-hinweis { top: 54px; } .ak-szene .ak-zu { top: 6px; } }
+@media (min-width: 900px) {
+  .ak-tafel { position: absolute; z-index: 1; top: 10px; left: var(--tafel-l, 194px); right: 300px; max-width: 640px; height: auto;
+    display: block; padding: 7px 12px 8px; border: 2px solid #0a1430; border-radius: 4px; cursor: default;
+    box-shadow: 0 4px 14px rgba(10, 6, 24, .3), inset 0 0 0 1px rgba(255, 255, 255, .06); }
+  .ak-tafel b { display: block; margin-bottom: 3px; }
+  .ak-tafel ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); column-gap: 18px; height: auto; perspective: none; }
+  .ak-tafel li, .ak-tafel li:not(.an) { position: static; display: list-item; opacity: 1; transform: none; visibility: visible; transition: none; font-size: 13px; line-height: 1.3; padding-left: 12px; text-indent: -12px; white-space: normal; }
+  .ak-tafel li::before { content: "› "; color: var(--t-gelb); }
+  .ak-hinweis { left: auto; width: 230px; }
+}
 .ak-zu, .akd-zu { position: absolute; top: 7px; right: 9px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--panel-rand);
   background: var(--panel); color: var(--tx); font: 16px/1 system-ui, sans-serif; cursor: pointer; }
 .b-wand { fill: var(--bh-wand); } .b-welle { stroke: var(--bh-welle); stroke-width: 1; } .b-dach { fill: var(--bh-dach); } .b-turm { fill: var(--bh-turm); }
@@ -1216,7 +1238,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <ol class="neuigkeiten">
     <li data-wann="neu">Am Ende steht jetzt der <a href="#schluss">Schluss</a>: Fragen und Kommentare gern auf GitHub, bis die erste Fassung erscheint.</li>
     <li data-wann="neu">Wo <span class="beide">Konzerner und Cyberpunk</span> beide gemeint sind, verläuft die Schrift von Blau nach Rot.</li>
-    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer bis zum Ende der Seite keins angetippt hat, bekommt den Zug dort einmal von selbst. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C. An einer Zeile steht eine Frage an den Agenten, abschicken musst du sie selbst. Drehst du den Revolver, während der Bahnhof offen ist, wird der Waggon neu beladen.</li>
+    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer keins angetippt hat, bekommt den Zug einmal von selbst, sobald er die Bautafel hinunterliest. Oben im Bahnhof steht auf einer Anzeigetafel, was merge-train kann. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C. An einer Zeile steht eine Frage an den Agenten, abschicken musst du sie selbst. Drehst du den Revolver, während der Bahnhof offen ist, wird der Waggon neu beladen.</li>
     <li data-wann="neu">Im äußersten Ring, Sicht <span class="beide">Konzerner/Cyberpunk</span>: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
     <li data-wann="neu"><span class="beide">Konzerner und Cyberpunk</span> wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
@@ -2925,11 +2947,31 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     const H = 212, gl = H - 4, W = 170, WH = 56, LOK = 200, r = n => n.toFixed(1);
     const ak = document.createElement('div');
     ak.className = 'ak'; ak.hidden = true;
-    ak.innerHTML = '<div class="ak-szene" role="region" aria-label="Bahnhof von merge-train"><svg class="ak-anlage"></svg>' +
+    // Zugzielanzeiger im freien Himmel des Bahnhofs: was merge-train kann (aus docs/funktionen.md von merge-train).
+    // Breit stehen alle Punkte da, schmal blättert eine Zeile über dem Bild weiter (Antippen auch, bei „Bewegung aus“ nur so).
+    const KANN = ['Fragen an der Zeile, der Agent antwortet', 'Branches, MRs und Myrling-Läufe in einem Zug',
+      'Fäden wandern mit neuen Commits mit', 'Datei abhaken, der Waggon füllt sich',
+      'Arbeitsstand live beobachten', 'Sehen, welcher Agent gerade zuhört'];
+    ak.innerHTML = '<div class="ak-szene" role="region" aria-label="Bahnhof von merge-train">' +
+      '<div class="ak-tafel" role="group" aria-label="Was merge-train kann" title="Antippen: weiterblättern"><b>Was merge-train kann</b><ul>' +
+      KANN.map((t, i) => `<li${i ? '' : ' class="an"'}>${t}</li>`).join('') + '</ul></div><svg class="ak-anlage"></svg>' +
       '<p class="ak-hinweis">Waggon antippen: Diff ansehen.<br>Lok antippen: weiterfahren.</p>' +
       '<button type="button" class="ak-zu" aria-label="Bahnhof zuklappen">✕</button></div>';
     document.body.append(ak);
     const sv = $('.ak-anlage', ak);
+    const tafel = $('.ak-tafel', ak), tafelZeilen = [...tafel.querySelectorAll('li')];
+    let tafelI = 0, tafelUhr = 0;
+    const schmal = matchMedia('(max-width: 899px)');  // breit stehen alle Punkte da, nur schmal wird geblättert
+    const blaettern = () => {
+      tafelZeilen[tafelI].classList.remove('an');
+      tafelI = (tafelI + 1) % tafelZeilen.length;
+      tafelZeilen[tafelI].classList.add('an');
+    };
+    const tafelLaufen = an => {
+      clearInterval(tafelUhr);
+      if (an && !ruhig.matches && schmal.matches) tafelUhr = setInterval(blaettern, 3400);
+    };
+    tafel.addEventListener('click', () => { blaettern(); tafelLaufen(offen); });
     let L = 640, stopp = 0, lauf = 0, offen = false, zugEl, wagenEl, markeEl;
 
     const rad = (cx, cy, rr) => {
@@ -2964,6 +3006,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       L = Math.max(html.clientWidth, 640);
       const cx = Math.round(Math.max(L / 2, 330));
       sv.setAttribute('viewBox', `0 0 ${L} ${H}`);
+      ak.style.setProperty('--tafel-l', (194 / L * 100).toFixed(2) + '%');  // gleich rechts neben dem Bandturm
       let s = `<rect x="0" y="${gl - 4}" width="${L}" height="8" class="b-schotter"/>`;
       for (let i = 3; i < L; i += 11) s += `<rect x="${i}" y="${gl - 1}" width="7" height="3" class="b-schwelle"/>`;
       // Gebäude: Bandturm mit Schild, Halle mit Glasband, Tor fürs Gleis
@@ -3029,7 +3072,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     }
     const fahren = x => { zugEl.style.transform = `translateX(${x}px)`; };
 
-    // Einmal je Sitzung soll jeder den Zug gesehen haben: Wer bis zum Ende der Seite nichts angetippt hat, bekommt ihn dort
+    // Einmal je Sitzung soll jeder den Zug gesehen haben: Wer nichts angetippt hat, bekommt ihn, sobald der obere Rand
+    // der Bautafel oben aus dem Bild geht, also noch vor dem Schluss (PO 21.11.)
     const GESEHEN = 'myr-pitch-zug';
     const gesehen = () => { try { return sessionStorage.getItem(GESEHEN) === 'ja'; } catch (e) { return false; } };
     async function ankunft(auto) {
@@ -3041,7 +3085,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       zeichnen();
       ak.className = 'ak'; ak.hidden = false;
       void ak.offsetWidth;
-      ak.classList.add('auf');
+      ak.classList.add('auf'); tafelLaufen(true);
       await warte(650); if (n !== lauf) return;
       ak.classList.add('faehrt'); fahren(stopp);
       await warte(2600); if (n !== lauf) return;
@@ -3058,7 +3102,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       await warte(1900); if (n !== lauf) return;
       ak.classList.remove('faehrt', 'auf');
       await warte(650); if (n !== lauf) return;
-      ak.hidden = true; offen = false;
+      ak.hidden = true; offen = false; tafelLaufen(false);
       if (zurueck) zurueck.focus({ preventScroll: true });
     }
     ausloeser.forEach(a => {
@@ -3089,14 +3133,17 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       ak.classList.remove('voll'); void ak.offsetWidth; ak.classList.add('laedt', 'voll');
       await warte(1300); if (n === umladen) ak.classList.remove('laedt');
     }).observe(document.body, { attributes: true, attributeFilter: ['data-sicht'] });
-    const ende = $('p.fuss');
-    if (ende && 'IntersectionObserver' in window) {
-      const beobachter = new IntersectionObserver(eintraege => {
-        if (!eintraege.some(e => e.isIntersecting)) return;
-        beobachter.disconnect();
-        if (!gesehen() && !offen) ankunft(true);
-      });
-      if (!gesehen()) beobachter.observe(ende);
+    const bautafel = $('#bautafel');
+    // Beim Scrollen nachsehen statt IntersectionObserver: Der meldet sich nicht, wenn ein Sprung (Link, schnelles Wischen)
+    // über die Kante hinwegsetzt, ohne dass sie je im Bild war.
+    if (bautafel && !gesehen()) {
+      const pruefen = () => {
+        if (gesehen() || offen) return removeEventListener('scroll', pruefen);
+        if (bautafel.getBoundingClientRect().top >= 0) return;
+        removeEventListener('scroll', pruefen);
+        ankunft(true);
+      };
+      addEventListener('scroll', pruefen, { passive: true });
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && offen && !dlg.open) abfahrt(); });
     addEventListener('resize', () => { if (ak.classList.contains('steht')) zeichnen('stopp'); });
