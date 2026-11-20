@@ -619,12 +619,56 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
 .haube-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
 .haube-text.gut { color: var(--gut); }
 
-/* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist */
-.dock { position: fixed; z-index: 20; right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
+/* Myrling und Myrtag: Keimling unter dem Wabenschild */
+html:not(.js) .myrling-bild { display: none; }
+.myrling-bild { margin: 12px 0 0; }
+.myrling-bild svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ml-wabe { fill: none; stroke: var(--neon); stroke-width: .8; opacity: .3; }
+.ml-schild-flaeche { fill: url(#waben); }
+.ml-schild-rand { fill: var(--neon); fill-opacity: .05; stroke: var(--neon); stroke-width: 2; stroke-opacity: .7; filter: drop-shadow(0 0 5px var(--neon-glut)); }
+.ml-erdhuegel { fill: var(--stiel); opacity: .45; }
+.ml-stengel { fill: none; stroke: var(--blatt1); stroke-width: 3.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s ease-out; }
+svg.gross .ml-stengel { stroke-dashoffset: 0; }
+.ml-spross { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.2); transition: opacity .35s, transform .5s cubic-bezier(.3, 1.6, .5, 1); }
+svg.gross .ml-spross { opacity: 1; transform: none; }
+.ml-stab { stroke: var(--blatt1); stroke-width: 2.4; stroke-linecap: round; }
+.ml-tafel { fill: var(--grund); stroke: var(--tx3); stroke-width: 1.4; }
+.ml-tafel-text { font-size: 9px; font-weight: 800; fill: var(--tx); text-anchor: middle; }
+.ml-element { transition: opacity .6s; }
+.ml-element.prallt { opacity: 0; }
+.ml-feuer { fill: #ff7a3d; filter: drop-shadow(0 0 4px rgba(255, 122, 61, .7)); }
+.ml-wasser { fill: #5fa8ff; }
+.ml-erde { fill: #a07f52; }
+.ml-luft { fill: none; stroke: var(--tx2); stroke-width: 2; stroke-linecap: round; }
+.ml-treffer { fill: none; stroke: var(--neon); stroke-width: 2.4; transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 0 5px var(--neon-glut)); }
+.ml-blase { fill: var(--neon); fill-opacity: .12; stroke: var(--neon); stroke-width: 1.6; opacity: 0; transform-box: fill-box; transform-origin: center;
+  filter: drop-shadow(0 0 4px var(--neon-glut)); transition: opacity .25s, transform .35s; }
+.ml-reise.aussen .ml-blase { opacity: 1; }
+.ml-reise.auf .ml-blase { opacity: 0; transform: scale(1.8); }
+.ml-reise.da { opacity: 0; transition: opacity .7s; }
+.ml-signatur circle { fill: var(--neon); }
+.ml-signatur path { fill: none; stroke: var(--grund); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.ml-handy .koerper { fill: var(--grund); stroke: var(--tx3); stroke-width: 1.6; }
+.ml-handy .fp { fill: none; stroke: var(--tx3); stroke-width: 1.2; stroke-linecap: round; transition: stroke .2s, opacity .2s; }
+.ml-handy.liest .fp { stroke: var(--neon); filter: drop-shadow(0 0 3px var(--neon-glut)); }
+.ml-handy.ok .fp { opacity: .2; }
+.ml-handy .haken { fill: none; stroke: var(--neon); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .2s;
+  filter: drop-shadow(0 0 3px var(--neon-glut)); }
+.ml-handy.ok .haken { opacity: 1; }
+.ml-funk { fill: none; stroke: var(--neon); stroke-width: 1.4; stroke-dasharray: 2 3; opacity: 0; transition: opacity .25s; }
+.ml-funk.an { opacity: .8; }
+/* Die dunklen Beeren brauchen nachts einen Schein, sonst gehen sie im Hintergrund unter */
+.ml-beere { filter: drop-shadow(0 0 2.5px var(--tx2)); }
+.ml-tausch { filter: drop-shadow(0 0 5px var(--neon-glut)); }
+.myrling-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; }
+
+/* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist. Links unten, weil rechts unten gern Hoster
+   und Browser etwas einblenden (Netlify, PO 20.11.); sie rollt von links herein. */
+.dock { position: fixed; z-index: 20; left: max(14px, env(safe-area-inset-left)); bottom: max(14px, env(safe-area-inset-bottom));
   display: flex; align-items: center; gap: 8px; padding: 5px 16px 5px 5px; border-radius: 999px; cursor: pointer; text-align: left;
   border: 1px solid var(--panel-rand); background: var(--panel); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   box-shadow: 0 10px 28px -10px rgba(15, 8, 40, .55); touch-action: pan-y; user-select: none; -webkit-user-select: none;
-  transform: translateX(calc(100% + 40px)); transition: transform .55s cubic-bezier(.3, 1.35, .5, 1); }
+  transform: translateX(calc(-100% - 40px)); transition: transform .55s cubic-bezier(.3, 1.35, .5, 1); }
 .dock.zeigt { transform: none; }
 .dock:not(.zeigt) { pointer-events: none; }
 .dock-trommel { width: 54px; height: 54px; transition: transform .7s cubic-bezier(.3, 1.2, .5, 1); transform: rotate(-300deg); }
@@ -1149,6 +1193,24 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
+  <!-- ═════ Myrling und Myrtag ═════ -->
+  <section class="abschnitt anker" aria-labelledby="a-myrling">
+    <h2 class="kicker" id="a-myrling">Myrling und Myrtag</h2>
+    <div class="je-sicht">
+      <div data-sicht="anwender"><h3>Der Myrling wächst bei dir. Der Myrtag sagt, wohin er gehört.</h3>
+        <p>Auf jedem Gerät steckt ein Myrling, wie ein Keimling im Topf. Aus ihm wachsen deine Myrten, also deine Apps. Der Myrtag ist das Schildchen daneben: Er zeigt, dass Gerät und App zu deinem Space gehören. Ohne passendes Schildchen kommt niemand an den Myrling heran.</p></div>
+      <div data-sicht="bastler"><h3>Der Myrling ist ein schlafender Agent, der Myrtag sein Alltags-Ausweis.</h3>
+        <p>Der Myrling startet erst, wenn ihn jemand anspricht (Socket-Aktivierung), und spricht nur mTLS. Der Myrtag ist das Zertifikat des Geräts für den Alltag: Damit nutzen Myrten einander, ohne Konten und ohne API-Schlüssel. Wer etwas ändern will, unterschreibt mit dem Myrsiegel.</p></div>
+      <div data-sicht="sicherheit"><h3>Gehärtet gegen alles, was von außen kommt.</h3>
+        <p>Der Myrling prüft jeden Ausweis selbst gegen den Fingerabdruck der Wurzel und fragt dabei niemanden. Fremden antwortet er nicht. Sein root-Helfer kennt keine freien Befehle, nur beschriebene Läufe, und die nur mit dem Myrsiegel, also mit einem Finger.</p></div>
+    </div>
+    <figure class="myrling-bild">
+      <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zwei Keimlinge, die Myrlinge, wachsen je unter einem Wabenschild. Aus ihnen sprießen Myrten-Beeren, daneben steckt je ein Schildchen mit der Aufschrift Myrtag. Eine Beere reist signiert und unter einem eigenen kleinen Schild zum anderen Myrling. Dort wartet sie vor dem Schild, bis ein kleines Handy beim Empfänger den Finger liest, dann kommt sie hinein. Feuer, Wasser, Erde und Luft fliegen von allen Seiten heran und prallen an den Schilden ab."></svg>
+      <figcaption class="myrling-text">Signiert und unter eigenem Schild reist eine Myrte zum anderen Myrling. Hinein kommt sie erst, wenn dort jemand mit dem Finger besiegelt. Feuer, Wasser, Erde und Luft prallen ab.</figcaption>
+    </figure>
+    <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
+  </section>
+
   <!-- ═════ Platzhalter ═════ -->
   <section class="abschnitt anker" aria-labelledby="a-netz">
     <span class="platzhalter-marke">Platzhalter</span>
@@ -1213,6 +1275,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z15"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Weiche als Revolver</span><span class="bau-zettel" role="tooltip" id="bau-z15">Anwender, Bastler, Konzerner. Ab und zu stößt ihn der Cyberpunk hinaus. Die Sicht steht im Link.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z16"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Warum dezentral</span><span class="bau-zettel" role="tooltip" id="bau-z16">Je Sicht ein eigenes Bild: deine Geräte, Stern gegen Netz, Schilde gegen fremde Pakete.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z17"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Alles unter einer Haube</span><span class="bau-zettel" role="tooltip" id="bau-z17">Kuppel auf: Zahnräder und Fachwörter. Kuppel zu: Für dich bleiben App, Myrling und Finger.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z31"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Myrling und Myrtag</span><span class="bau-zettel" role="tooltip" id="bau-z31">Zwei Keimlinge unter Wabenschilden tauschen Myrten aus: signiert, im eigenen Schild, hinein erst mit dem Finger.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Die Frage nach der Kuppel, je Sicht eigen: praktisch? erweiterbar? sicher? Dazu, wie alle zusammen das Netz tragen. Darum kommt Mitmachen wohl gleich danach.</span></span></li>
         <li class="dran" tabindex="0" aria-describedby="bau-z18"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Ein Netz aus Myrten</span><span class="bau-zettel" role="tooltip" id="bau-z18">Die Texte stehen, das Bild fehlt noch: MyrTube antippen, seine Verbindungen leuchten.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
@@ -1509,7 +1572,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       { transform: `translate(${-s * 150}px, -22px) rotate(${-s * 32}deg)`, opacity: 0 }
     ], { duration: 620, easing: 'ease-in', fill: 'forwards' });
     // Aufräumen nach Uhr, nicht nach onfinish: im Hintergrund-Tab stehen Animationen still
-    setTimeout(() => nameEl.querySelectorAll('.wer').forEach(w => w !== ein && w.remove()), 700);
+    // Nur den verdrängten Namen: Wird inzwischen neu beschriftet (Drehen, Bewegungs-Schalter), bleibt das stehen
+    setTimeout(() => alt && alt.remove(), 700);
     const blitz = document.createElement('i'); blitz.className = 'blitz';
     blitz.style.setProperty('--blitz', neu === 'cyberpunk' ? '#ff5c8a' : '#8fb0ff');
     nameEl.append(blitz);
@@ -1523,8 +1587,14 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   function duellPlanen() {
     clearTimeout(duellUhr);
     if (sicht !== 2 || ruhig.matches || !Element.prototype.animate) return;
-    duellUhr = setTimeout(() => { angriff(); duellPlanen(); }, 10000);
+    duellUhr = setTimeout(() => { if (sicht === 2 && !ruhig.matches) angriff(); duellPlanen(); }, 10000);
   }
+  // Bewegung an oder aus: dritte Kammer neu beschriften (still „Konzerner oder Cyberpunk“), Duell neu takten
+  ruhig.addEventListener('change', () => {
+    if (sicht === 2) verankert(() => { if (ruhig.matches) { nameZeigen('Konzerner oder Cyberpunk'); werSetzen(''); } else { nameZeigen(WER[wer], wer); werSetzen(wer); } });
+    else dockNameSetzen();
+    duellPlanen();
+  });
 
   function sichtSetzen(neu, richtung, sofort) { verankert(() => sichtSetzenJetzt(neu, richtung, sofort)); }
   function sichtSetzenJetzt(neu, richtung, sofort) {
@@ -1726,6 +1796,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       if (sichtbar && !gestartet) { gestartet = true; starte('stern'); }
       if (sichtbar && !war) requestAnimationFrame(tick);
     }, { threshold: .35 }).observe(svg);
+    // Bewegung wieder an: Die Schleife hatte sich beendet, also neu anstoßen
+    ruhig.addEventListener('change', () => { if (sichtbar && !ruhig.matches) requestAnimationFrame(tick); });
     zeige();
   }
 
@@ -1841,6 +1913,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       if (sichtbar && !gestartet) { gestartet = true; demoUhr = setTimeout(demo, 1600); }
       if (sichtbar && !war) requestAnimationFrame(tick);
     }, { threshold: .35 }).observe(svg);
+    // Bewegung wieder an: Die Schleife hatte sich beendet, also neu anstoßen
+    ruhig.addEventListener('change', () => { if (sichtbar && !ruhig.matches) requestAnimationFrame(tick); });
     zeige();
   }
 
@@ -1967,6 +2041,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       if (sichtbar && !gestartet) { gestartet = true; starte('stern'); }
       if (sichtbar && !war) requestAnimationFrame(tick);
     }, { threshold: .35 }).observe(svg);
+    // Bewegung wieder an: Die Schleife hatte sich beendet, also neu anstoßen
+    ruhig.addEventListener('change', () => { if (sichtbar && !ruhig.matches) requestAnimationFrame(tick); });
     // Wechselt im Revolver Konzerner und Cyberpunk, tauschen hier Angreifer und Verteidiger die Farben
     new MutationObserver(rollen).observe(document.body, { attributes: true, attributeFilter: ['data-wer'] });
     rollen(); zeige();
@@ -2001,12 +2077,16 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       ['circle', { class: 'p', r: 5 }],
       ['path', { class: 'l', d: 'M-5 -1h10v8h-10zM-3 -1v-3a3 3 0 0 1 6 0v3' }]
     ];
-    DINGE.forEach(([name, attr], i) => {
+    // Steht alles still, kreist nichts mehr: Dann sitzen die Symbole auf freien Plätzen statt auf den Fachwörtern
+    const RUHEPLATZ = [[164, 112], [278, 148], [272, 190], [200, 202], [106, 148]];
+    const dinge = DINGE.map(([name, attr], i) => {
       const w = i * 2 * Math.PI / DINGE.length - Math.PI / 2;
-      const g = el('g', { transform: `translate(${(180 + 84 * Math.cos(w)).toFixed(1)} ${(158 + 84 * Math.sin(w)).toFixed(1)})` }, umlauf);
-      el(name, attr, g);
+      const g = el('g', {}, umlauf); el(name, attr, g);
+      return { g, kreis: `translate(${(180 + 84 * Math.cos(w)).toFixed(1)} ${(158 + 84 * Math.sin(w)).toFixed(1)})`, ruhe: `translate(${RUHEPLATZ[i].join(' ')})` };
     });
-    [['Zertifikat', 180, 80], ['TPM', 128, 102], ['ff02::1', 232, 102], ['Wurzel', 106, 130], ['Myrtag', 256, 130],
+    const platzieren = () => dinge.forEach(d => d.g.setAttribute('transform', ruhig.matches ? d.ruhe : d.kreis));
+    platzieren(); ruhig.addEventListener('change', platzieren);
+    [['Zertifikat', 180, 80], ['TPM', 128, 102], ['ff02::1', 232, 102], ['Wurzel', 114, 130], ['Myrtag', 256, 130],
      ['Laufbuch', 82, 172], ['Myrsiegel', 280, 172], ['mTLS', 82, 212], ['myrapp.json', 150, 226], ['Umweg', 226, 226], ['QR', 284, 212]]
       .forEach(([w, x, y], i) => { const t = el('text', { x, y, class: 'hb-wort', style: `animation-delay:-${(i * .7).toFixed(1)}s` }, innen); t.textContent = w; });
     el('path', { d: KUPPEL, class: 'hb-frost' }, svg);
@@ -2052,6 +2132,180 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       if (e.isIntersecting && !gestartet) { gestartet = true; uhr = setTimeout(() => { if (!selbst) { zu = true; zeige(); } }, ruhig.matches ? 1500 : 3000); }
     }, { threshold: .4 }).observe(svg);
     zeige();
+  }
+
+  /* ── Myrling und Myrtag: zwei Keimlinge, Myrten reisen signiert ── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const fig = $('.myrling-bild'), svg = $('svg', fig);
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    const BODEN = 234;
+    // Zwei Schilde: Mitte, Halbachsen, Größe der Pflanze darin; das Handy steht außen daneben
+    const SCHILDE = [{ cx: 100, rx: 74, ry: 116, s: .86, hx: 12 }, { cx: 260, rx: 74, ry: 116, s: .86, hx: 348 }];
+    const ELEMENTE = {
+      feuer: ['path', { d: 'M0 -9C4 -4 7 -1 6 3A6 6 0 0 1 -6 3C-7 -1 -3 -2 -2 -6C-1 -3 1 -2 0 -9Z', class: 'ml-feuer' }],
+      wasser: ['path', { d: 'M0 -9C4 -3 6 0 6 3A6 6 0 0 1 -6 3C-6 0 -4 -3 0 -9Z', class: 'ml-wasser' }],
+      erde: ['path', { d: 'M-7 3L-4 -5L3 -7L8 -1L5 6L-3 7Z', class: 'ml-erde' }],
+      luft: ['path', { d: 'M-8 -3H4A3 3 0 1 0 1 -6M-8 2H7A3 3 0 1 1 4 5', class: 'ml-luft' }]
+    };
+    const ARTEN = Object.keys(ELEMENTE);
+    const STARTS = [[8, 40], [352, 48], [10, 150], [350, 150], [180, 4], [70, 8], [292, 10]];
+    let ebene = null, flug = null, handys = [], sichtbar = false, gestartet = false;
+    let liste = [], letzte = 0, reifAb = 0, reise = null, pause = 0, hin = true;
+
+    const defs = el('defs', {}, svg);
+    const muster = el('pattern', { id: 'waben', width: 14, height: 24, patternUnits: 'userSpaceOnUse' }, defs);
+    el('path', { d: 'M7 0L14 4V12L7 16L0 12V4ZM7 16V24', class: 'ml-wabe' }, muster);
+    el('ellipse', { cx: 180, cy: BODEN + 2, rx: 172, ry: 11, class: 'hb-sockel' }, svg);
+
+    const kuppel = sc => `M${sc.cx - sc.rx} ${BODEN} A${sc.rx} ${sc.ry} 0 0 1 ${sc.cx + sc.rx} ${BODEN} Z`;
+    const sechseck = (x, y, r) => Array.from({ length: 6 }, (_, k) => { const a = Math.PI / 6 + k * Math.PI / 3; return `${k ? 'L' : 'M'}${(x + r * Math.cos(a)).toFixed(1)} ${(y + r * Math.sin(a)).toFixed(1)}`; }).join('') + 'Z';
+    // Position außen, Animation innen: eine CSS-transform würde sonst das transform-Attribut überschreiben
+    const wachsend = (eltern, transform, klasse, verz) => el('g', { class: klasse, style: `transition-delay:${verz.toFixed(2)}s` }, el('g', { transform }, eltern));
+
+    function pflanze(g, sc) {
+      const p = el('g', { transform: `translate(${sc.cx} ${BODEN}) scale(${sc.s})` }, g);
+      el('ellipse', { cx: 0, cy: 0, rx: 26, ry: 6, class: 'ml-erdhuegel' }, p);
+      [['M0 0C-7 -30 6 -58 0 -92', 0], ['M1 -46C10 -54 22 -58 32 -68', .7], ['M-1 -60C-10 -67 -21 -70 -30 -80', .9], ['M0 -80C6 -86 12 -88 18 -96', 1.1]]
+        .forEach(([d, v]) => el('path', { d, class: 'ml-stengel', pathLength: 1, style: `transition-delay:${v}s` }, p));
+      [[0, -20, -150, .4], [0, -30, -30, .38], [16, -56, -40, .34], [-14, -68, -150, .34], [0, -92, -80, .3], [26, -64, 20, .28], [-24, -77, 200, .28]]
+        .forEach(([x, y, r, s], i) => el('use', { href: '#blatt', class: i % 2 ? 'bl3' : 'bl1' }, wachsend(p, `translate(${x} ${y}) rotate(${r}) scale(${s})`, 'ml-spross', .6 + i * .15)));
+      // Die Beeren sind die Myrten, die aus dem Myrling wachsen
+      [[33, -60], [-30, -72], [19, -88]].forEach(([x, y], i) =>
+        el('use', { href: '#beere', class: 'ml-beere' }, wachsend(p, `translate(${x} ${y}) scale(.55)`, 'ml-spross', 1.9 + i * .25)));
+      // Das Schildchen an der Pflanze: der Myrtag
+      const t = wachsend(p, 'translate(40 0)', 'ml-spross', 1.2);
+      el('path', { d: 'M0 0V-24', class: 'ml-stab' }, t);
+      const tafel = el('g', { transform: 'translate(0 -30) rotate(-7)' }, t);
+      el('rect', { x: -21, y: -8, width: 42, height: 15, rx: 3, class: 'ml-tafel' }, tafel);
+      el('text', { y: 3, class: 'ml-tafel-text' }, tafel).textContent = 'Myrtag';
+    }
+    // Das kleine Handy beim Myrling: liest den Finger des Empfängers
+    function handy(sc) {
+      const g = el('g', { class: 'ml-handy', transform: `translate(${sc.hx} 212)` }, ebene);
+      el('rect', { x: -8, y: -14, width: 16, height: 28, rx: 3.5, class: 'koerper' }, g);
+      el('path', { d: 'M-4 3a4 4 0 0 1 8 0M-2.2 4.5a2.2 2.2 0 0 1 4.4 0M-5.5 .5a5.5 5.5 0 0 1 11 0M-6.5 -2.5a6.5 6.5 0 0 1 13 0', class: 'fp' }, g);
+      el('path', { d: 'M-4 0l2.6 2.8L4.4 -3', class: 'haken' }, g);
+      return g;
+    }
+
+    const ziel = sc => [sc.cx, BODEN - 50 * sc.s];
+    const drin = (sc, x, y) => ((x - sc.cx) / sc.rx) ** 2 + ((y - BODEN) / sc.ry) ** 2 <= 1;
+    const naechstes = x => SCHILDE.reduce((b, sc) => Math.abs(sc.cx - x) < Math.abs(b.cx - x) ? sc : b);
+    // Wo trifft ein Element auf dem Weg zur Pflanze das Schild? (Halbierung entlang der Strecke)
+    function treffpunkt(sc, [x, y]) {
+      const [zx, zy] = ziel(sc); let lo = 0, hi = 1;
+      for (let i = 0; i < 20; i++) { const m = (lo + hi) / 2; if (drin(sc, x + (zx - x) * m, y + (zy - y) * m)) hi = m; else lo = m; }
+      return [x + (zx - x) * lo, y + (zy - y) * lo];
+    }
+    function element(art, x, y) {
+      const g = el('g', { class: 'ml-element', transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})` }, flug);
+      const [n, a] = ELEMENTE[art]; el(n, a, g); return g;
+    }
+    function wabe(x, y, bleibt) {
+      const s = el('path', { class: 'ml-treffer', d: sechseck(x, y, 9) }, flug);
+      if (bleibt) return;
+      s.animate([{ opacity: 0, transform: 'scale(.6)' }, { opacity: 1, transform: 'scale(1.1)', offset: .3 }, { opacity: 0, transform: 'scale(1.4)' }], { duration: 600, easing: 'ease-out', fill: 'forwards' });
+      setTimeout(() => s.remove(), 650);
+    }
+
+    // Eine Myrte reist von einem Myrling zum anderen: hinaus, warten am fremden Schild, Finger, hinein
+    function reiseBauen(von, nach) {
+      const p0 = [von.cx + 19 * von.s, BODEN - 92 * von.s], p2 = [nach.cx + 19 * nach.s, BODEN - 92 * nach.s], c = [(p0[0] + p2[0]) / 2, -45];
+      const punkt = u => [(1 - u) ** 2 * p0[0] + 2 * (1 - u) * u * c[0] + u * u * p2[0], (1 - u) ** 2 * p0[1] + 2 * (1 - u) * u * c[1] + u * u * p2[1]];
+      let uAus = 0, uEin = 1;
+      for (let u = 0; u <= 1; u += .005) if (!drin(von, ...punkt(u))) { uAus = u; break; }
+      for (let u = 1; u >= 0; u -= .005) if (!drin(nach, ...punkt(u))) { uEin = u; break; }
+      const g = el('g', { class: 'ml-reise' }, flug);
+      el('path', { d: sechseck(0, 0, 13), class: 'ml-blase' }, g);
+      el('use', { href: '#beere', class: 'ml-beere', transform: 'scale(.5)' }, g);
+      // Die Signatur des Absenders reist mit
+      const sig = el('g', { class: 'ml-signatur', transform: 'translate(8 -8)' }, g);
+      el('circle', { r: 4.2 }, sig); el('path', { d: 'M-2 .2l1.4 1.5L2.2 -1.6' }, sig);
+      const h = handys[SCHILDE.indexOf(nach)], tor = punkt(uEin);
+      const funk = el('path', { class: 'ml-funk', d: `M${nach.hx} 198L${tor[0].toFixed(1)} ${tor[1].toFixed(1)}` }, flug);
+      return { g, punkt, uAus, uEin, uWarte: uEin - .05, h, funk, tor };
+    }
+    const setzen = (r, u) => { const [x, y] = r.punkt(u); r.g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`); r.g.classList.toggle('aussen', u > r.uAus); };
+
+    function reisen(jetzt) {
+      if (!reise) {
+        if (jetzt < reifAb || jetzt - pause < 900) return;
+        const [von, nach] = hin ? SCHILDE : [SCHILDE[1], SCHILDE[0]];
+        reise = Object.assign(reiseBauen(von, nach), { phase: 'raus', t: jetzt, raus: false });
+        hin = !hin;
+      }
+      const r = reise, dt = jetzt - r.t;
+      if (r.phase === 'raus') {
+        const u = Math.min(r.uWarte, dt / 1500 * r.uWarte);
+        if (!r.raus && u > r.uAus) { r.raus = true; wabe(...r.punkt(r.uAus)); }
+        setzen(r, u);
+        if (u >= r.uWarte) { r.phase = 'wartet'; r.t = jetzt; r.h.classList.add('liest'); r.funk.classList.add('an'); }
+      } else if (r.phase === 'wartet') {
+        if (dt > 800 && !r.h.classList.contains('ok')) { r.h.classList.remove('liest'); r.h.classList.add('ok'); }
+        if (dt > 1100) { r.phase = 'rein'; r.t = jetzt; wabe(...r.tor); r.g.classList.add('auf'); r.funk.classList.remove('an'); }
+      } else if (r.phase === 'rein') {
+        const f = Math.min(1, dt / 600);
+        setzen(r, r.uWarte + (1 - r.uWarte) * f); r.g.classList.add('auf');
+        if (f >= 1) { r.phase = 'da'; r.t = jetzt; r.g.classList.add('da'); }
+      } else if (dt > 800) {
+        r.g.remove(); r.funk.remove(); r.h.classList.remove('liest', 'ok');
+        reise = null; pause = jetzt;
+      }
+    }
+
+    // Steht alles still: Die Elemente warten an den Schilden, eine Myrte wartet vor dem fremden Schild, das Handy liest
+    function standbild() {
+      [[4, 150], [70, 4], [330, 30], [356, 190]].forEach((st, i) => {
+        const sc = naechstes(st[0]), [tx, ty] = treffpunkt(sc, st), [zx, zy] = ziel(sc), l = Math.hypot(zx - tx, zy - ty);
+        wabe(tx, ty, true);
+        element(ARTEN[i], tx - (zx - tx) / l * 16, ty - (zy - ty) / l * 16);
+      });
+      const r = reiseBauen(SCHILDE[0], SCHILDE[1]);
+      setzen(r, r.uWarte); r.h.classList.add('liest'); r.funk.classList.add('an');
+    }
+
+    function bauen() {
+      if (ebene) ebene.remove();
+      liste = []; reise = null; hin = true;
+      ebene = el('g', {}, svg);
+      for (const sc of SCHILDE) { el('path', { d: kuppel(sc), class: 'ml-schild-flaeche' }, ebene); pflanze(ebene, sc); el('path', { d: kuppel(sc), class: 'ml-schild-rand' }, ebene); }
+      handys = SCHILDE.map(handy);
+      flug = el('g', {}, ebene);
+      // Wachsen: erst ohne, dann mit Klasse, damit die Übergänge laufen
+      svg.classList.remove('gross'); void svg.getBoundingClientRect();
+      requestAnimationFrame(() => requestAnimationFrame(() => svg.classList.add('gross')));
+      reifAb = performance.now() + (ruhig.matches ? 0 : 2600);
+      if (ruhig.matches) standbild();
+    }
+
+    function tick(jetzt) {
+      if (!sichtbar || ruhig.matches) return;
+      if (jetzt - letzte > 900) {
+        const st = STARTS[Math.floor(Math.random() * STARTS.length)], sc = naechstes(st[0]);
+        const [zx, zy] = ziel(sc), l = Math.hypot(zx - st[0], zy - st[1]), v = .09;
+        liste.push({ g: element(ARTEN[Math.floor(Math.random() * ARTEN.length)], st[0], st[1]), x: st[0], y: st[1], vx: (zx - st[0]) / l * v, vy: (zy - st[1]) / l * v, sc, t: jetzt, ab: 0 });
+        letzte = jetzt;
+      }
+      reisen(jetzt);
+      liste = liste.filter(e => {
+        const dt = Math.max(0, Math.min(50, jetzt - e.t)); e.t = jetzt;
+        e.x += e.vx * dt; e.y += e.vy * dt;
+        if (!e.ab && drin(e.sc, e.x, e.y)) { wabe(e.x, e.y); e.ab = jetzt; e.vx *= -.55; e.vy *= -.55; e.g.classList.add('prallt'); }
+        if ((e.ab && jetzt - e.ab > 700) || e.x < -30 || e.x > 390) { e.g.remove(); return false; }
+        e.g.setAttribute('transform', `translate(${e.x.toFixed(1)} ${e.y.toFixed(1)})`);
+        return true;
+      });
+      requestAnimationFrame(tick);
+    }
+
+    new IntersectionObserver(([e]) => {
+      const war = sichtbar; sichtbar = e.isIntersecting;
+      if (sichtbar && !gestartet) { gestartet = true; bauen(); }
+      if (sichtbar && !war) requestAnimationFrame(tick);
+    }, { threshold: .35 }).observe(svg);
+    // Bewegung an oder aus: neu aufbauen (still als Standbild) und die Schleife wieder anstoßen
+    ruhig.addEventListener('change', () => { if (gestartet) bauen(); if (sichtbar && !ruhig.matches) requestAnimationFrame(tick); });
   }
 
   /* ── Parallaxe ────────────────────────────────────────────── */
