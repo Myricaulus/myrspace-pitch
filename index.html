@@ -723,6 +723,39 @@ svg.dabei .tr-du .tr-zweig { opacity: 1; }
 .mitmach-knopf:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
 .traeger-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
 .traeger-text.gut { color: var(--gut); }
+
+/* Von innen nach außen: fünf Ringe, die sich beim Scrollen füllen */
+html:not(.js) .ringe-bild { display: none; }
+html:not(.js) .ring-reihe { display: none; }
+.ring-knopf { scroll-margin: 16px 0 104px; }  /* nachscrollen bis über die „Ich bin …“-Leiste */
+.ringe-bild { margin: 12px auto 0; max-width: 420px; }
+.ringe-bild svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rg-band { fill: var(--neon); fill-opacity: 0; stroke: none; cursor: pointer; outline: none; }
+/* Nur die Bänder fangen die Maus. Fingen auch die Randlinien sie, ließe der dicker werdende Rand das Band los, und es flackerte */
+.rg-rand, .rg-fuell { pointer-events: none; }
+.rg-rand { fill: none; stroke: var(--tx3); stroke-width: 1.5; opacity: .35; stroke-dasharray: 3 5; }
+.rg-fuell { fill: none; stroke: var(--neon); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; filter: drop-shadow(0 0 3px var(--neon-glut)); transition: stroke-dashoffset .8s ease-out, stroke-width .3s, opacity .3s; }
+.rg-band { transition: fill-opacity .5s; }
+.rg-ring.vorschau .rg-fuell { stroke-dasharray: 4 5; stroke-dashoffset: 0 !important; opacity: .7 !important; }
+.rg-ring.vorschau .rg-name { opacity: 1; }
+.rg-ring.vorschau .rg-band { fill-opacity: .07 !important; }
+.rg-ring.vorschau .rg-ding { opacity: .55; transform: none; }
+.rg-name { font-size: 13px; font-weight: 800; fill: var(--tx); text-anchor: middle; dominant-baseline: central; opacity: .45; transition: opacity .3s; pointer-events: none; }
+.rg-ring.voll .rg-name { opacity: 1; }
+.rg-ding { opacity: 0; transform: scale(.4); transform-box: fill-box; transform-origin: center; transition: opacity .35s, transform .45s cubic-bezier(.3, 1.6, .5, 1); pointer-events: none; }
+.rg-ding text { font-size: 19px; text-anchor: middle; dominant-baseline: central; }
+.rg-ring.voll .rg-ding { opacity: 1; transform: none; }
+.rg-ring.an .rg-fuell { stroke-width: 5; }
+.rg-band:focus-visible { stroke: var(--neon); stroke-width: 2; }
+.rg-space circle { fill: var(--grund); stroke: var(--neon); stroke-width: 1.8; }
+.ringe-liste ol { margin: 14px 0 0; padding-left: 1.6em; }
+.ringe-liste li { margin: 4px 0; padding: 6px 10px; border-radius: 10px; border-left: 3px solid transparent; cursor: pointer; transition: background .3s, border-color .3s; }
+/* Mit JS stehen nur die offenen Ringe da; ein geschlossener erscheint, solange man über seinem Ring schwebt */
+.js .ringe-liste li:not(.offen):not(.vorschau) { display: none; }
+.ringe-liste li.offen { animation: auftauchen .45s ease both; }
+.ringe-liste li.vorschau:not(.offen) { opacity: .75; border-left-color: var(--tx3); border-left-style: dashed; }
+.ringe-liste li { cursor: default; }
+.ringe-liste li.an { background: color-mix(in srgb, var(--neon) 14%, transparent); border-left-color: var(--neon); }
 .mitmachen { margin-top: 6px; }
 .grenzen ul { margin: 10px 0 0; padding-left: 1.2em; }
 .grenzen li { margin: 8px 0 0; font-size: 16px; }
@@ -1058,6 +1091,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <details class="neu-box" open>
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
+    <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
+    <li data-wann="neu">Der Platzhalter „Ein Netz aus Myrten“ ist weg. Was nur dort stand, steht jetzt in den Ringen.</li>
     <li data-wann="neu">In jedem Abschnitt mit mehreren Sichten stehen oben kleine Reiter. So siehst du, dass es mehr gibt, und kannst alle durchschauen.</li>
     <li data-wann="neu">Diese Liste: Hier steht, was zuletzt neu ist. Was seit deinem letzten Besuch dazukam, ist markiert.</li>
     <li data-wann="2026-11-20T20:59"><a href="#a-haken">Zu schön, um wahr zu sein?</a> Je Sicht eine ehrliche Antwort samt Haken, dazu ein Netz, in das du deinen Space hängen kannst.</li>
@@ -1339,19 +1374,44 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
-  <!-- ═════ Platzhalter ═════ -->
-  <section class="abschnitt anker" aria-labelledby="a-netz">
-    <span class="platzhalter-marke">Platzhalter</span>
-    <h2 class="kicker" id="a-netz">Ein Netz aus Myrten</h2>
-    <div class="platzhalter-bild" aria-hidden="true">Bild kommt noch:<br>Netz aus Myrten, MyrTube antippen lässt seine Verbindungen leuchten</div>
+  <!-- ═════ Von innen nach außen: Ringe füllen sich beim Scrollen, vom Taschen-Space bis zur Föderation ═════ -->
+  <section class="abschnitt anker" aria-labelledby="a-ringe">
+    <h2 class="kicker" id="a-ringe">Von innen nach außen</h2>
     <div class="je-sicht">
-      <div data-sicht="anwender"><h3>Apps, die sich kennen.</h3>
-        <p>Deine Apps sprechen miteinander, ohne Konten, ohne API-Schlüssel, ohne Anmeldung je Dienst. Jede neue Myrte kann alle anderen nutzen, und ein eigenes Video-Portal ist einfach eine Myrte von vielen.</p></div>
-      <div data-sicht="bastler"><h3>Ein Paket mit Ausweis.</h3>
-        <p>Eine Myrte ist ein Git-Projekt mit ein paar Metadaten mehr (heute <code>myrapp.json</code>). MyrSpace ist der Paketmanager und gibt vor, wie Myrten über den Myrtag miteinander sprechen. Statt eines Stores hat jeder Space ein öffentliches Protokoll, um Myrten zu suchen.</p></div>
-      <div data-sicht="sicherheit"><h3>Ausweise statt Schlüssel, Empfehlungen als Vertrauen.</h3>
-        <p>Zwischen Myrten gelten Ausweise, die von der Wurzel des Space abstammen. Jeder unterschreibt, was er baut, Forks tragen ihre Abstammung. Empfehlungen sammeln sich bei der Person und am Strang der Myrte, so sieht man, wem man vertraut.</p></div>
+      <div data-sicht="anwender"><h3>Klein anfangen und wachsen, ohne die Kontrolle abzugeben.</h3>
+        <p>Dein Space wächst in Ringen, wie eine Myrte vom Setzling zum Hain. Jeder Ring ist für sich nützlich, keiner setzt den nächsten voraus.</p></div>
+      <div data-sicht="bastler"><h3>Jeder Ring braucht nur ein Stück mehr.</h3>
+        <p>Alles stammt von einer Wurzel ab. Mit jedem Ring kommt ein Baustein dazu, der Kern bleibt derselbe.</p></div>
+      <div data-sicht="sicherheit"><h3>Je weiter außen, desto weniger darf man.</h3>
+        <p>Jede Funktion einer Myrte sagt selbst, wie weit sie reicht: nur du, dein Haushalt, ein benannter Kreis oder alle. Für mehr braucht es eine Freigabe, und von selbst ist alles zu.</p></div>
     </div>
+    <figure class="ringe-bild">
+      <svg viewBox="0 0 360 360" role="img" aria-label="Schaubild: Fünf Ringe um ein Handy. Innen der Taschen-Space, dann dein Space mit deinen Geräten, der Haushalt, deine Kreise mit Freunden und außen die Föderation mit vielen Spaces. Erst ist nur der Taschen-Space offen, jeder Klick öffnet einen Ring mehr."></svg>
+    </figure>
+    <div class="je-sicht ringe-liste">
+      <ol data-sicht="anwender">
+        <li data-ring="1"><b>Taschen-Space.</b> Nur dein Handy, kein NAS, keine Einrichtung. Bei der LAN-Party lädst du einen Freund ein: QR, Finger, fertig.</li>
+        <li data-ring="2"><b>Dein Space.</b> Handy, Laptop, PC, Fernseher und NAS sprechen direkt miteinander. Alle Apps an einem Ort, und ein Fenster schiebst du vom Handy auf den Fernseher.</li>
+        <li data-ring="3"><b>Haushalt.</b> Die Familie bekommt einzelne Apps, keine Admin-Rechte. Spielzeit fürs Kind aufladen, „Komm essen“ mit einem Druck, und schummeln geht nicht.</li>
+        <li data-ring="4"><b>Kreise.</b> Freunde sehen nur, was du ihrem Kreis freigibst: einen Sprachkanal, deinen Bildschirm, einen Ordner oder die Urlaubsvideos auf deinem eigenen Video-Portal.</li>
+        <li data-ring="5"><b>Föderation.</b> Viele Spaces teilen ihre Myrten, ganz ohne Store. Neue findest du bei Leuten, denen du vertraust, und gute Verbesserungen wandern von Space zu Space.</li>
+      </ol>
+      <ol data-sicht="bastler">
+        <li data-ring="1"><b>Taschen-Space.</b> Wurzel und Ausgabestelle liegen im Handy. Damit koppelt es sogar eigene PCs, ganz ohne Server.</li>
+        <li data-ring="2"><b>Dein Space.</b> Die Wurzel bleibt offline, der NAS stellt Ausweise aus und liefert Myrten aus. Auf jedem Gerät schläft ein Myrling, bis ihn ein Myrtag anspricht.</li>
+        <li data-ring="3"><b>Haushalt.</b> Weitere Personen bekommen eigene Ausweise unter derselben Wurzel. Jede Funktion einer Myrte erklärt, ob sie nur für dich gedacht ist oder für alle im Haushalt.</li>
+        <li data-ring="4"><b>Kreise.</b> Befreunden heißt gegenseitig QR scannen oder einen Einladungscode einlösen. Das ergibt eine Freigabe für den Kreis „Freunde“, in der Firma gibt es eigene Kreise.</li>
+        <li data-ring="5"><b>Föderation.</b> Eine Myrte ist ein Git-Projekt mit ein paar Metadaten mehr. Statt eines Stores hat jeder Space ein öffentliches Protokoll, um Myrten zu suchen, und Forks tragen ihre Abstammung.</li>
+      </ol>
+      <ol data-sicht="sicherheit">
+        <li data-ring="1"><b>Taschen-Space.</b> Andere Spaces behandeln ihn vorsichtig: Bei ihnen darf er nichts installieren und nichts ausführen, und Freigaben gelten höchstens ein Jahr.</li>
+        <li data-ring="2"><b>Dein Space.</b> Nutzen geht mit dem Myrtag, verändern nur mit dem Myrsiegel, also mit deinem Finger. Eine KI ist Teilnehmer, keine Person, und besiegelt nie.</li>
+        <li data-ring="3"><b>Haushalt.</b> Wer im Haushalt ist, kommt an das, was für den Haushalt gedacht ist. Was nur dir gehört, bleibt bei dir, und Admin-Rechte gibt es nur, wenn du sie vergibst.</li>
+        <li data-ring="4"><b>Kreise.</b> Fremde sehen nur die Einladung. Freunde kommen an die Funktionen ihres Kreises, alles andere braucht eine eigene Freigabe, gern nur bis heute Nacht.</li>
+        <li data-ring="5"><b>Föderation.</b> Jeder unterschreibt, was er baut. Empfehlungen sammeln sich bei der Person und am Strang der Myrte, so siehst du, wem du vertraust. Hinein kommt eine fremde Myrte trotzdem nur mit deinem Finger.</li>
+      </ol>
+    </div>
+    <div class="schalter-reihe ring-reihe"><button type="button" class="mitmach-knopf ring-knopf">Weiterer Kreis?</button></div>
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
@@ -1406,8 +1466,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z31"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Myrling und Myrtag</span><span class="bau-zettel" role="tooltip" id="bau-z31">Zwei Keimlinge unter Wabenschilden tauschen Myrten aus: signiert, im eigenen Schild, hinein erst mit dem Finger.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Je Sicht eine ehrliche Antwort mit Haken: praktisch, erweiterbar, sicher. Dazu ein Netz ohne Mitte, in das du deinen Space hängst, und gleich danach Mitmachen.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z32"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Was MyrSpace nicht behauptet</span><span class="bau-zettel" role="tooltip" id="bau-z32">Ehrliche Grenzen statt Superlativen, aufklappbar unter „Sicher? Das sagen alle.“, dazu ein fremder Dienst, der nur Verschlüsseltes sieht.</span></span></li>
-        <li class="dran" tabindex="0" aria-describedby="bau-z18"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">als Nächstes: </span><span class="bau-titel">Ein Netz aus Myrten</span><span class="bau-zettel" role="tooltip" id="bau-z18">Die Texte stehen, das Bild fehlt noch: MyrTube antippen, seine Verbindungen leuchten.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Ringe wachsen beim Scrollen, vom Taschen-Space bis zur Föderation.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Fünf Ringe, vom Taschen-Space bis zur Föderation. Erst ist nur das Handy offen, jeder Klick öffnet einen Ring mehr. Darin ist auch „Ein Netz aus Myrten“ aufgegangen.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der merge-train fährt vorbei</span><span class="bau-zettel" role="tooltip" id="bau-z21">Eine Dampflok mit Papierwagen am unteren Rand. Antippen erzählt von KI, Anfrage und Siegel.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Die drei Türen noch einmal nebeneinander, darunter derselbe Revolver. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
@@ -2582,6 +2641,94 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       if (!gestartet) return;
       if (ruhig.matches) { stellen(0); standbild(); } else { ebeneF.textContent = ''; fluege = []; if (sichtbar) requestAnimationFrame(tick); }
     });
+  }
+
+  /* ── Von innen nach außen: Ring um Ring per Klick, Schweben zeigt einen Ring vorab ── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const fig = $('.ringe-bild'), svg = $('svg', fig), sec = fig.closest('.abschnitt');
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    const C = 180, R = [42, 77, 109, 141, 174], DICHTE = [.26, .2, .16, .12, .09];
+    const NAMEN = ['Taschen-Space', 'Dein Space', 'Haushalt', 'Kreise', 'Föderation'];
+    // Was in jedem Ring dazukommt; Winkel in Grad, 0 = rechts, 90 = unten (oben steht der Name)
+    const DINGE = [[], [['💻', 205], ['🖥️', 150], ['📺', 90], ['🗄️', 30]],
+      [['👩', 210], ['👧', 155], ['👦', 100], ['👴', 45], ['🧑', -15]],
+      [['🎮', 212], ['🎧', 168], ['👥', 125], ['🎬', 82], ['📁', 40], ['💼', -2], ['🖥️', -40]]];
+    const SPACES = [-142, -38, 2, 40, 76, 112, 148, 184, 218];
+    const ringe = [];
+
+    const bogen = r => `M${C - r} ${C}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
+    const punkt = (r, w) => [C + r * Math.cos(w * Math.PI / 180), C + r * Math.sin(w * Math.PI / 180)];
+    R.forEach((r, i) => {
+      const innen = i ? R[i - 1] : 0, mitte = (innen + r) / 2;
+      const g = el('g', { class: 'rg-ring' }, svg);
+      const band = el('path', { class: 'rg-band', d: bogen(r) + (innen ? bogen(innen) : ''), 'fill-rule': 'evenodd',
+        tabindex: 0, role: 'button', 'aria-label': `Ring ${i + 1}: ${NAMEN[i]}` }, g);
+      el('circle', { class: 'rg-rand', cx: C, cy: C, r }, g);
+      const fuell = el('circle', { class: 'rg-fuell', cx: C, cy: C, r, pathLength: 1, transform: `rotate(-90 ${C} ${C})` }, g);
+      if (i === 0) {
+        el('text', { x: C, y: C - 12 }, el('g', { class: 'rg-ding' }, g)).textContent = '📱';
+        ['Taschen-', 'Space'].forEach((w, k) => { el('text', { class: 'rg-name', x: C, y: C + 12 + k * 12, style: 'font-size:11.5px' }, g).textContent = w; });
+      } else el('text', { class: 'rg-name', x: C, y: C - mitte }, g).textContent = NAMEN[i];
+      (DINGE[i] || []).forEach(([z, w], k) => {
+        const [x, y] = punkt(mitte, w), d = el('g', { class: 'rg-ding', style: `transition-delay:${k * 70}ms` }, g);
+        el('text', { x: x.toFixed(1), y: y.toFixed(1) }, d).textContent = z;
+      });
+      if (i === 4) SPACES.forEach((w, k) => {
+        const [x, y] = punkt(mitte, w), d = el('g', { class: 'rg-ding rg-space', style: `transition-delay:${k * 50}ms` }, g);
+        const t = el('g', { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})` }, d);
+        el('circle', { r: 11.5 }, t);
+        el('use', { href: '#blatt', class: 'bl1', transform: 'translate(0 -1) rotate(-140) scale(.15)' }, t);
+        el('use', { href: '#blatt', class: 'bl3', transform: 'translate(0 -1) rotate(-40) scale(.15)' }, t);
+        el('use', { href: '#beere', class: 'ml-beere', transform: 'translate(0 2) scale(.34)' }, t);
+      });
+      ringe.push({ g, band, fuell });
+    });
+    const eintraege = [...sec.querySelectorAll('.ringe-liste li')], knopf = $('.ring-knopf', sec);
+    let offen = 0, schwebt = 0;
+
+    // Erst ist nur der Taschen-Space offen. Der Knopf öffnet den nächsten Ring, ein Klick in einen Ring alle bis dorthin.
+    function zeigen() {
+      ringe.forEach((r, i) => {
+        const auf = i < offen;
+        r.fuell.style.strokeDashoffset = auf ? 0 : 1;
+        r.fuell.style.opacity = auf ? 1 : 0;
+        r.band.style.fillOpacity = auf ? DICHTE[i] : 0;
+        r.band.setAttribute('aria-label', `Ring ${i + 1}: ${NAMEN[i]}` + (auf ? '' : ', öffnen'));
+        r.g.classList.toggle('voll', auf);
+        r.g.classList.toggle('vorschau', !auf && schwebt === i + 1);
+        r.g.classList.toggle('an', auf && schwebt === i + 1);
+      });
+      eintraege.forEach(li => {
+        const n = +li.dataset.ring;
+        li.classList.toggle('offen', n <= offen);
+        li.classList.toggle('vorschau', n > offen && n === schwebt);
+        li.classList.toggle('an', n <= offen && n === schwebt);
+      });
+      knopf.textContent = offen < ringe.length ? 'Weiterer Kreis?' : '↺ Wieder nur das Handy';
+    }
+    // Was aufgeht, wächst unter dem Bild. Das Bild bleibt stehen, damit man den Ring wachsen sieht;
+    // nur wenn der Knopf aus dem Bildschirm rutscht, scrollt die Seite gerade so weit nach.
+    function oeffnen(n, still) {
+      offen = n; zeigen();
+      if (!still) knopf.scrollIntoView({ block: 'nearest', behavior: ruhig.matches ? 'auto' : 'smooth' });
+    }
+    knopf.addEventListener('click', () => oeffnen(offen < ringe.length ? offen + 1 : 1));
+    ringe.forEach((r, i) => {
+      const n = i + 1;
+      r.band.addEventListener('click', () => { if (n > offen) oeffnen(n); });
+      r.band.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && n > offen) { e.preventDefault(); oeffnen(n); } });
+      const rein = () => { schwebt = n; zeigen(); }, raus = () => { if (schwebt === n) { schwebt = 0; zeigen(); } };
+      r.band.addEventListener('pointerenter', rein); r.band.addEventListener('pointerleave', raus);
+      r.band.addEventListener('focus', rein); r.band.addEventListener('blur', raus);
+    });
+    // Umgekehrt: Über einem offenen Eintrag leuchtet sein Ring mit
+    eintraege.forEach(li => {
+      li.addEventListener('pointerenter', () => { if (li.classList.contains('offen')) { schwebt = +li.dataset.ring; zeigen(); } });
+      li.addEventListener('pointerleave', () => { if (schwebt === +li.dataset.ring) { schwebt = 0; zeigen(); } });
+    });
+    eintraege.forEach(li => li.value = +li.dataset.ring);  // Nummer = Ring, auch wenn davor welche zu sind
+    oeffnen(1, true);
   }
 
   /* ── Parallaxe ────────────────────────────────────────────── */
