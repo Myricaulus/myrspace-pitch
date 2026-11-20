@@ -724,6 +724,15 @@ svg.dabei .tr-du .tr-zweig { opacity: 1; }
 .traeger-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
 .traeger-text.gut { color: var(--gut); }
 
+/* Kleiner Zettel an einem Wort: zeigen beim Schweben oder Antippen (Fokus), ohne JS genauso */
+.tipp { position: relative; text-decoration: underline dotted var(--tx3); text-decoration-thickness: 2px; text-underline-offset: 3px; cursor: help; outline: none; }
+.tipp:focus-visible { outline: 2px solid var(--neon); outline-offset: 2px; border-radius: 3px; }
+.tipp-zettel { position: absolute; z-index: 7; left: -6px; bottom: calc(100% + 6px); width: max-content; max-width: min(16em, 70vw); padding: 7px 11px;
+  border-radius: 12px 12px 12px 4px; background: var(--grund); border: 1px solid var(--panel-rand); box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
+  font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--tx); text-decoration: none;
+  opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .2s, transform .2s, visibility .2s; pointer-events: none; }
+.tipp:focus .tipp-zettel { opacity: 1; visibility: visible; transform: none; }
+@media (hover: hover) { .tipp:hover .tipp-zettel { opacity: 1; visibility: visible; transform: none; } }
 /* Von innen nach außen: fünf Ringe, die sich beim Scrollen füllen */
 html:not(.js) .ringe-bild { display: none; }
 html:not(.js) .ring-reihe { display: none; }
@@ -1092,6 +1101,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <details class="neu-box" open>
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
+    <li data-wann="neu">Im äußersten Ring, Sicht Konzerner/Cyberpunk: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
     <li data-wann="neu">Konzerner und Cyberpunk wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
     <li data-wann="neu">Der Platzhalter „Ein Netz aus Myrten“ ist weg. Was nur dort stand, steht jetzt in den Ringen.</li>
@@ -1410,14 +1420,14 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li data-ring="2"><b>Dein Space.</b> Nutzen geht mit dem Myrtag, verändern nur mit dem Myrsiegel, also mit deinem Finger. Eine KI ist Teilnehmer, keine Person, und besiegelt nie.</li>
         <li data-ring="3"><b>Haushalt.</b> Wer im Haushalt ist, kommt an das, was für den Haushalt gedacht ist. Was nur dir gehört, bleibt bei dir, und Admin-Rechte gibt es nur, wenn du sie vergibst.</li>
         <li data-ring="4"><b>Kreise.</b> Fremde sehen nur die Einladung. Freunde kommen an die Funktionen ihres Kreises, alles andere braucht eine eigene Freigabe, gern nur bis heute Nacht.</li>
-        <li data-ring="5"><b>Föderation.</b> Jeder unterschreibt, was er baut. Empfehlungen sammeln sich bei der Person und am Strang der Myrte, so siehst du, wem du vertraust. Hinein kommt eine fremde Myrte trotzdem nur mit deinem Finger.</li>
+        <li data-ring="5"><b>Föderation.</b> Jeder unterschreibt, was er baut. Empfehlungen sammeln sich bei der Person und am Strang der Myrte, so siehst du, wem man vielleicht trauen kann. <span class="tipp" tabindex="0" aria-describedby="tipp-mt">Kontrolliere<span class="tipp-zettel" role="tooltip" id="tipp-mt">z.&nbsp;B. mit merge-train, dem voll integrierbaren Diff-Tool</span></span> seine Myrten und lass sie mit dem Finger rein.</li>
       </ol>
     </div>
     <div class="schalter-reihe ring-reihe"><button type="button" class="mitmach-knopf ring-knopf">Weiterer Kreis?</button></div>
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
 
-  <!-- ═════ Bautafel: Stand der Entwicklung und der Seite (Vorläufer des Fahrplans) ═════ -->
+  <!-- ═════ Bautafel: Stand der Entwicklung und der Seite, zugleich der Fahrplan ═════ -->
   <section class="abschnitt anker bautafel" id="bautafel" aria-labelledby="a-bau">
     <h2 class="kicker" id="a-bau">Bautafel · Stand 20.11.2026</h2>
     <h3>Hier wird noch gebaut.</h3>
@@ -1469,8 +1479,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Je Sicht eine ehrliche Antwort mit Haken: praktisch, erweiterbar, sicher. Dazu ein Netz ohne Mitte, in das du deinen Space hängst, und gleich danach Mitmachen.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z32"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Was MyrSpace nicht behauptet</span><span class="bau-zettel" role="tooltip" id="bau-z32">Ehrliche Grenzen statt Superlativen, aufklappbar unter „Sicher? Das sagen alle.“, dazu ein fremder Dienst, der nur Verschlüsseltes sieht.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Fünf Ringe, vom Taschen-Space bis zur Föderation. Erst ist nur das Handy offen, jeder Klick öffnet einen Ring mehr. Darin ist auch „Ein Netz aus Myrten“ aufgegangen.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z20"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Fahrplan als Pfad</span><span class="bau-zettel" role="tooltip" id="bau-z20">Fertig farbig, in Arbeit pulsierend, Idee nur umrissen. Diese Bautafel ist sein Vorläufer.</span></span></li>
-        <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der merge-train fährt vorbei</span><span class="bau-zettel" role="tooltip" id="bau-z21">Eine Dampflok mit Papierwagen am unteren Rand. Antippen erzählt von KI, Anfrage und Siegel.</span></span></li>
+        <li class="idee" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Der merge-train fährt ein</span><span class="bau-zettel" role="tooltip" id="bau-z21">Hinter „Kontrolliere“ im äußersten Ring: Der Bahnhof klappt herunter, ein Zug fährt ein, und im Waggon steckt ein Diff, an dem Mensch und Agent ein Gespräch führen.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Die drei Türen noch einmal nebeneinander, darunter derselbe Revolver. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
       </ul>
