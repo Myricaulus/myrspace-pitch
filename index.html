@@ -1267,9 +1267,9 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <h2 class="kicker" id="a-haken">Zu schön, um wahr zu sein?</h2>
     <div class="je-sicht">
       <div data-sicht="anwender"><h3>Praktisch, aber wo ist der Haken?</h3>
-        <p>Du brauchst ein Handy mit der App, mehr nicht. Ein NAS macht es bequemer, nötig ist er nicht. Neue Geräte koppelst du per QR, und niemand verdient an deinen Daten. Der Haken: Vieles ist noch im Bau. Was schon steht, zeigt die <a href="#bautafel">Bautafel</a>.</p></div>
+        <p>Du brauchst ein Handy mit der App, mehr nicht. Ein NAS macht es bequemer, nötig ist er nicht. Neue Geräte koppelst du per QR. Deine Daten bleiben in deinem Space, also verdient auch niemand an ihnen. Der Haken: Vieles ist noch im Bau. Was schon steht, zeigt die <a href="#bautafel">Bautafel</a>.</p></div>
       <div data-sicht="bastler"><h3>Erweiterbar? So weit, wie du baust.</h3>
-        <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Was andere bauen, findest du in ihren Spaces statt in einem Store, und Gutes übernimmst du als Fork mit Abstammung. Der Haken: Die Formate ändern sich noch.</p></div>
+        <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Was andere bauen, findest du in ihren Spaces statt in einem Store, und Gutes übernimmst du als Fork mit Abstammung. Der Haken: Die Formate wachsen noch. Sie werden nur erweitert, aber neue Myrten müssen alte Fassungen nicht mehr können.</p></div>
       <div data-sicht="sicherheit"><h3>Sicher? Das sagen alle.</h3>
         <p>Darum zählt nur, was sich nachprüfen lässt: Die Wurzel bleibt offline, das Siegel verlässt den Chip nicht, nur Menschen besiegeln, und jeder Eingriff steht im Laufbuch. Wo es offene Bausteine gibt, baut MyrSpace auf ihnen auf. Der Haken: Von außen geprüft hat das noch niemand.</p>
         <details class="mehr grenzen">
@@ -1279,9 +1279,10 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
             <li><b>Nicht gegen dich selbst.</b> Was du besiegelst, läuft. Darum zeigt das Handy vorher, was genau passieren soll, und danach steht es im Laufbuch.</li>
             <li><b>Nicht, dass die KI keine Fehler macht.</b> Nur, dass sie ohne deinen Finger nichts verändert.</li>
             <li><b>Keine Heilung für einen übernommenen Rechner.</b> Wer dort schon root ist, bleibt es. Ohne dein Siegel verändert er aber deine anderen Geräte nicht.</li>
+            <li><b>Nicht für die Ewigkeit.</b> Wird ein Verfahren unsicher, braucht dein Space eine neue Wurzel, und alle Geräte werden neu gekoppelt. Wie sich viele Spaces ohne Mitte auf ein neues Verfahren einigen, ist noch offen.</li>
             <li><b>Nicht nur mit Handy, aber am besten damit.</b> Es geht auch mit einem USB-Sicherheitsschlüssel oder der PIN des Sicherheitschips am PC, für den Notfall gibt es ein Notfallblatt. Das ist unbequemer: Nur das Handy zeigt an, was du gerade besiegelst, und ohne Handy gibt es kein sudo per Finger. Auch alte Handys können nicht alles, manche Chips unterschreiben nur und entschlüsseln nicht.</li>
           </ul>
-          <p><b>Und fremd heißt nicht verboten.</b> Ein fremder Dienst darf Daten aufbewahren, wenn er nur Verschlüsseltes sieht, etwa eine Sicherung außer Haus. Er hält die Bytes, lesen kann er sie nicht, und dein Space hängt nicht an ihm. Das ist geplant, noch nicht gebaut.</p>
+          <p><b>Und fremd heißt nicht verboten.</b> Ein fremder Dienst darf Daten aufbewahren, wenn er nur Verschlüsseltes sieht, etwa eine Sicherung außer Haus. Er hält die Bytes, lesen kann er sie nicht, und dein Space hängt nicht an ihm. Das ist geplant.</p>
         </details></div>
     </div>
     <figure class="traeger-bild">
@@ -1341,7 +1342,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       <h5 class="bau-unter">Phase 2, Fassung 1 „AGAP“<span class="bau-zahl"></span></h5>
       <span class="bau-balken" aria-hidden="true"><i></i><b></b></span>
       <p class="bau-ziel">Anschauen, Genehmigen, Ausführen, Protokollieren: Ein Skript, auch von einer KI, läuft erst, wenn du am Handy den Finger auflegst.
-        Dazu gehören 15 Use Cases. Gebaut ist noch keiner, 9 sind fertig beschrieben (gestreift). Geplant ist also schon viel, gebaut noch nichts.</p>
+        Dazu gehören 15 Use Cases. Gebaut ist noch keiner, 9 sind fertig beschrieben (gestreift).</p>
       <ul class="bau-liste">
         <li class="fertig" tabindex="0" aria-describedby="bau-z2"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Proben: Finger am Handy, Ausweis im Browser, sudo-Modul</span><span class="bau-zettel" role="tooltip" id="bau-z2">Fünf Wegwerf-Versuche vom 14. bis 16.11., alle bestanden. Der Finger gilt je Unterschrift und nur bei entsperrtem Handy.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z3"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Namensdienst entschieden</span><span class="bau-zettel" role="tooltip" id="bau-z3">Die FritzBox bleibt DNS-Server. Ist der NAS aus, hat das Heimnetz trotzdem Namen.</span></span></li>
