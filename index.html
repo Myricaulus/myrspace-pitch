@@ -936,7 +936,8 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
       <summary>Mehr erfahren</summary>
       <div class="je-sicht">
         <div data-sicht="anwender">
-          <p><b>Den Admin macht die KI.</b> Sie richtet Geräte ein, repariert und pflegt. Bevor sie etwas verändert, siehst du auf dem Handy, was sie vorhat, und besiegelst es mit dem Finger. Später kannst du alles nachlesen.</p>
+          <p><b>Die KI kann den Admin machen.</b> Sie richtet Geräte ein, repariert und pflegt. Bevor sie etwas verändert, siehst du auf dem Handy, was sie vorhat, und besiegelst es mit dem Finger. Später kannst du alles nachlesen.</p>
+          <p>Und fällt die KI aus, geht trotzdem alles weiter. Du machst es dann eben selbst.</p>
           <p>Ein neues Gerät dazu? QR-Code zeigen, Finger drauf, fertig.</p>
         </div>
         <div data-sicht="bastler">
@@ -1769,7 +1770,7 @@ svg.zu .hb-ding { opacity: 1; transform: none; }
       svg.classList.toggle('zu', zu);
       schalter.setAttribute('aria-checked', !zu);
       lbls.forEach(l => l.classList.toggle('an', l.dataset.modus === (zu ? 'zu' : 'auf')));
-      text.textContent = zu ? 'Für dich: eine App, ein Myrling auf jedem Gerät, dein Finger. Den Rest erledigt die KI, und du besiegelst.'
+      text.textContent = zu ? 'Für dich: eine App, ein Myrling auf jedem Gerät, dein Finger. Den Rest erledigt MyrSpace. Die KI hilft, aber es geht auch ohne sie.'
                             : 'Unter der Haube: Wurzel, Ausweise, Schlüssel im Chip, Myrlinge, Umwege, Schilde …';
       text.classList.toggle('gut', zu);
     }
