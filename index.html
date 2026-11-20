@@ -959,12 +959,14 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
   :root:not([data-theme="light"]) .ak, :root:not([data-theme="light"]) .ak-diff { --bh-wand: #4f4c4c; --bh-welle: #45423f; --bh-turm: #4a4746; --bh-dach: #2c2a2a;
     --bh-schrift: #c9bfa6; --bh-fenster: #f2c45a; --bh-glut: drop-shadow(0 0 3px #f2b13a); --bh-glas: #4a3f22; --bh-glasrand: #2c2a2a;
     --bh-schild: #8f8672; --bh-schotter: #3b3732; --bh-schwelle: #28221d; --bh-schiene: #8a8a8a; --bh-stahl: #5d636a;
-    --ak-kasten: #221b42; --ak-rand: #8a80a8; --ak-p: #7fdc8a; --ak-m: #ff7a85; }
+    --ak-kasten: #221b42; --ak-rand: #8a80a8; --ak-p: #7fdc8a; --ak-m: #ff7a85;
+    --sy-c: #9a90b8; --sy-s: #f0b080; --sy-z: #ffb86b; --sy-k: #c9a0ff; --sy-f: #8fc8ff; }
 }
 :root[data-theme="dark"] .ak, :root[data-theme="dark"] .ak-diff { --bh-wand: #4f4c4c; --bh-welle: #45423f; --bh-turm: #4a4746; --bh-dach: #2c2a2a;
   --bh-schrift: #c9bfa6; --bh-fenster: #f2c45a; --bh-glut: drop-shadow(0 0 3px #f2b13a); --bh-glas: #4a3f22; --bh-glasrand: #2c2a2a;
   --bh-schild: #8f8672; --bh-schotter: #3b3732; --bh-schwelle: #28221d; --bh-schiene: #8a8a8a; --bh-stahl: #5d636a;
-  --ak-kasten: #221b42; --ak-rand: #8a80a8; --ak-p: #7fdc8a; --ak-m: #ff7a85; }
+  --ak-kasten: #221b42; --ak-rand: #8a80a8; --ak-p: #7fdc8a; --ak-m: #ff7a85;
+    --sy-c: #9a90b8; --sy-s: #f0b080; --sy-z: #ffb86b; --sy-k: #c9a0ff; --sy-f: #8fc8ff; }
 .ak[hidden] { display: none; }
 .ak-szene { position: relative; pointer-events: auto; background: linear-gradient(var(--himmel-oben), var(--himmel-unten));
   border-bottom: 3px solid var(--bh-dach); box-shadow: 0 12px 34px rgba(10, 6, 24, .4);
@@ -1005,7 +1007,8 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 .ak.faehrt .ak-dampf circle:nth-child(2) { animation-delay: .33s; } .ak.faehrt .ak-dampf circle:nth-child(3) { animation-delay: .66s; }
 @keyframes ak-dampf { from { opacity: .6; transform: scale(.6); } to { opacity: 0; transform: translate(-26px, -12px) scale(1.7); } }
 /* Das Diff im Waggon */
-.ak-diff { width: min(580px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); padding: 0; overflow: auto; color: var(--tx); background: var(--grund);
+.ak-diff { --ak-p: #2f8a46; --ak-m: #c4373f; --sy-c: #7d7590; --sy-s: #a0522d; --sy-z: #b0570a; --sy-k: #7a3fb0; --sy-f: #1f6fae;
+  width: min(580px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); padding: 0; overflow: auto; color: var(--tx); background: var(--grund);
   border: 1px solid var(--panel-rand); border-radius: 12px; box-shadow: 0 22px 60px rgba(10, 6, 24, .5); }
 .ak-diff::backdrop { background: rgba(10, 6, 24, .55); }
 .ak-diff[open] { animation: auftauchen .3s ease both; }
@@ -1018,9 +1021,11 @@ html:not(.js) .bau-pfad .bau-zettel { display: none; }
 .akd-z.plus { background: color-mix(in srgb, var(--ak-p) 15%, transparent); } .akd-z.plus b { color: var(--ak-p); }
 .akd-z.minus { background: color-mix(in srgb, var(--ak-m) 15%, transparent); } .akd-z.minus b { color: var(--ak-m); }
 .akd-z.frisch { animation: ak-blitz 1.4s ease-out; }
+.akd-z.alt > span { text-decoration: line-through; text-decoration-color: var(--ak-m); opacity: .75; }
+.s-c { color: var(--sy-c); font-style: italic; } .s-s { color: var(--sy-s); } .s-z { color: var(--sy-z); } .s-k { color: var(--sy-k); } .s-f { color: var(--sy-f); }
 @keyframes ak-blitz { 0%, 35% { background: color-mix(in srgb, var(--neon) 50%, transparent); } }
 .akd-z em { font: italic 11.5px system-ui, sans-serif; color: var(--tx3); margin-left: .8em; }
-@media (max-width: 480px) { .akd-z em span { display: none; } .akd-code { font-size: 12.5px; } }
+@media (max-width: 480px) { .akd-z em span { display: none; } .akd-code { font-size: 11.5px; } .akd-z { grid-template-columns: 1.8em 1.8em 1.2em 1fr; padding-right: 6px; } }
 .akd-faden { margin: 4px 10px 8px calc(4em + 10px); padding: 8px 10px; border: 1px solid var(--panel-rand); border-left: 3px solid var(--tx3); border-radius: 8px;
   background: var(--panel); font: 14px/1.45 system-ui, sans-serif; }
 .akd-msg { margin: 0 0 7px; animation: auftauchen .35s ease both; } .akd-msg b { margin-right: .3em; } .akd-msg.agent b { color: var(--tx2); }
@@ -1193,7 +1198,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
     <li data-wann="neu">Wo <span class="beide">Konzerner und Cyberpunk</span> beide gemeint sind, verläuft die Schrift von Blau nach Rot.</li>
-    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „Kontrolliere“, „nachlesen“ oder „Such die Lücken“ klappt oben ein Bahnhof herunter, und im Waggon steckt ein Diff, an dem jemand den Agenten fragt.</li>
+    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „Kontrolliere“, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C, und jemand fragt an einer Zeile den Agenten.</li>
     <li data-wann="neu">Im äußersten Ring, Sicht <span class="beide">Konzerner/Cyberpunk</span>: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
     <li data-wann="neu"><span class="beide">Konzerner und Cyberpunk</span> wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
@@ -1443,7 +1448,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       <div data-sicht="anwender"><h3>Praktisch, aber wo ist der Haken?</h3>
         <p>Du brauchst ein Handy mit der App, mehr nicht. Ein NAS macht es bequemer, nötig ist er nicht. Neue Geräte koppelst du per QR. Deine Daten bleiben in deinem Space, also verdient auch niemand an ihnen. Der Haken: Vieles ist noch im Bau. Was schon steht, zeigt die <a href="#bautafel">Bautafel</a>.</p></div>
       <div data-sicht="bastler"><h3>Erweiterbar? So weit, wie du baust.</h3>
-        <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Was andere bauen, findest du in ihren Spaces statt in einem Store, und Gutes übernimmst du als Fork mit Abstammung. Der Haken: Die Formate wachsen noch. Sie werden nur erweitert, aber neue Myrten müssen alte Fassungen nicht mehr können.</p></div>
+        <p>Eine Myrte ist ein Git-Projekt mit <code>myrapp.json</code>, ausgeliefert mit einem Befehl. Was andere bauen, findest du in ihren Spaces statt in einem Store, und Gutes <span class="tipp" tabindex="0" data-ankunft aria-describedby="tipp-mt4">schaust du durch<span class="tipp-zettel" role="tooltip" id="tipp-mt4">z.&nbsp;B. mit merge-train, dem voll integrierbaren Diff-Tool</span></span> und übernimmst es als Fork mit Abstammung. Der Haken: Die Formate wachsen noch. Sie werden nur erweitert, aber neue Myrten müssen alte Fassungen nicht mehr können.</p></div>
       <div data-sicht="sicherheit"><h3>Sicher? Das sagen alle.</h3>
         <p>Darum zählt nur, was sich nachprüfen lässt: Die Wurzel bleibt offline, das Siegel verlässt den Chip nicht, nur Menschen besiegeln, und jeder Eingriff steht im Laufbuch. Wo es offene Bausteine gibt, baut MyrSpace auf ihnen auf. Der Haken: Von außen geprüft hat das noch niemand.</p>
         <details class="mehr grenzen">
@@ -1572,7 +1577,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         <li class="fertig" tabindex="0" aria-describedby="bau-z30"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Zu schön, um wahr zu sein?</span><span class="bau-zettel" role="tooltip" id="bau-z30">Je Sicht eine ehrliche Antwort mit Haken: praktisch, erweiterbar, sicher. Dazu ein Netz ohne Mitte, in das du deinen Space hängst, und gleich danach Mitmachen.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z32"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Was MyrSpace nicht behauptet</span><span class="bau-zettel" role="tooltip" id="bau-z32">Ehrliche Grenzen statt Superlativen, aufklappbar unter „Sicher? Das sagen alle.“, dazu ein fremder Dienst, der nur Verschlüsseltes sieht.</span></span></li>
         <li class="fertig" tabindex="0" aria-describedby="bau-z19"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Von innen nach außen</span><span class="bau-zettel" role="tooltip" id="bau-z19">Fünf Ringe, vom Taschen-Space bis zur Föderation. Erst ist nur das Handy offen, jeder Klick öffnet einen Ring mehr. Darin ist auch „Ein Netz aus Myrten“ aufgegangen.</span></span></li>
-        <li class="fertig" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Der merge-train fährt ein</span><span class="bau-zettel" role="tooltip" id="bau-z21">Hinter „Kontrolliere“ im äußersten Ring (Sicht <span class="beide">Konzerner/Cyberpunk</span>): Der Bahnhof klappt herunter, ein Zug fährt ein, und im Waggon steckt ein Diff, an dem Mensch und Agent ein Gespräch führen.</span></span></li>
+        <li class="fertig" tabindex="0" aria-describedby="bau-z21"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Der merge-train fährt ein</span><span class="bau-zettel" role="tooltip" id="bau-z21">Hinter „Kontrolliere“ im äußersten Ring (Sicht <span class="beide">Konzerner/Cyberpunk</span>): Der Bahnhof klappt herunter, ein Zug fährt ein, und im Waggon steckt ein Diff, an dem Mensch und Agent ein Gespräch führen. Je nach Sicht ist es eine Konfiguration, Python oder TPM2 in C.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z22"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Schluss: Mitmachen</span><span class="bau-zettel" role="tooltip" id="bau-z22">Die drei Türen noch einmal nebeneinander, darunter derselbe Revolver. Die Wege je Sicht stehen schon bei „Zu schön, um wahr zu sein?“.</span></span></li>
         <li class="idee" tabindex="0" aria-describedby="bau-z23"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">geplant: </span><span class="bau-titel">Zuhause unter myrspace.de</span><span class="bau-zettel" role="tooltip" id="bau-z23">Ausgeliefert vom eigenen NAS. Dafür geht 443 nach außen auf, nur für diese eine Seite.</span></span></li>
       </ul>
@@ -2840,10 +2845,54 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     const ausloeser = [...document.querySelectorAll('.tipp[data-ankunft]')];
     if (!ausloeser.length) return;
     let zurueck = ausloeser[0];
+    // Das Diff im Waggon hängt an der Sicht: Konfiguration, Python oder TPM2 in C. Bewusst kein Code „aus einer Myrte“,
+    // deren Aufbau ist noch offen (PO 20.11.). Zeilen: [alt, neu, Art, Text]; Art '-', '+' oder 'ziel' (dort fragt man).
+    const BSP = {
+      anwender: { datei: 'urlaubsfotos.toml', wagen: 'Urlaubsfotos', spr: 'toml', zeilen: [
+        [1, 1, '', '# Was geteilt wird und mit wem'], [2, 2, '', '[ordner]'], [3, 3, '', 'quelle = "Fotos/Urlaub"'],
+        [4, 4, '', 'nur_neue = true'], [5, 5, '', ''], [6, 6, '', '[teilen]'], [7, '', '-', 'groesse = 2000   # Pixel, lange Kante'],
+        ['', 7, '+', 'groesse = 1200   # Pixel, lange Kante'], ['', 8, 'ziel', 'mit = "alle"'], [8, 9, '', 'hinweis = "Neue Urlaubsfotos sind da"']],
+        neu: 'mit = "Familie"   # dein Kreis',
+        frage: 'Warum alle? Das sollen nur Oma und Opa sehen.',
+        antwort: 'Stimmt, „alle“ hieße: jeder, der den Link hat. Jetzt geht es nur an deinen Kreis „Familie“.' },
+      bastler: { datei: 'verkleinern.py', wagen: 'Fotos verkleinern', spr: 'py', zeilen: [
+        [1, 1, '', 'from pathlib import Path'], [2, 2, '', 'from PIL import Image, ImageOps'], [3, 3, '', 'KLEIN = Path("Fotos/klein")'], [4, 4, '', ''],
+        [5, 5, '', 'def verkleinern(bild: Path, kante=1200):'], [6, 6, '', '    ziel = KLEIN / bild.name'],
+        [7, 7, '', '    with Image.open(bild) as roh:'], [8, 8, '', '        im = ImageOps.exif_transpose(roh)'],
+        [9, '', '-', '        im.thumbnail((2000, 2000))'], [10, '', '-', '        im.save(ziel)'],
+        ['', 9, '+', '        im.thumbnail((kante, kante))'], ['', 10, 'ziel', '        im.save(ziel, exif=im.getexif())'], [11, 11, '', '    return ziel']],
+        neu: '        im.save(ziel)  # ohne GPS',
+        frage: 'Warum gehen die EXIF-Daten mit? Da steht drin, wo das Foto gemacht wurde.',
+        antwort: 'Stimmt, darin stecken auch die GPS-Koordinaten. Jetzt speichere ich ohne EXIF, gedreht ist das Bild ja schon.' },
+      sicherheit: { datei: 'siegel_schluessel.c', wagen: 'Siegel-Schlüssel', spr: 'c', zeilen: [
+        [1, 1, '', '// Siegel-Schlüssel: bleibt im Chip'], [2, 2, '', 'TPMA_OBJECT attr ='], [3, 3, '', '      TPMA_OBJECT_SIGN_ENCRYPT'],
+        [4, 4, '', '    | TPMA_OBJECT_FIXEDTPM'], [5, 5, '', '    | TPMA_OBJECT_FIXEDPARENT'], [6, 6, '', '    | TPMA_OBJECT_SENSITIVEDATAORIGIN'],
+        [7, 7, '', '    | TPMA_OBJECT_USERWITHAUTH;'], [8, '', '-', 'pub.publicArea.objectAttributes = attr;'],
+        ['', 8, '+', 'pub.publicArea.objectAttributes ='], ['', 9, 'ziel', '    attr | TPMA_OBJECT_NODA;'],
+        [9, 10, '', 'r = Esys_CreatePrimary(ctx,'], [10, 11, '', '    ESYS_TR_RH_OWNER, ESYS_TR_PASSWORD,'], [11, 12, '', '    ESYS_TR_NONE, ESYS_TR_NONE,'],
+        [12, 13, '', '    &geheim, &pub, &leer, &keine_pcr,'], [13, 14, '', '    &schluessel, NULL, NULL, NULL, NULL);']],
+        neu: '    attr;  // Fehlversuche zählen',
+        frage: 'Warum NODA? Dann darf man die PIN beliebig oft raten.',
+        antwort: 'Stimmt, mit NODA zählt der Chip keine Fehlversuche. Ohne sperrt er nach zu vielen falschen PINs eine Weile.' },
+    };
+    const bsp = () => BSP[(zurueck.closest('[data-sicht]') || document.body).dataset.sicht] || BSP.anwender;
+    const zaehl = (b, art) => b.zeilen.filter(z => art === '-' ? z[2] === '-' : z[2] === '+' || z[2] === 'ziel').length;
+    // Kleine Syntaxfarben: Kommentar, Text, Zahl/Wert, Schlüsselwort/Konstante/Abschnitt, Funktion/Schlüssel
+    const MUSTER = {
+      toml: /(#.*$)|("[^"]*")|(\b\d+\b|\btrue\b|\bfalse\b)|(^\[[^\]]*\])|(^\w+(?= *=))/g,
+      py: /(#.*$)|("[^"]*")|(\b\d+\b|\bTrue\b|\bFalse\b|\bNone\b)|(\b(?:from|import|def|with|as|return)\b)|(\b\w+(?=\())/g,
+      c: /(\/\/.*$|\/\*.*?\*\/)|("[^"]*")|(\b\d+\b|\bNULL\b)|(\b[A-Z][A-Z0-9]*_[A-Z0-9_]+\b)|(\b\w+(?=\())/g,
+    };
+    const KL = ['s-c', 's-s', 's-z', 's-k', 's-f'], esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const farbe = (t, spr) => {
+      let aus = '', i = 0;
+      for (const m of t.matchAll(MUSTER[spr])) {
+        aus += esc(t.slice(i, m.index)) + `<span class="${KL[m.slice(1).findIndex(g => g !== undefined)]}">${esc(m[0])}</span>`;
+        i = m.index + m[0].length;
+      }
+      return aus + esc(t.slice(i));
+    };
     const H = 212, gl = H - 4, W = 170, WH = 56, LOK = 200, r = n => n.toFixed(1);
-    const FRAGE = 'Warum alle? Das sollen nur Oma und Opa sehen.';
-    const ANTWORT = 'Stimmt, „alle“ hieße: jeder, der den Link hat. Jetzt geht es nur an deinen Kreis „Familie“.';
-    const ALT = 'teile mit: alle', NEU = 'teile mit: Kreis "Familie"';
     const ak = document.createElement('div');
     ak.className = 'ak'; ak.hidden = true;
     ak.innerHTML = '<div class="ak-szene" role="region" aria-label="Bahnhof von merge-train"><svg class="ak-anlage"></svg>' +
@@ -2917,14 +2966,15 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       // Zug: ein Waggon nach Art von merge-train, dahinter (rechts) die Lok
       const wy = gl - WH - 10;
       stopp = cx + 4 - W / 2;
+      const b = bsp(), plus = zaehl(b, '+'), minus = zaehl(b, '-'), bp = Math.round(150 * plus / (plus + minus));
       s += `<g class="ak-zug" style="transform: translateX(${x == null ? -(W + 14 + LOK + 20) : x === 'stopp' ? stopp : x}px)">
-  <g class="ak-wagen" tabindex="0" role="button" aria-label="Waggon „Urlaubsfotos teilen“, plus 2, minus 1: Diff ansehen">
+  <g class="ak-wagen" tabindex="0" role="button" aria-label="Waggon „${b.wagen}“, plus ${plus}, minus ${minus}: Diff ansehen">
    <rect class="ak-kasten" x="0" y="${wy}" width="${W}" height="${WH}" rx="5"/>
    <rect class="ak-fuell" x="1.5" y="${wy + 26}" width="${W - 3}" height="${WH - 27.5}" rx="3.5"/>
-   <text x="10" y="${wy + 17}" class="ak-tx ak-fett">Urlaubsfotos teilen</text>
-   <text x="10" y="${wy + 35}" class="ak-tx"><tspan class="ak-p">+2</tspan> <tspan class="ak-m">−1</tspan> <tspan class="ak-klein">1 Dat.</tspan></text>
+   <text x="10" y="${wy + 17}" class="ak-tx ak-fett">${b.wagen}</text>
+   <text x="10" y="${wy + 35}" class="ak-tx"><tspan class="ak-p">+${plus}</tspan> <tspan class="ak-m">−${minus}</tspan> <tspan class="ak-klein">1 Dat.</tspan></text>
    <text x="${W - 10}" y="${wy + 35}" text-anchor="end" class="ak-tx ak-fett ak-marke">● offen</text>
-   <rect x="10" y="${wy + 43}" width="100" height="4" class="ak-p"/><rect x="110" y="${wy + 43}" width="50" height="4" class="ak-m"/>
+   <rect x="10" y="${wy + 43}" width="${bp}" height="4" class="ak-p"/><rect x="${10 + bp}" y="${wy + 43}" width="${150 - bp}" height="4" class="ak-m"/>
    <circle cx="24" cy="${wy + WH + 4}" r="6" class="ak-radw"/><circle cx="${W - 24}" cy="${wy + WH + 4}" r="6" class="ak-radw"/></g>
   <line x1="${W}" y1="${wy + WH - 8}" x2="${W + 14}" y2="${wy + WH - 8}" stroke="var(--ak-rand)" stroke-width="2"/>
   <g class="ak-lok" tabindex="0" role="button" aria-label="Lok: weiterfahren und Bahnhof zuklappen"><g transform="translate(${W + 14},${gl - 70})">${lok()}</g></g></g>`;
@@ -2975,45 +3025,48 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && offen && !dlg.open) abfahrt(); });
     addEventListener('resize', () => { if (ak.classList.contains('steht')) zeichnen('stopp'); });
 
-    /* Das Diff im Waggon: eine Myrte von jemand anderem, v1.2 → v1.3; am Faden fragt man den Agenten, er ändert die Zeile */
+    /* Das Diff im Waggon: ein Update 1.2 → 1.3 von jemand anderem. Am Faden fragt man den Agenten, er ändert die Zeile;
+       die alte bleibt durchgestrichen stehen, die neue kommt darunter. */
     const dlg = document.createElement('dialog');
     dlg.className = 'ak-diff';
     dlg.setAttribute('aria-labelledby', 'akd-titel');
-    const z = (a, b, art, text) => `<div class="akd-z ${art}"><i>${a}</i><i>${b}</i><b>${art === 'plus' ? '+' : art === 'minus' ? '−' : ''}</b><span>${text}</span></div>`;
-    dlg.innerHTML = `<p class="akd-kopf" id="akd-titel">🌿 Urlaubsfotos teilen <small>Myrte, Version 1.2 → 1.3 · <span class="p">+2</span> <span class="m">−1</span></small></p>
+    dlg.innerHTML = `<p class="akd-kopf" id="akd-titel"></p>
   <button type="button" class="akd-zu" aria-label="Diff schließen">✕</button>
-  <div class="akd-code">${z(1, 1, '', 'myrte "Urlaubsfotos teilen"')}${z(2, 2, '', '  wenn neues Foto in "Urlaub":')}${z(3, '', 'minus', '    verkleinere auf 2000 px')}${z('', 3, 'plus', '    verkleinere auf 1200 px')}<div class="akd-z plus akd-ziel"><i></i><i>4</i><b>+</b><span>    <span class="akd-text"></span><em hidden>✎<span> Agent</span></em></span></div>
-   <div class="akd-faden" aria-live="polite"><div class="akd-msgs"></div><p class="akd-denkt" hidden>Agent arbeitet<i>.</i><i>.</i><i>.</i></p>
-    <div class="akd-eingabe"><div class="akd-feld" data-leer="Frag an dieser Zeile …"></div><span class="akd-senden" aria-hidden="true">Senden</span></div></div>
-   ${z(4, 5, '', '    sage Bescheid: "Neue Fotos da"')}</div>
+  <div class="akd-code"></div>
   <div class="akd-fuss"><p>Geht auch ohne Agent: Zeile selbst ändern und dann mit dem Finger reinlassen.</p>
    <div><button type="button" class="akd-nochmal">↺ Nochmal</button><button type="button" class="akd-fertig">Fertig</button></div></div>`;
     document.body.append(dlg);
-    const ziel = $('.akd-ziel', dlg), zielText = $('.akd-text', dlg), agentMarke = $('.akd-ziel em', dlg), msgs = $('.akd-msgs', dlg),
-      denkt = $('.akd-denkt', dlg), feld = $('.akd-feld', dlg), senden = $('.akd-senden', dlg);
+    const kopf = $('.akd-kopf', dlg), code = $('.akd-code', dlg);
+    const zeile = (a, b, art, text, spr) => `<div class="akd-z${art === '-' ? ' minus' : art ? ' plus' : ''}${art === 'ziel' ? ' akd-ziel' : ''}"><i>${a}</i><i>${b}</i><b>${art === '-' ? '−' : art ? '+' : ''}</b><span>${farbe(text, spr)}</span></div>`;
+    const FADEN = `<div class="akd-faden" aria-live="polite"><div class="akd-msgs"></div><p class="akd-denkt" hidden>Agent arbeitet<i>.</i><i>.</i><i>.</i></p>
+    <div class="akd-eingabe"><div class="akd-feld" data-leer="Frag an dieser Zeile …"></div><span class="akd-senden" aria-hidden="true">Senden</span></div></div>`;
     let spiel = 0;
-    const nachricht = (wer, text) => {
-      const p = document.createElement('p');
-      p.className = 'akd-msg' + (wer === 'Agent' ? ' agent' : '');
-      p.innerHTML = `<b>${wer}:</b>`; p.append(text);
-      msgs.append(p);
-    };
     async function szene() {
-      const n = ++spiel, weiter = () => n === spiel && dlg.open;
-      zielText.textContent = ALT; agentMarke.hidden = true; ziel.classList.remove('frisch');
-      msgs.textContent = ''; feld.textContent = ''; denkt.hidden = true;
+      const n = ++spiel, weiter = () => n === spiel && dlg.open, b = bsp();
+      kopf.innerHTML = `📄 ${b.datei} <small>Update 1.2 → 1.3 · <span class="p">+${zaehl(b, '+')}</span> <span class="m">−${zaehl(b, '-')}</span></small>`;
+      code.innerHTML = b.zeilen.map(z => zeile(...z, b.spr) + (z[2] === 'ziel' ? FADEN : '')).join('');
+      const ziel = $('.akd-ziel', code), msgs = $('.akd-msgs', code), denkt = $('.akd-denkt', code), feld = $('.akd-feld', code), senden = $('.akd-senden', code);
+      const nachricht = (wer, text) => {
+        const p = document.createElement('p');
+        p.className = 'akd-msg' + (wer === 'Agent' ? ' agent' : '');
+        p.innerHTML = `<b>${wer}:</b>`; p.append(text);
+        msgs.append(p);
+      };
       await warte(900); if (!weiter()) return;
-      if (ruhig.matches) feld.textContent = FRAGE;
-      else for (const ch of FRAGE) { feld.textContent += ch; await warte(42); if (!weiter()) return; }
+      if (ruhig.matches) feld.textContent = b.frage;
+      else for (const ch of b.frage) { feld.textContent += ch; await warte(42); if (!weiter()) return; }
       await warte(400); senden.classList.add('druck');
       await warte(180); senden.classList.remove('druck'); if (!weiter()) return;
-      feld.textContent = ''; nachricht('Du', FRAGE);
+      feld.textContent = ''; nachricht('Du', b.frage);
       await warte(500); denkt.hidden = false;
       await warte(1700); if (!weiter()) return;
-      zielText.textContent = NEU; agentMarke.hidden = false;
-      void ziel.offsetWidth; ziel.classList.add('frisch');
+      // Die Zeile des Updates bleibt sichtbar, durchgestrichen; die Fassung des Agenten kommt darunter
+      const nr = ziel.children[1].textContent;
+      ziel.classList.replace('plus', 'minus'); ziel.classList.add('alt');
+      ziel.children[1].textContent = ''; ziel.children[2].textContent = '−';
+      ziel.insertAdjacentHTML('afterend', zeile('', nr, '+', b.neu, b.spr).replace(/<\/span><\/div>$/, '<em>✎<span> Agent</span></em></span></div>').replace('akd-z plus', 'akd-z plus frisch'));
       await warte(900); if (!weiter()) return;
-      denkt.hidden = true; nachricht('Agent', ANTWORT);
+      denkt.hidden = true; nachricht('Agent', b.antwort);
       if (markeEl) markeEl.textContent = '💬 2';
     }
     function diffZeigen() { if (!dlg.open) { dlg.showModal(); szene(); } }
