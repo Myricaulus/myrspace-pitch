@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Myrte – Zeichen von MyrSpace</title>
+  <defs>
+    <radialGradient id="beere" cx="38%" cy="36%" r="70%">
+      <stop offset="0" stop-color="#6a5a9c"/>
+      <stop offset=".45" stop-color="#2f2552"/>
+      <stop offset="1" stop-color="#140f26"/>
+    </radialGradient>
+    <linearGradient id="blatt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5f9a5c"/>
+      <stop offset="1" stop-color="#2f6236"/>
+    </linearGradient>
+  </defs>
+  <!-- Stiel und zwei schmale, spitze Myrtenblätter -->
+  <path d="M33 16 C35 11 38 8 42 6" fill="none" stroke="#4a5a34" stroke-width="2" stroke-linecap="round"/>
+  <path d="M41 7 C47 3 56 4 60 7 C55 11 46 12 41 7 Z" fill="url(#blatt)"/>
+  <path d="M41 7 C51 6 55 7 59 7" fill="none" stroke="#a9cf98" stroke-width=".7" opacity=".7"/>
+  <path d="M39 9 C38 2 31 -1 26 1 C27 6 33 10 39 9 Z" fill="url(#blatt)" transform="rotate(-8 39 9)"/>
+  <!-- Beere: oval, blauschwarz, mit leichtem Wachsreif -->
+  <ellipse cx="32" cy="39" rx="17" ry="21" fill="url(#beere)"/>
+  <ellipse cx="25" cy="31" rx="5" ry="8" fill="#ffffff" opacity=".16" transform="rotate(-18 25 31)"/>
+  <!-- Kelchkrönchen oben -->
+  <g fill="#3a2c4f" stroke="#140f26" stroke-width=".6" stroke-linejoin="round">
+    <path d="M32 21 L27 13 L30.5 19 Z"/>
+    <path d="M32 21 L37 13 L33.5 19 Z"/>
+    <path d="M32 21 L23.5 17 L29.5 20.5 Z"/>
+    <path d="M32 21 L40.5 17 L34.5 20.5 Z"/>
+  </g>
+  <circle cx="32" cy="20.5" r="2.4" fill="#4b3a5e" stroke="#140f26" stroke-width=".6"/>
+</svg>

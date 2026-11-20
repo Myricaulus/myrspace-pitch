@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17122a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
+<title>MyrSpace</title>
+<meta name="description" content="Dein eigener Raum für Geräte, Apps und KI: Die KI darf arbeiten, du besiegelst mit dem Finger, und nichts davon hängt an fremden Rechenzentren.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MyrSpace">
+<meta property="og:title" content="MyrSpace">
+<meta property="og:description" content="Dein eigener Raum für Geräte, Apps und KI. Die KI darf arbeiten, du besiegelst mit dem Finger.">
+<meta property="og:url" content="%MYR_URL%/">
+<meta property="og:image" content="%MYR_URL%/vorschau.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="myrte.svg">
+<script>
+  // Vor dem ersten Bild: JS-Klasse und gemerktes Thema setzen, damit nichts flackert.
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('myr-pitch-thema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>
+/* ── Farben: Morgen im Hain (hell) ─────────────────────────────── */
+:root {
+  color-scheme: light;
+  --grund: #f7f4ee; --nebel: #ece6f6;
+  --himmel-oben: #e6def4; --himmel-mitte: #efe8f3; --himmel-unten: #f9efe9;
+  --licht: rgba(255, 205, 160, .55);
+  --fern1: #ddd4ef; --fern2: #d3e2cb;
+  --mitte1: #b4cfa6; --mitte2: #9cc08a; --huegel: #86b574;
+  --haus: #6a5a9c; --haus2: #5a4b8a; --gitter: #4a3d78;
+  --fenster: #ffcf73; --glut-farbe: #ffb85c; --glut-op: .38;
+  --blatt1: #4f8a4e; --blatt2: #2f6236; --blatt3: #7fb36a; --rippe: rgba(240, 250, 230, .35); --stiel: #4a5a34;
+  --beere-licht: #7a6aae; --beere-mitte: #2f2552; --beere-dunkel: #17122a; --krone: #2f2552;
+  --tx: #2f2552; --tx2: #2f6236; --tx3: #6a5a9c;
+  --neon: #3f9a4a; --neon-glut: rgba(90, 190, 90, .45);
+  --panel: rgba(247, 244, 238, .80); --panel-rand: rgba(106, 90, 156, .18);
+  --stern: 0; --mond: 0; --sonne: 1;
+  --funke: rgba(106, 90, 156, .55); --funke-glut: rgba(255, 255, 255, .0);
+  --netz-op: .16; --netz-a: #6a5a9c; --netz-b: #4f8a4e;
+  --knopf: #2f2552; --knopf-tx: #f5f3ee;
+  --gut: #2f6236; --mark: #2f6236; --mark-glut: none;
+  --kz: #2850c8; --cp: #c4164f; --cp-glut: transparent;
+}
+/* ── Farben: Nacht im Hain (dunkel) ────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --grund: #17122a; --nebel: #140f26;
+    --himmel-oben: #110c20; --himmel-mitte: #1d1638; --himmel-unten: #3b2d69;
+    --licht: rgba(184, 168, 238, .28);
+    --fern1: #352a62; --fern2: #2b2252;
+    --mitte1: #221b42; --mitte2: #1d1739; --huegel: #181230;
+    --haus: #120e22; --haus2: #0f0b1d; --gitter: #120e22;
+    --fenster: #ffc867; --glut-farbe: #ffaa45; --glut-op: .6;
+    --blatt1: #3f7a4a; --blatt2: #2a5634; --blatt3: #5d9a5c; --rippe: rgba(190, 240, 180, .25); --stiel: #3b4a2c;
+    --beere-licht: #6a5a9c; --beere-mitte: #2f2552; --beere-dunkel: #0d0a18; --krone: #241c40;
+    --tx: #f5f3ee; --tx2: #b8a8ee; --tx3: #7fbf7c;
+    --neon: #86f08a; --neon-glut: rgba(120, 255, 130, .55);
+    --panel: rgba(20, 15, 38, .66); --panel-rand: rgba(184, 168, 238, .16);
+    --stern: 1; --mond: 1; --sonne: 0;
+    --funke: rgba(190, 255, 150, .9); --funke-glut: rgba(150, 255, 120, .6);
+    --netz-op: .22; --netz-a: #b8a8ee; --netz-b: #7fbf7c;
+    --knopf: #b8a8ee; --knopf-tx: #17122a;
+    --gut: #7fbf7c; --mark: #86f08a; --mark-glut: 0 0 14px rgba(120, 255, 130, .55);
+  --kz: #8fb0ff; --cp: #ff5c8a; --cp-glut: rgba(255, 70, 120, .6);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --grund: #17122a; --nebel: #140f26;
+  --himmel-oben: #110c20; --himmel-mitte: #1d1638; --himmel-unten: #3b2d69;
+  --licht: rgba(184, 168, 238, .28);
+  --fern1: #352a62; --fern2: #2b2252;
+  --mitte1: #221b42; --mitte2: #1d1739; --huegel: #181230;
+  --haus: #120e22; --haus2: #0f0b1d; --gitter: #120e22;
+  --fenster: #ffc867; --glut-farbe: #ffaa45; --glut-op: .6;
+  --blatt1: #3f7a4a; --blatt2: #2a5634; --blatt3: #5d9a5c; --rippe: rgba(190, 240, 180, .25); --stiel: #3b4a2c;
+  --beere-licht: #6a5a9c; --beere-mitte: #2f2552; --beere-dunkel: #0d0a18; --krone: #241c40;
+  --tx: #f5f3ee; --tx2: #b8a8ee; --tx3: #7fbf7c;
+  --neon: #86f08a; --neon-glut: rgba(120, 255, 130, .55);
+  --panel: rgba(20, 15, 38, .66); --panel-rand: rgba(184, 168, 238, .16);
+  --stern: 1; --mond: 1; --sonne: 0;
+  --funke: rgba(190, 255, 150, .9); --funke-glut: rgba(150, 255, 120, .6);
+  --netz-op: .22; --netz-a: #b8a8ee; --netz-b: #7fbf7c;
+  --knopf: #b8a8ee; --knopf-tx: #17122a;
+  --gut: #7fbf7c; --mark: #86f08a; --mark-glut: 0 0 14px rgba(120, 255, 130, .55);
+  --kz: #8fb0ff; --cp: #ff5c8a; --cp-glut: rgba(255, 70, 120, .6);
+}
+
+/* ── Grundgerüst ───────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; overflow-x: hidden;
+  background: var(--grund); color: var(--tx);
+  font: 16px/1.5 ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  transition: background-color .6s, color .6s;
+}
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+.unsichtbar { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── Hintergrund: Ebenen ───────────────────────────────────────── */
+.hg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.hg > * { position: absolute; will-change: transform; }
+.himmel { inset: 0; background: linear-gradient(to bottom, var(--himmel-oben) 0%, var(--himmel-mitte) 45%, var(--himmel-unten) 78%, var(--himmel-unten) 100%); transition: background .6s; }
+.himmel::after { content: ""; position: absolute; left: 50%; bottom: 18vh; width: 120vmax; height: 60vmax; transform: translateX(-50%);
+  background: radial-gradient(closest-side, var(--licht), transparent); }
+.sterne { inset: 0; width: 100%; height: 70%; opacity: var(--stern); transition: opacity .8s; }
+.sterne circle { fill: #f5f3ee; }
+.sterne .funkeln { animation: funkeln 3.5s ease-in-out infinite; }
+@keyframes funkeln { 50% { opacity: .2; } }
+.mond { top: 9vh; right: 12vw; width: clamp(44px, 9vw, 92px); aspect-ratio: 1; border-radius: 50%; opacity: var(--mond);
+  background: radial-gradient(circle at 38% 36%, #e9e2ff, #b8a8ee 60%, #8a7cc0);
+  box-shadow: 0 0 40px 10px rgba(184, 168, 238, .28); transition: opacity .8s; }
+.sonne { top: 22vh; left: 14vw; width: clamp(80px, 18vw, 200px); aspect-ratio: 1; border-radius: 50%; opacity: var(--sonne);
+  background: radial-gradient(circle, rgba(255, 236, 205, .95), rgba(255, 210, 170, .5) 45%, transparent 70%); transition: opacity .8s; }
+.hg-netz { inset: -10%; width: 120%; height: 120%; opacity: var(--netz-op); }
+.hg-netz g { animation: treiben 70s ease-in-out infinite alternate; }
+.hg-netz line { stroke: var(--netz-a); stroke-width: 1.2; }
+.hg-netz .ka { fill: var(--netz-a); } .hg-netz .kb { fill: var(--netz-b); }
+@keyframes treiben { from { transform: translate(0, 0); } to { transform: translate(-60px, 30px); } }
+.ebene { left: 0; right: 0; bottom: 0; height: 58vh; }
+.ebene svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ebene::after { content: ""; position: absolute; left: 0; right: 0; top: 99.5%; height: 60vh; }
+.e-fern::after { background: var(--fern2); }
+.e-mitte::after { background: var(--huegel); }
+.fern1 { fill: var(--fern1); } .fern2 { fill: var(--fern2); }
+.mitte1 { fill: var(--mitte1); } .mitte2 { fill: var(--mitte2); } .huegel { fill: var(--huegel); }
+.haus { fill: var(--haus); } .haus2 { fill: var(--haus2); }
+.gitter { fill: none; stroke: var(--gitter); stroke-width: 2.4; }
+.fenster { fill: var(--fenster); }
+.glut { fill: url(#glut-verlauf); }
+.gl1 { stop-color: var(--glut-farbe); stop-opacity: var(--glut-op); } .gl2 { stop-color: var(--glut-farbe); stop-opacity: 0; }
+.flackern { animation: flackern 6s steps(1) infinite; }
+.flackern.b { animation-duration: 9s; animation-delay: -3s; }
+@keyframes flackern { 0%, 100% { opacity: 1; } 47% { opacity: .55; } 49% { opacity: 1; } 83% { opacity: .75; } 85% { opacity: 1; } }
+.antennenlicht { fill: #ff4a5e; animation: blinken 2.2s ease-in-out infinite; }
+@keyframes blinken { 0%, 60%, 100% { opacity: .25; } 70%, 85% { opacity: 1; } }
+.ecke, .zweig { position: absolute; }
+.ecke { bottom: -2px; width: clamp(170px, 34vw, 460px); }
+.ecke.links { left: -10px; } .ecke.rechts { right: -10px; }
+.ecke svg, .zweig svg { display: block; width: 100%; height: auto; overflow: visible; }
+.zweig { top: -6px; right: -4px; width: clamp(130px, 26vw, 330px); }
+.bl1 { fill: var(--blatt1); } .bl2 { fill: var(--blatt2); } .bl3 { fill: var(--blatt3); }
+.rippe { fill: none; stroke: var(--rippe); stroke-width: 1.2; stroke-linecap: round; }
+.stiel { fill: none; stroke: var(--stiel); stroke-linecap: round; }
+.krone { fill: var(--krone); }
+.bv1 { stop-color: var(--beere-licht); } .bv2 { stop-color: var(--beere-mitte); } .bv3 { stop-color: var(--beere-dunkel); }
+.wiegen { transform-box: fill-box; animation: wiegen 7s ease-in-out infinite alternate; }
+.e-vorn .rechts .wiegen { animation-duration: 8.5s; animation-delay: -2s; }
+.zweig .wiegen { transform-origin: 100% 0; animation-duration: 9s; }
+.ecke.links .wiegen { transform-origin: 0 100%; }
+.ecke.rechts .wiegen { transform-origin: 100% 100%; }
+@keyframes wiegen { from { transform: rotate(-1.2deg); } to { transform: rotate(1.4deg); } }
+.funken { inset: 0; }
+.funken i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--funke); box-shadow: 0 0 10px 3px var(--funke-glut);
+  animation: schweben var(--d, 14s) ease-in-out var(--v, 0s) infinite alternate; }
+@keyframes schweben {
+  0% { transform: translate(0, 0); opacity: .2; }
+  30% { opacity: 1; }
+  50% { transform: translate(var(--x1), var(--y1)); }
+  70% { opacity: .35; }
+  100% { transform: translate(var(--x2), var(--y2)); opacity: .9; }
+}
+/* Der Hintergrund dreht mit dem Revolver */
+.sicht-schicht { inset: 0; opacity: 0; transition: opacity .9s ease; }
+.s-warm { background: radial-gradient(60% 45% at 50% 100%, rgba(255, 190, 110, .22), transparent 70%); }
+.s-raster {
+  background-image:
+    linear-gradient(rgba(140, 170, 255, .16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 170, 255, .16) 1px, transparent 1px),
+    linear-gradient(rgba(140, 170, 255, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 170, 255, .07) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 85%);
+}
+.s-rot { background: radial-gradient(60% 75% at 0% 55%, rgba(224, 54, 90, .5), transparent 70%); }
+.s-blau { background: radial-gradient(60% 75% at 100% 55%, rgba(58, 109, 240, .5), transparent 70%); }
+body[data-sicht="sicherheit"] .s-rot, body[data-sicht="sicherheit"] .s-blau { opacity: .4; }
+body[data-sicht="anwender"] .s-warm,
+body[data-sicht="bastler"] .s-raster,
+body[data-sicht="sicherheit"][data-wer="cyberpunk"] .s-rot,
+body[data-sicht="sicherheit"][data-wer="konzerner"] .s-blau { opacity: 1; }
+
+/* ── Kopfzeile ─────────────────────────────────────────────────── */
+.kopf { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between;
+  padding: max(14px, env(safe-area-inset-top)) 16px 0; max-width: 1120px; margin: 0 auto; }
+.marke { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; letter-spacing: -.01em; text-decoration: none; }
+.marke svg { width: 30px; height: 30px; }
+.thema { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--panel-rand); background: var(--panel);
+  border-radius: 999px; padding: 6px 12px 6px 8px; cursor: pointer; font-size: 14px; font-weight: 600;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.thema svg { width: 20px; height: 20px; }
+.thema .ic-mond { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .thema .ic-mond { display: block; } :root:not([data-theme="light"]) .thema .ic-sonne { display: none; } }
+:root[data-theme="dark"] .thema .ic-mond { display: block; } :root[data-theme="dark"] .thema .ic-sonne { display: none; }
+
+/* ── Bühne ─────────────────────────────────────────────────────── */
+main { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; padding: 8px 16px 110px; }
+.buehne { display: grid; justify-items: center; gap: 14px; padding-top: 6px; }
+.anreisser { margin: 4px 0 0; font-size: clamp(22px, 6vw, 34px); font-weight: 800; letter-spacing: -.02em; text-align: center; }
+.anreisser span { color: var(--tx3); display: block; }
+
+/* Das Handy */
+.handy-platz { position: relative; display: grid; place-items: center; }
+.handy {
+  position: relative; width: clamp(228px, 66vw, 286px); aspect-ratio: 10 / 19.2;
+  border-radius: 42px; padding: 11px;
+  background: linear-gradient(145deg, #4a3d78, #1a1430 40%, #0c0918);
+  box-shadow: inset 0 0 0 1.5px rgba(184, 168, 238, .45), 0 30px 60px -20px rgba(15, 8, 40, .65), 0 0 0 1px rgba(0, 0, 0, .3);
+  transform: rotate(-4deg); animation: schaukeln 6s ease-in-out infinite alternate;
+}
+@keyframes schaukeln { from { transform: rotate(-4deg) translateY(0); } to { transform: rotate(-2deg) translateY(-8px); } }
+/* Über dem Handy wird der Mauszeiger zum Finger: man soll drauftippen */
+.handy, .handy * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='13' cy='4.5' r='3.6' fill='%2386f08a' opacity='.45'/%3E%3Cpath d='M13 2.5c-1.4 0-2.5 1.1-2.5 2.5v11.2l-1.6-1.6c-1-1-2.6-1-3.5 0-.9.9-.9 2.3-.1 3.3l5.2 6.6c1.3 1.6 3.2 2.5 5.3 2.5h4.2c3.6 0 6.5-2.9 6.5-6.5v-5.6c0-1.3-1.1-2.4-2.4-2.4-.5 0-1 .2-1.4.4-.3-1-1.2-1.7-2.3-1.7-.6 0-1.1.2-1.5.5-.4-.8-1.2-1.4-2.2-1.4-.4 0-.8.1-1.2.3V5c0-1.4-1.1-2.5-2.5-2.5z' fill='%23f5f3ee' stroke='%232f2552' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 13 3, pointer; }
+/* Für Touch (kein Mauszeiger): eine Hand zeigt, wohin man tippt */
+.tipp-hand { position: absolute; left: 50%; top: 41px; width: 46px; height: 46px; margin: -4px 0 0 -19px; pointer-events: none; z-index: 2;
+  opacity: 0; transition: opacity .4s; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .45)); }
+.tipp-hand.zeigt { opacity: 1; animation: tippen 1.7s ease-in-out infinite; }
+@keyframes tippen {
+  0% { transform: translate(18px, 26px); opacity: 0; }
+  20% { opacity: 1; }
+  42%, 50% { transform: translate(0, 0) scale(1); }
+  56% { transform: translate(0, 0) scale(.86); }
+  64% { transform: translate(0, 0) scale(1); }
+  85% { opacity: 1; }
+  100% { transform: translate(18px, 26px); opacity: 0; }
+}
+.handy::before { content: ""; position: absolute; top: 18px; left: 50%; width: 30%; height: 20px; transform: translateX(-50%);
+  background: #07050e; border-radius: 12px; z-index: 3; }
+.bildschirm {
+  position: relative; height: 100%; border-radius: 32px; overflow: hidden;
+  background: radial-gradient(120% 70% at 50% 100%, #2a2150 0%, #1a1433 55%, #120d24 100%);
+  color: #f5f3ee; display: flex; flex-direction: column;
+}
+.statuszeile { display: flex; justify-content: space-between; padding: 12px 22px 0; font-size: 12px; font-weight: 700; opacity: .85; }
+.statuszeile .icons { display: flex; gap: 4px; align-items: center; }
+.statuszeile .icons i { display: block; width: 3px; background: #f5f3ee; border-radius: 1px; }
+.szene { flex: 1; display: flex; flex-direction: column; padding: 30px 16px 16px; transition: transform .45s cubic-bezier(.3, .8, .3, 1), opacity .35s; }
+.szene.raus { transform: translateX(-30%); opacity: 0; }
+.szene.rein { transform: translateX(30%); opacity: 0; transition: none; }
+.ort { align-self: center; display: inline-flex; gap: 6px; align-items: center; font-size: 11.5px; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px; background: rgba(184, 168, 238, .14); color: #d9cff0; }
+.ort svg { width: 12px; height: 12px; }
+.frage { margin: 12px 0 0; font-size: clamp(17px, 4.9vw, 20px); line-height: 1.22; font-weight: 800; text-align: center; letter-spacing: -.01em; }
+.bild { flex: 1; display: grid; place-items: center; padding: 8px 0; min-height: 0; }
+
+/* Siegel: der Finger */
+.siegel { position: relative; display: grid; justify-items: center; gap: 6px; }
+.finger {
+  position: relative; width: 82px; height: 82px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+  background: radial-gradient(circle, rgba(134, 240, 138, .14), rgba(134, 240, 138, .03) 65%, transparent 70%);
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.finger:focus-visible { outline: 3px solid #b8a8ee; outline-offset: 4px; }
+.finger svg { width: 100%; height: 100%; overflow: visible; }
+.finger .linien path { fill: none; stroke: #6a8f6e; stroke-width: 2.6; stroke-linecap: round; transition: stroke .25s; }
+.finger .ring-grund { fill: none; stroke: rgba(134, 240, 138, .18); stroke-width: 3; }
+.finger .ring { fill: none; stroke: #86f08a; stroke-width: 3.2; stroke-linecap: round; stroke-dasharray: 189; stroke-dashoffset: 189;
+  transform: rotate(-90deg); transform-origin: 32px 32px; filter: drop-shadow(0 0 4px rgba(120, 255, 130, .8)); }
+.finger .haken { fill: none; stroke: #86f08a; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 40;
+  filter: drop-shadow(0 0 5px rgba(120, 255, 130, .9)); }
+.finger::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid rgba(134, 240, 138, .55);
+  animation: puls 1.8s ease-out infinite; }
+@keyframes puls { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
+.finger.liest .linien path { stroke: #86f08a; filter: drop-shadow(0 0 3px rgba(120, 255, 130, .8)); }
+.finger.liest .linien path:nth-child(odd) { transition-delay: .15s; }
+.finger.liest .ring { stroke-dashoffset: 0; transition: stroke-dashoffset .75s cubic-bezier(.5, 0, .3, 1); }
+.finger.liest::after, .finger.fertig::after { animation: none; opacity: 0; }
+.finger.fertig .linien { opacity: .18; transition: opacity .3s; }
+.finger.fertig .ring { stroke-dashoffset: 0; }
+.finger.fertig .haken { stroke-dashoffset: 0; transition: stroke-dashoffset .35s .05s ease-out; }
+.finger-text { font-size: 12px; font-weight: 700; color: #b8d9b4; letter-spacing: .01em; min-height: 18px; }
+
+/* Szene 1: 2FA */
+.code { display: flex; gap: 5px; }
+.code span { width: 30px; height: 40px; border-radius: 9px; display: grid; place-items: center; font-size: 21px; font-weight: 800;
+  background: rgba(245, 243, 238, .07); border: 1.5px solid rgba(184, 168, 238, .35); transition: border-color .3s, background .3s; }
+.code span:nth-child(3) { margin-right: 6px; }
+.code span.drin { animation: plopp .3s cubic-bezier(.3, 1.8, .5, 1); }
+.code.ok span { border-color: #86f08a; background: rgba(134, 240, 138, .1); }
+@keyframes plopp { from { transform: scale(.4) translateY(10px); } }
+.klein { font-size: 11.5px; color: #c7bde8; margin-top: 10px; text-align: center; transition: color .3s; }
+.klein.ok { color: #86f08a; font-weight: 700; }
+.mitte-stapel { display: grid; justify-items: center; }
+
+/* Szene 2: WLAN */
+.wlan-karte { display: grid; justify-items: center; gap: 8px; }
+.wlan-karte svg.wifi { width: 56px; height: 44px; }
+.wifi path { fill: none; stroke: #b8a8ee; stroke-width: 5; stroke-linecap: round; }
+.zettel { background: #f3ecd2; color: #4a3b2a; font: 600 12px/1.3 ui-monospace, monospace; padding: 8px 10px; border-radius: 3px; transform: rotate(3deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .35); }
+.zettel s { opacity: .55; }
+.qr { width: 132px; height: 132px; padding: 8px; background: #f5f3ee; border-radius: 12px; animation: aufgehen .5s cubic-bezier(.3, 1.6, .5, 1); }
+.qr svg { width: 100%; height: 100%; display: block; }
+@keyframes aufgehen { from { transform: scale(.2) rotate(-20deg); opacity: 0; } }
+
+/* Szene 3: fremder Rechner */
+.rechner { width: 100%; max-width: 210px; }
+.rechner .schirm { background: #e9e4f5; color: #2f2552; border-radius: 8px 8px 2px 2px; border: 5px solid #3a3060; padding: 10px 10px 12px; }
+.rechner .fuss { height: 7px; margin: 0 -10px; background: #3a3060; border-radius: 0 0 8px 8px; }
+.rechner .titel { font-size: 11px; font-weight: 800; margin-bottom: 6px; }
+.feld { display: flex; align-items: center; height: 24px; border-radius: 5px; background: #fff; border: 1.5px solid #c9c0e6; margin-top: 5px; padding: 0 7px;
+  font-size: 11px; color: #6a5a9c; overflow: hidden; white-space: nowrap; }
+.feld .punkte { letter-spacing: 1px; color: #2f2552; font-weight: 900; }
+.cursor { width: 1.5px; height: 13px; background: #2f2552; margin-left: 1px; animation: blinken2 1s steps(1) infinite; }
+@keyframes blinken2 { 50% { opacity: 0; } }
+.anmelden { margin-top: 7px; text-align: center; font-size: 11px; font-weight: 800; border-radius: 5px; padding: 4px; background: #6a5a9c; color: #fff; transition: background .3s; }
+.anmelden.ok { background: #3f7a4a; }
+
+/* Szene 4: Komm essen */
+.monitor { position: relative; width: 100%; max-width: 210px; aspect-ratio: 16 / 10; border-radius: 8px; border: 5px solid #3a3060; overflow: hidden;
+  background: linear-gradient(#20305a, #3b2d69); }
+.monitor::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 18%; background: repeating-linear-gradient(90deg, #5d9a5c 0 14px, #3f7a4a 14px 28px);
+  animation: boden 1s linear infinite; }
+@keyframes boden { to { background-position: -28px 0; } }
+.spieler { position: absolute; left: 22%; bottom: 18%; width: 14px; height: 14px; background: #ffcf73; border-radius: 3px; box-shadow: inset -3px -3px 0 #e0a040;
+  animation: huepfen .9s cubic-bezier(.3, 0, .7, 1) infinite; }
+@keyframes huepfen { 50% { transform: translateY(-26px) rotate(90deg); } }
+.hindernis { position: absolute; bottom: 18%; width: 10px; height: 16px; background: #e0365a; border-radius: 2px 2px 0 0; animation: kommt 1.8s linear infinite; }
+.hindernis.b { animation-delay: -.9s; height: 11px; }
+@keyframes kommt { from { left: 105%; } to { left: -10%; } }
+.punktestand { position: absolute; top: 5px; right: 8px; font: 700 10px ui-monospace, monospace; color: #fff; opacity: .8; }
+.banner { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(20, 15, 38, .55); opacity: 0; transition: opacity .3s; }
+.banner b { background: #f5f3ee; color: #2f2552; font-size: 17px; font-weight: 900; padding: 6px 12px; border-radius: 10px; transform: scale(.3) rotate(-8deg);
+  transition: transform .45s cubic-bezier(.3, 1.8, .5, 1); box-shadow: 0 8px 18px rgba(0, 0, 0, .4); }
+.monitor.essen .banner { opacity: 1; }
+.monitor.essen .banner b { transform: scale(1) rotate(-3deg); }
+.zimmer { font-size: 11px; color: #c7bde8; margin-top: 8px; text-align: center; }
+
+/* Unter dem Handy */
+.unterzeile { display: grid; justify-items: center; gap: 12px; text-align: center; max-width: 34em; }
+.nerv { margin: 0; min-height: 3em; font-size: 16.5px; line-height: 1.45; color: var(--tx); padding: 10px 16px; border-radius: 16px;
+  background: var(--panel); border: 1px solid var(--panel-rand); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: color .3s; }
+.nerv.geschafft { color: var(--gut); font-weight: 700; }
+.noch-eins { display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer; border-radius: 999px; padding: 11px 22px;
+  background: var(--knopf); color: var(--knopf-tx); font-weight: 800; font-size: 17px; box-shadow: 0 6px 18px -6px rgba(47, 37, 82, .6);
+  transition: transform .15s; }
+.noch-eins[hidden] { display: none; }
+.noch-eins:hover { transform: translateY(-2px) rotate(-1deg); }
+.noch-eins:active { transform: scale(.96); }
+.noch-eins:focus-visible, .pfeil:focus-visible, .thema:focus-visible, .reiter a:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+.noch-eins svg { width: 18px; height: 18px; transition: transform .5s; }
+.noch-eins:hover svg { transform: rotate(180deg); }
+.noch-eins.lockt { animation: locken 1.6s ease-in-out infinite; }
+@keyframes locken { 0%, 100% { transform: none; } 10% { transform: rotate(-4deg) scale(1.04); } 20% { transform: rotate(4deg) scale(1.04); } 30% { transform: none; } }
+
+/* Kernbotschaft */
+.kern { margin: 22px auto 0; max-width: 40em; text-align: center; padding: 18px 18px 20px; border-radius: 22px;
+  background: var(--panel); border: 1px solid var(--panel-rand); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.2, .9, .3, 1); }
+.js .kern:not(.da) { opacity: 0; transform: translateY(18px); }
+.kern h1 { margin: 0; font-size: clamp(26px, 7vw, 44px); line-height: 1.08; letter-spacing: -.025em; font-weight: 850; }
+.kern p { margin: 10px 0 0; font-size: clamp(16.5px, 4.3vw, 20px); line-height: 1.45; }
+.kern mark { background: none; color: var(--mark); text-shadow: var(--mark-glut); font-weight: 800; }
+
+/* ── Die Weiche als Revolver ───────────────────────────────────── */
+.weiche { margin: 34px auto 0; display: grid; justify-items: center; text-align: center; max-width: 34em; }
+.weiche h2 { margin: 0; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--tx3); font-weight: 800; }
+.trommel-reihe { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.pfeil { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--panel-rand); background: var(--panel); cursor: pointer; display: grid; place-items: center;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: transform .15s; }
+.pfeil:active { transform: scale(.9); }
+.pfeil svg { width: 20px; height: 20px; }
+.pfeil path { fill: none; stroke: var(--tx); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.trommel { width: clamp(190px, 56vw, 250px); aspect-ratio: 1; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; outline: none; }
+.trommel:active { cursor: grabbing; }
+.trommel:focus-visible .zeiger-ring { stroke-width: 5; }
+.trommel svg { width: 100%; height: 100%; overflow: visible; }
+.mv1 { stop-color: #f1edf9; } .mv2 { stop-color: #b3a7da; } .mv3 { stop-color: #5e5090; }
+.kammer-loch { fill: #2a2148; stroke: #1a1430; stroke-width: 2; }
+.kammer-rand { fill: none; stroke: rgba(255, 255, 255, .35); stroke-width: 2; }
+.ikon { fill: #f5f3ee; }
+.ikon .zu { fill: none; stroke: #f5f3ee; stroke-width: 3.2; stroke-linecap: round; }
+.zeiger-ring { fill: none; stroke: var(--neon); stroke-width: 3.5; filter: drop-shadow(0 0 5px var(--neon-glut)); }
+.zeiger { fill: var(--neon); filter: drop-shadow(0 0 4px var(--neon-glut)); }
+.kreisel { fill: none; stroke: var(--neon); stroke-width: 3; stroke-linecap: round; opacity: .7; }
+.kreisel-dreh { animation: kreiseln 24s linear infinite; transform-origin: 0 0; }
+@keyframes kreiseln { to { transform: rotate(360deg); } }
+.ich-bin { margin-top: 12px; font-size: 19px; font-weight: 700; color: var(--tx); padding: 4px 18px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--panel-rand); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.sicht-name { position: relative; display: inline-grid; vertical-align: bottom; font-weight: 900; font-size: 28px; letter-spacing: -.02em; color: var(--tx); }
+.sicht-name > .wer { grid-area: 1 / 1; white-space: nowrap; }
+.wer.konzerner, .anriss b.kz { color: var(--kz); }
+.wer.cyberpunk, .anriss b.cp { color: var(--cp); text-shadow: 0 0 16px var(--cp-glut); }
+.blitz { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle, #fff 0 10%, var(--blitz) 28%, transparent 66%); }
+.ik-cp { opacity: 0; transition: opacity .25s; }
+.ik-kz { transition: opacity .25s; }
+body[data-wer="cyberpunk"] .ik-cp { opacity: 1; }
+body[data-wer="cyberpunk"] .ik-kz { opacity: 0; }
+.ik-kz path:first-of-type { fill: #d6e2ff; }
+.visier { fill: none; stroke: #ff5c8a; stroke-width: 2.6; stroke-linecap: round; filter: drop-shadow(0 0 3px #ff2a6a); }
+.sicht-name.links { animation: von-rechts .45s cubic-bezier(.2, 1.4, .4, 1); }
+.sicht-name.rechts { animation: von-links .45s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes von-rechts { from { transform: translateX(40px); opacity: 0; } }
+@keyframes von-links { from { transform: translateX(-40px); opacity: 0; } }
+.reiter { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+.reiter a { text-decoration: none; font-size: 14px; font-weight: 700; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--panel-rand); background: var(--panel); color: var(--tx2); }
+.reiter a[aria-current="true"] { background: var(--knopf); color: var(--knopf-tx); border-color: transparent; }
+.anriss { margin: 14px 0 0; padding: 12px 16px; border-radius: 16px; background: var(--panel); border: 1px solid var(--panel-rand);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 16.5px; }
+.js .anriss > p:not(.aktiv) { display: none; }
+.anriss p { margin: 0; }
+.anriss p + p { margin-top: 8px; }
+.js .anriss p + p { margin-top: 0; }
+.js .anriss p.aktiv ~ p.aktiv { margin-top: 6px; }
+.anriss b { color: var(--tx2); }
+.weiter { display: inline-block; margin-top: 16px; font-size: 14px; color: var(--tx2); text-decoration: none; font-weight: 600; }
+.weiter span { display: inline-block; animation: nicken 2s ease-in-out infinite; }
+@keyframes nicken { 50% { transform: translateY(4px); } }
+.fuss { margin: 40px auto 0; text-align: center; font-size: 13px; color: var(--tx2); max-width: 30em; }
+.fuss span { padding: 4px 10px; border-radius: 999px; background: var(--panel); border: 1px solid var(--panel-rand); }
+
+/* ── Abschnitte, die sich der Sicht anpassen (Platzhalter) ────── */
+.abschnitt { position: relative; max-width: 40em; margin: 56px auto 0; padding: 22px 20px 20px; border-radius: 22px;
+  background: var(--panel); border: 1px solid var(--panel-rand); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.abschnitt .kicker { margin: 0; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--tx3); font-weight: 800; }
+.platzhalter-marke { position: absolute; top: -11px; right: 16px; font-size: 12px; font-weight: 800; padding: 2px 10px; border-radius: 999px;
+  background: var(--knopf); color: var(--knopf-tx); }
+.platzhalter-bild { display: grid; place-items: center; text-align: center; aspect-ratio: 16 / 8; margin: 14px 0 4px; padding: 12px; border-radius: 16px;
+  border: 2px dashed var(--panel-rand); color: var(--tx2); font-size: 14px; font-weight: 600; }
+.je-sicht h3 { margin: 14px 0 0; font-size: clamp(21px, 5.6vw, 28px); line-height: 1.15; letter-spacing: -.015em; }
+.je-sicht p { margin: 8px 0 0; font-size: 16.5px; }
+.je-sicht > [data-sicht], .genauer > [data-sicht] { display: none; }
+body[data-sicht="anwender"] .je-sicht > [data-sicht="anwender"],
+body[data-sicht="bastler"] .je-sicht > [data-sicht="bastler"],
+body[data-sicht="sicherheit"] .je-sicht > [data-sicht="sicherheit"] { display: block; animation: auftauchen .45s ease both; }
+body[data-sicht="anwender"] .genauer > [data-sicht="anwender"],
+body[data-sicht="bastler"] .genauer > [data-sicht="bastler"],
+body[data-sicht="sicherheit"] .genauer > [data-sicht="sicherheit"] { display: inline; }
+@keyframes auftauchen { from { opacity: 0; transform: translateY(8px); } }
+html:not(.js) .je-sicht > [data-sicht] { display: block; }
+html:not(.js) .genauer, html:not(.js) .dock { display: none; }
+.genauer { margin-top: 14px; border: 0; background: none; padding: 4px 0; cursor: pointer; font-weight: 800; font-size: 16px; color: var(--gut);
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.genauer:focus-visible, .dock:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+
+/* Warum dezentral: Stern gegen Netz */
+.ausfall { margin: 12px 0 0; }
+.ausfall svg { display: block; width: 100%; height: auto; overflow: visible; }
+.k-stern, .k-netz { stroke: var(--netz-a); stroke-width: 2; opacity: .55; transition: opacity .6s, stroke .4s; }
+.k-netz { stroke: var(--tx3); }
+svg.netz .k-stern, svg.stern .k-netz { opacity: 0; }
+.knoten circle { fill: var(--grund); stroke: var(--tx3); stroke-width: 2.5; transition: fill .4s, stroke .4s, opacity .4s; }
+.knoten text { fill: var(--tx); font-size: 11.5px; font-weight: 700; text-anchor: middle; transition: opacity .4s; }
+.knoten .x, .zentrum .x { fill: none; stroke: #fff; stroke-width: 3.5; stroke-linecap: round; opacity: 0; transition: opacity .3s; }
+.zentrum { transform-origin: 180px 128px; transition: transform .6s cubic-bezier(.3, 1.4, .5, 1), opacity .4s; }
+.zentrum circle { fill: var(--knopf); stroke: var(--tx3); stroke-width: 3; transition: fill .3s, stroke .3s; }
+.zentrum text { fill: var(--knopf-tx); font-size: 12px; font-weight: 800; text-anchor: middle; transition: opacity .3s; }
+svg.netz .zentrum { transform: scale(0); opacity: 0; }
+svg.stern.ausgefallen .zentrum circle { fill: var(--cp); stroke: var(--cp); filter: drop-shadow(0 0 10px var(--cp)); }
+svg.stern.ausgefallen .zentrum .x { opacity: 1; }
+svg.stern.ausgefallen .zentrum text { opacity: 0; }
+svg.stern.ausgefallen .k-stern, svg.netz.ausgefallen .k-netz.am-nas { stroke: #8a8399; stroke-dasharray: 4 5; opacity: .45; }
+svg.stern.ausgefallen .knoten circle { fill: #8a8399; stroke: #8a8399; opacity: .5; }
+svg.stern.ausgefallen .knoten text { opacity: .45; }
+svg.netz .knoten circle { stroke: var(--neon); filter: drop-shadow(0 0 4px var(--neon-glut)); }
+svg.netz.ausgefallen .knoten.nas circle { fill: var(--cp); stroke: var(--cp); filter: drop-shadow(0 0 8px var(--cp)); }
+svg.netz.ausgefallen .knoten.nas .x { opacity: 1; }
+svg.netz.ausgefallen .knoten:not(.nas) circle { animation: leuchten 1.4s ease-in-out infinite alternate; }
+@keyframes leuchten { to { stroke-width: 4; filter: drop-shadow(0 0 9px var(--neon-glut)); } }
+.paket { fill: var(--neon); filter: drop-shadow(0 0 3px var(--neon-glut)); }
+.schalter-reihe { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; }
+.schalter-reihe .lbl { border: 0; background: none; padding: 4px 2px; cursor: pointer; font-weight: 800; font-size: 15px; color: var(--tx2); opacity: .6; transition: opacity .3s; }
+.schalter-reihe .lbl.an { opacity: 1; color: var(--tx); }
+.schalter { position: relative; width: 58px; height: 32px; border-radius: 999px; border: 0; padding: 0; cursor: pointer; background: var(--tx3); transition: background .3s; }
+.schalter::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .3); transition: transform .35s cubic-bezier(.3, 1.5, .5, 1); }
+.schalter[aria-checked="true"] { background: var(--blatt1); }
+.schalter[aria-checked="true"]::after { transform: translateX(26px); }
+.schalter:focus-visible, .schalter-reihe .lbl:focus-visible, .mehr summary:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+.ausfall-text { margin: 10px auto 0; text-align: center; font-size: 16px; font-weight: 700; min-height: 3em; max-width: 30em; transition: color .3s; }
+.ausfall-text.schlecht { color: var(--cp); } .ausfall-text.gut { color: var(--gut); }
+.mehr { margin-top: 10px; }
+.mehr summary { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; color: var(--tx3); list-style: none; padding: 4px 0; }
+.mehr summary::-webkit-details-marker { display: none; }
+.mehr summary::after { content: "▾"; transition: transform .3s; }
+.mehr[open] summary::after { transform: rotate(180deg); }
+.mehr .je-sicht p { margin: 10px 0 0; }
+.quellen { font-size: 13.5px; color: var(--tx2); }
+html:not(.js) .ausfall { display: none; }
+
+/* Angedockte Mini-Trommel: erscheint, sobald die große aus dem Bild ist */
+.dock { position: fixed; z-index: 20; right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: 8px; padding: 5px 16px 5px 5px; border-radius: 999px; cursor: pointer; text-align: left;
+  border: 1px solid var(--panel-rand); background: var(--panel); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: 0 10px 28px -10px rgba(15, 8, 40, .55); touch-action: pan-y; user-select: none; -webkit-user-select: none;
+  transform: translateX(calc(100% + 40px)); transition: transform .55s cubic-bezier(.3, 1.35, .5, 1); }
+.dock.zeigt { transform: none; }
+.dock:not(.zeigt) { pointer-events: none; }
+.dock-trommel { width: 54px; height: 54px; transition: transform .7s cubic-bezier(.3, 1.2, .5, 1); transform: rotate(-300deg); }
+.dock.zeigt .dock-trommel { transform: none; }
+.dock-trommel svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.dock-text { display: grid; line-height: 1.15; }
+.dock-text small { font-size: 11.5px; color: var(--tx2); font-weight: 600; }
+.dock-name { font-size: 17px; font-weight: 900; letter-spacing: -.01em; }
+.dock-name.konzerner { color: var(--kz); } .dock-name.cyberpunk { color: var(--cp); }
+
+/* Funken beim Besiegeln */
+.funkenflug { position: fixed; z-index: 50; pointer-events: none; width: 16px; height: 20px; margin: -10px 0 0 -8px; }
+.funkenflug svg { width: 100%; height: 100%; overflow: visible; }
+
+/* ── Breiter Bildschirm ────────────────────────────────────────── */
+@media (min-width: 880px) {
+  .buehne { grid-template-columns: auto minmax(0, 30em); grid-template-areas: "handy anreisser" "handy unter"; column-gap: 64px; align-items: center; justify-content: center; padding-top: 24px; }
+  .anreisser { grid-area: anreisser; align-self: end; text-align: left; justify-self: start; }
+  .handy-platz { grid-area: handy; }
+  .unterzeile { grid-area: unter; align-self: start; justify-self: start; justify-items: start; text-align: left; }
+  .handy { width: 300px; }
+}
+
+/* ── Bewegung reduzieren: alles steht still ────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
+  .handy { transform: rotate(-3deg); }
+}
+</style>
+</head>
+<body data-sicht="anwender">
+
+<!-- ═════ Hintergrund: Nacht bzw. Morgen im Myrtenhain, in Ebenen ═════ -->
+<div class="hg" aria-hidden="true">
+  <div class="himmel"></div>
+  <svg class="sterne" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMin slice"><!--gen:sterne--><circle cx="709.5" cy="270" r="1.1" opacity="0.8"/><circle cx="668" cy="480.3" r="1.3" opacity="0.5" class="funkeln" style="animation-delay:-0.4s"/><circle cx="747.2" cy="443.2" r="0.9" opacity="0.7"/><circle cx="141.3" cy="27.8" r="1.1" opacity="0.8"/><circle cx="589.6" cy="196.9" r="1.1" opacity="0.8"/><circle cx="942.7" cy="183.6" r="1.3" opacity="0.8"/><circle cx="587.6" cy="318.7" r="1.8" opacity="0.8"/><circle cx="734.4" cy="512.9" r="1.1" opacity="0.6"/><circle cx="1180.5" cy="379.7" r="1.3" opacity="0.9" class="funkeln" style="animation-delay:-1.1s"/><circle cx="325.6" cy="88.6" r="0.7" opacity="0.5" class="funkeln" style="animation-delay:-2.8s"/><circle cx="538.8" cy="67.5" r="0.7" opacity="0.6"/><circle cx="28.6" cy="361.4" r="0.9" opacity="0.9"/><circle cx="93.9" cy="143" r="0.9" opacity="0.8"/><circle cx="498.3" cy="185.3" r="0.7" opacity="0.4" class="funkeln" style="animation-delay:-0.4s"/><circle cx="13.3" cy="86.4" r="0.7" opacity="0.8"/><circle cx="615.6" cy="155.7" r="1.8" opacity="0.7"/><circle cx="894.4" cy="376.3" r="1.1" opacity="0.4"/><circle cx="1386.9" cy="52.2" r="0.7" opacity="0.6"/><circle cx="388.3" cy="172.5" r="0.7" opacity="0.9"/><circle cx="1196.7" cy="256.3" r="1.3" opacity="0.8" class="funkeln" style="animation-delay:-3.5s"/><circle cx="893.2" cy="145.5" r="0.7" opacity="0.6"/><circle cx="479.9" cy="491.6" r="1.3" opacity="0.4" class="funkeln" style="animation-delay:-1.1s"/><circle cx="893.5" cy="327.8" r="0.7" opacity="0.5" class="funkeln" style="animation-delay:-1.8s"/><circle cx="803.1" cy="95.4" r="1.8" opacity="0.8"/><circle cx="791.7" cy="96.8" r="0.9" opacity="0.6"/><circle cx="134.1" cy="391.9" r="1.3" opacity="0.4" class="funkeln" style="animation-delay:-2.4s"/><circle cx="291.4" cy="91.8" r="1.1" opacity="0.4"/><circle cx="373.6" cy="299.6" r="1.3" opacity="0.5"/><circle cx="849" cy="504.7" r="0.9" opacity="0.9"/><circle cx="276" cy="428.5" r="0.9" opacity="0.8"/><circle cx="1347.5" cy="57.7" r="0.7" opacity="0.8"/><circle cx="1036.6" cy="239.3" r="1.3" opacity="0.8"/><circle cx="767.4" cy="176.6" r="1.1" opacity="0.7"/><circle cx="317.8" cy="205.6" r="1.8" opacity="0.7"/><circle cx="783.6" cy="322.7" r="1.1" opacity="0.6"/><circle cx="1460.6" cy="135.4" r="0.9" opacity="0.8" class="funkeln" style="animation-delay:-0.8s"/><circle cx="46.4" cy="513.1" r="1.3" opacity="0.9" class="funkeln" style="animation-delay:-1.7s"/><circle cx="36.5" cy="407.9" r="1.8" opacity="0.8"/><circle cx="433.7" cy="362.1" r="1.1" opacity="0.9"/><circle cx="1490.6" cy="85.3" r="1.8" opacity="0.6"/><circle cx="773.1" cy="92.6" r="1.8" opacity="0.4"/><circle cx="1115.9" cy="364.8" r="1.1" opacity="0.9" class="funkeln" style="animation-delay:-3s"/><circle cx="798.9" cy="25.3" r="1.1" opacity="0.6"/><circle cx="588.4" cy="383.9" r="0.7" opacity="0.6"/><circle cx="1101.5" cy="491.9" r="1.8" opacity="0.6"/><circle cx="538.1" cy="202.6" r="1.1" opacity="0.5" class="funkeln" style="animation-delay:-1s"/><circle cx="661.8" cy="166" r="1.1" opacity="0.5"/><circle cx="1470.8" cy="358.3" r="1.3" opacity="0.6" class="funkeln" style="animation-delay:-2.9s"/><circle cx="386.7" cy="301.7" r="1.1" opacity="0.9"/><circle cx="1235" cy="423.7" r="0.9" opacity="0.9"/><circle cx="391.8" cy="270" r="1.3" opacity="0.5"/><circle cx="1485" cy="128.5" r="0.9" opacity="0.4"/><circle cx="923.5" cy="227.9" r="1.3" opacity="0.6" class="funkeln" style="animation-delay:-0.5s"/><circle cx="506.2" cy="217.4" r="0.7" opacity="0.7"/><circle cx="665.4" cy="395.3" r="1.8" opacity="0.4" class="funkeln" style="animation-delay:-2.4s"/><circle cx="920.7" cy="117.2" r="0.9" opacity="0.6"/><circle cx="1341.6" cy="15.2" r="0.7" opacity="0.4" class="funkeln" style="animation-delay:-2.1s"/><circle cx="445.1" cy="60.4" r="1.8" opacity="0.9"/><circle cx="1252.1" cy="359" r="1.8" opacity="0.5"/><circle cx="1049.7" cy="10" r="1.8" opacity="0.7" class="funkeln" style="animation-delay:-0.6s"/><circle cx="1117.4" cy="82" r="1.1" opacity="0.7"/><circle cx="1218.4" cy="107.9" r="0.7" opacity="0.4" class="funkeln" style="animation-delay:-1.8s"/><circle cx="189.2" cy="250.1" r="1.8" opacity="0.6" class="funkeln" style="animation-delay:-3.2s"/><circle cx="1505.4" cy="25.9" r="1.8" opacity="0.7" class="funkeln" style="animation-delay:-0.8s"/><circle cx="744.7" cy="13.5" r="1.1" opacity="0.9"/><circle cx="978.8" cy="120.7" r="0.7" opacity="0.7"/><circle cx="539.9" cy="80.8" r="1.3" opacity="0.9" class="funkeln" style="animation-delay:-2.1s"/><circle cx="418.7" cy="24.7" r="0.9" opacity="0.6"/><circle cx="527.8" cy="453.8" r="1.1" opacity="0.5"/><circle cx="267.3" cy="391.9" r="1.1" opacity="0.8"/><circle cx="11.9" cy="422.9" r="1.1" opacity="0.6"/><circle cx="270.9" cy="445.6" r="0.9" opacity="0.5" class="funkeln" style="animation-delay:-0.4s"/><circle cx="20.3" cy="371.3" r="1.8" opacity="0.8"/><circle cx="1113.6" cy="189.1" r="1.3" opacity="0.9" class="funkeln" style="animation-delay:-0s"/><circle cx="757.4" cy="495" r="0.9" opacity="0.6" class="funkeln" style="animation-delay:-0.3s"/><circle cx="1504.5" cy="313.4" r="0.9" opacity="0.6"/><circle cx="397.6" cy="444.1" r="1.3" opacity="0.4"/><circle cx="417.6" cy="150.5" r="1.1" opacity="0.4"/><circle cx="208.3" cy="256.4" r="0.7" opacity="0.4"/><circle cx="351.8" cy="455" r="1.3" opacity="0.4"/><circle cx="250.8" cy="49.2" r="1.1" opacity="0.6"/><circle cx="351" cy="30.6" r="1.1" opacity="0.4"/><circle cx="462.8" cy="256.2" r="1.8" opacity="0.7"/><circle cx="408.8" cy="443.3" r="1.8" opacity="0.4" class="funkeln" style="animation-delay:-2.7s"/><circle cx="523.7" cy="333.8" r="1.8" opacity="0.8" class="funkeln" style="animation-delay:-0.8s"/><circle cx="713.1" cy="131.3" r="1.1" opacity="0.6"/><circle cx="1522.2" cy="210.7" r="0.7" opacity="0.4" class="funkeln" style="animation-delay:-2.2s"/><circle cx="1428.8" cy="207.4" r="1.8" opacity="0.7"/><circle cx="736.6" cy="79.4" r="0.7" opacity="0.7" class="funkeln" style="animation-delay:-2.4s"/><circle cx="1466.2" cy="120.8" r="0.7" opacity="0.9"/><!--/gen:sterne--></svg>
+  <div class="sonne"></div>
+  <div class="mond"></div>
+  <svg class="hg-netz" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice"><g><!--gen:netz--><line x1="1523.5" y1="383.7" x2="1431.8" y2="564.4"/><line x1="1523.5" y1="383.7" x2="1171.4" y2="519.7"/><line x1="116.6" y1="132.9" x2="443" y2="156"/><line x1="116.6" y1="132.9" x2="447.4" y2="120.2"/><line x1="822.3" y1="639.3" x2="789.5" y2="706.8"/><line x1="822.3" y1="639.3" x2="877.9" y2="440.8"/><line x1="707" y1="219.5" x2="728.2" y2="303.6"/><line x1="707" y1="219.5" x2="741.5" y2="68.9"/><line x1="1096.7" y1="776" x2="1152.9" y2="838.9"/><line x1="1096.7" y1="776" x2="1148.1" y2="683.9"/><line x1="846.3" y1="934.3" x2="954.7" y2="860.4"/><line x1="846.3" y1="934.3" x2="789.5" y2="706.8"/><line x1="289.4" y1="778.9" x2="250.5" y2="770.1"/><line x1="289.4" y1="778.9" x2="363.5" y2="579.1"/><line x1="741.5" y1="68.9" x2="728.2" y2="303.6"/><line x1="518.1" y1="834.9" x2="576.5" y2="818.3"/><line x1="289.4" y1="778.9" x2="518.1" y2="834.9"/><line x1="443" y1="156" x2="447.4" y2="120.2"/><line x1="443" y1="156" x2="491" y2="378.3"/><line x1="1148.1" y1="683.9" x2="1152.9" y2="838.9"/><line x1="1431.8" y1="564.4" x2="1171.4" y2="519.7"/><line x1="1146.2" y1="400.8" x2="1171.4" y2="519.7"/><line x1="1146.2" y1="400.8" x2="877.9" y2="440.8"/><line x1="250.5" y1="770.1" x2="363.5" y2="579.1"/><line x1="1148.1" y1="683.9" x2="1171.4" y2="519.7"/><line x1="1146.2" y1="400.8" x2="1187.9" y2="72.4"/><line x1="741.5" y1="68.9" x2="1187.9" y2="72.4"/><line x1="524.4" y1="428.7" x2="491" y2="378.3"/><line x1="524.4" y1="428.7" x2="363.5" y2="579.1"/><line x1="789.5" y1="706.8" x2="954.7" y2="860.4"/><line x1="491" y1="378.3" x2="447.4" y2="120.2"/><line x1="1096.7" y1="776" x2="954.7" y2="860.4"/><line x1="789.5" y1="706.8" x2="576.5" y2="818.3"/><line x1="728.2" y1="303.6" x2="877.9" y2="440.8"/><circle class="kb" cx="1523.5" cy="383.7" r="4.7"/><circle class="ka" cx="116.6" cy="132.9" r="3.7"/><circle class="ka" cx="822.3" cy="639.3" r="4.8"/><circle class="kb" cx="707" cy="219.5" r="4.7"/><circle class="ka" cx="1096.7" cy="776" r="4.6"/><circle class="ka" cx="846.3" cy="934.3" r="4.3"/><circle class="kb" cx="289.4" cy="778.9" r="5.9"/><circle class="ka" cx="741.5" cy="68.9" r="3.9"/><circle class="ka" cx="518.1" cy="834.9" r="5.9"/><circle class="kb" cx="443" cy="156" r="5"/><circle class="ka" cx="1148.1" cy="683.9" r="4"/><circle class="ka" cx="1431.8" cy="564.4" r="3.9"/><circle class="kb" cx="1146.2" cy="400.8" r="4.1"/><circle class="ka" cx="1152.9" cy="838.9" r="5.4"/><circle class="ka" cx="250.5" cy="770.1" r="4.6"/><circle class="kb" cx="1171.4" cy="519.7" r="5.1"/><circle class="ka" cx="1187.9" cy="72.4" r="5"/><circle class="ka" cx="524.4" cy="428.7" r="4.5"/><circle class="kb" cx="491" cy="378.3" r="4.3"/><circle class="ka" cx="789.5" cy="706.8" r="5.2"/><circle class="ka" cx="447.4" cy="120.2" r="5.8"/><circle class="kb" cx="954.7" cy="860.4" r="4.7"/><circle class="ka" cx="576.5" cy="818.3" r="3.5"/><circle class="ka" cx="363.5" cy="579.1" r="3.5"/><circle class="kb" cx="728.2" cy="303.6" r="5"/><circle class="ka" cx="877.9" cy="440.8" r="5"/><!--/gen:netz--></g></svg>
+  <div class="sicht-schicht s-warm"></div>
+  <div class="sicht-schicht s-raster"></div>
+  <div class="sicht-schicht s-rot"></div>
+  <div class="sicht-schicht s-blau"></div>
+
+  <div class="ebene e-fern" data-tiefe="0.06">
+    <svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice"><!--gen:fern--><rect class="fern1" x="-40" y="410" width="1680" height="190"/><ellipse class="fern1" cx="-40" cy="351.6" rx="12.9" ry="72.9"/><ellipse class="fern1" cx="-4.4" cy="347.2" rx="19.7" ry="18.1"/><ellipse class="fern1" cx="8.9" cy="337.3" rx="19.9" ry="22.3"/><ellipse class="fern1" cx="-13.7" cy="348.6" rx="24" ry="22.2"/><rect class="fern1" x="-15.1" y="346.6" width="33.9" height="65.4"/><ellipse class="fern1" cx="24.6" cy="342.3" rx="22" ry="23.6"/><ellipse class="fern1" cx="21.6" cy="328.3" rx="24.4" ry="23.2"/><ellipse class="fern1" cx="44.3" cy="336.6" rx="30.9" ry="21.3"/><rect class="fern1" x="19.7" y="336.1" width="38.9" height="75.9"/><ellipse class="fern1" cx="79.8" cy="307.4" rx="25.2" ry="28.3"/><ellipse class="fern1" cx="95.4" cy="309.6" rx="25.8" ry="27"/><ellipse class="fern1" cx="63.3" cy="301.9" rx="32.5" ry="23.2"/><rect class="fern1" x="59.2" y="313.4" width="45.2" height="98.6"/><ellipse class="fern1" cx="114.6" cy="304.4" rx="31.8" ry="28.3"/><ellipse class="fern1" cx="111.9" cy="297" rx="24.9" ry="20.9"/><ellipse class="fern1" cx="147.2" cy="309.1" rx="32.4" ry="26.5"/><rect class="fern1" x="110.7" y="311.3" width="41.7" height="100.7"/><ellipse class="fern1" cx="177.4" cy="367.1" rx="13.7" ry="53.6"/><ellipse class="fern1" cx="211.6" cy="298.9" rx="37.4" ry="31.1"/><ellipse class="fern1" cx="237.2" cy="296.6" rx="29.1" ry="33.1"/><ellipse class="fern1" cx="247.2" cy="301.1" rx="34.1" ry="34.2"/><rect class="fern1" x="196.1" y="308.2" width="51.5" height="103.8"/><ellipse class="fern1" cx="286.8" cy="302.3" rx="21.9" ry="20.7"/><ellipse class="fern1" cx="294.5" cy="294.9" rx="22" ry="24.7"/><ellipse class="fern1" cx="282" cy="298.3" rx="20.4" ry="18.2"/><rect class="fern1" x="260.5" y="304.7" width="35.8" height="107.3"/><ellipse class="fern1" cx="309.9" cy="339.7" rx="28.3" ry="23.5"/><ellipse class="fern1" cx="318.7" cy="332.3" rx="26.5" ry="24.7"/><ellipse class="fern1" cx="313.5" cy="342.3" rx="23.2" ry="25.4"/><rect class="fern1" x="299.3" y="335.3" width="37.1" height="76.7"/><ellipse class="fern1" cx="347.8" cy="374.2" rx="22.5" ry="20.4"/><ellipse class="fern1" cx="342.9" cy="361.2" rx="19.5" ry="21.6"/><ellipse class="fern1" cx="374.7" cy="360.8" rx="22.3" ry="19"/><rect class="fern1" x="342" y="368.1" width="33.4" height="43.9"/><ellipse class="fern1" cx="383.6" cy="351.4" rx="24.8" ry="23.8"/><ellipse class="fern1" cx="375.9" cy="363" rx="29.3" ry="23.4"/><ellipse class="fern1" cx="405.1" cy="364.4" rx="25.1" ry="25.2"/><rect class="fern1" x="375.9" y="362.8" width="39" height="49.2"/><ellipse class="fern1" cx="438.9" cy="371.4" rx="18.3" ry="22"/><ellipse class="fern1" cx="425" cy="357.3" rx="20.3" ry="21.3"/><ellipse class="fern1" cx="430.3" cy="370.4" rx="20.3" ry="22.1"/><rect class="fern1" x="421.9" y="365.6" width="32.9" height="46.4"/><ellipse class="fern1" cx="474.5" cy="377" rx="12.9" ry="41.2"/><ellipse class="fern1" cx="509.5" cy="366.7" rx="19.1" ry="13.8"/><ellipse class="fern1" cx="520.6" cy="364.1" rx="17.9" ry="17.4"/><ellipse class="fern1" cx="505.6" cy="359.4" rx="18.3" ry="15.5"/><rect class="fern1" x="502.6" y="362.2" width="27" height="49.8"/><ellipse class="fern1" cx="541.6" cy="335.6" rx="27.8" ry="25.3"/><ellipse class="fern1" cx="536.1" cy="340.5" rx="29.4" ry="21"/><ellipse class="fern1" cx="562" cy="341.2" rx="28.1" ry="22.6"/><rect class="fern1" x="525.9" y="344.9" width="40" height="67.1"/><ellipse class="fern1" cx="578.7" cy="323.5" rx="19.6" ry="19.2"/><ellipse class="fern1" cx="591.7" cy="320.1" rx="22.9" ry="19.8"/><ellipse class="fern1" cx="585.4" cy="321.9" rx="22.2" ry="16.5"/><rect class="fern1" x="573.6" y="327.3" width="32.4" height="84.7"/><ellipse class="fern1" cx="623.1" cy="364.5" rx="20.4" ry="24.8"/><ellipse class="fern1" cx="627.4" cy="366.9" rx="26.6" ry="20.5"/><ellipse class="fern1" cx="608.6" cy="365.2" rx="21.7" ry="23"/><rect class="fern1" x="607.6" y="361.3" width="35.9" height="50.7"/><ellipse class="fern1" cx="665.2" cy="357.8" rx="16.4" ry="14.6"/><ellipse class="fern1" cx="676.3" cy="358.1" rx="15.5" ry="18.8"/><ellipse class="fern1" cx="660.7" cy="349.4" rx="16.9" ry="13.9"/><rect class="fern1" x="651.2" y="353.6" width="27.6" height="58.4"/><ellipse class="fern1" cx="706.2" cy="291.5" rx="35.4" ry="32.8"/><ellipse class="fern1" cx="715.8" cy="300.6" rx="36.3" ry="31.4"/><ellipse class="fern1" cx="682" cy="289.8" rx="38.5" ry="33.5"/><rect class="fern1" x="671.2" y="292" width="48.2" height="120"/><ellipse class="fern1" cx="763.2" cy="287.6" rx="21.5" ry="17.7"/><ellipse class="fern1" cx="763.8" cy="296.4" rx="23.4" ry="23.9"/><ellipse class="fern1" cx="738.4" cy="304.9" rx="24.2" ry="21.9"/><rect class="fern1" x="731" y="298.9" width="34.7" height="113.1"/><ellipse class="fern1" cx="782.4" cy="314.2" rx="29.3" ry="24.5"/><ellipse class="fern1" cx="771" cy="312.6" rx="32.8" ry="29"/><ellipse class="fern1" cx="789.4" cy="318.4" rx="30.3" ry="21.4"/><rect class="fern1" x="765.6" y="321.7" width="41.7" height="90.3"/><ellipse class="fern1" cx="832.4" cy="348.5" rx="11.2" ry="76.9"/><ellipse class="fern1" cx="879.8" cy="329.8" rx="19.4" ry="14"/><ellipse class="fern1" cx="881" cy="326.9" rx="15.9" ry="18.2"/><ellipse class="fern1" cx="872.3" cy="324.8" rx="17.8" ry="13.4"/><rect class="fern1" x="855.5" y="327.1" width="26.3" height="84.9"/><ellipse class="fern1" cx="878.4" cy="277.5" rx="30.5" ry="26"/><ellipse class="fern1" cx="878.1" cy="293.9" rx="28.5" ry="29.2"/><ellipse class="fern1" cx="880.2" cy="298.7" rx="32.5" ry="24.1"/><rect class="fern1" x="875.1" y="291.6" width="44.9" height="120.4"/><ellipse class="fern1" cx="932.6" cy="315.8" rx="33" ry="34.2"/><ellipse class="fern1" cx="947.6" cy="323" rx="33" ry="31.4"/><ellipse class="fern1" cx="951.9" cy="326.1" rx="34" ry="35.8"/><rect class="fern1" x="921.1" y="332.2" width="51.7" height="79.8"/><ellipse class="fern1" cx="1013.1" cy="325.7" rx="20.2" ry="18.5"/><ellipse class="fern1" cx="1011.2" cy="331.3" rx="26.7" ry="22.7"/><ellipse class="fern1" cx="1008.6" cy="334.9" rx="22.1" ry="17.6"/><rect class="fern1" x="987.1" y="329.3" width="33.4" height="82.7"/><ellipse class="fern1" cx="1051.3" cy="357.5" rx="27" ry="23.2"/><ellipse class="fern1" cx="1026.2" cy="338" rx="34" ry="23.5"/><ellipse class="fern1" cx="1021.3" cy="345.8" rx="27" ry="30.3"/><rect class="fern1" x="1018.2" y="351.8" width="44.7" height="60.2"/><ellipse class="fern1" cx="1090.8" cy="358.5" rx="29.6" ry="24.8"/><ellipse class="fern1" cx="1086.2" cy="349.3" rx="32.3" ry="29.6"/><ellipse class="fern1" cx="1092.7" cy="354.4" rx="27.7" ry="25.4"/><rect class="fern1" x="1068.1" y="357.8" width="43.2" height="54.2"/><ellipse class="fern1" cx="1118.9" cy="349.5" rx="29.1" ry="26.4"/><ellipse class="fern1" cx="1138.1" cy="329.5" rx="27" ry="23"/><ellipse class="fern1" cx="1127.2" cy="332.7" rx="23.5" ry="22.2"/><rect class="fern1" x="1117.4" y="342.9" width="39.7" height="69.1"/><ellipse class="fern1" cx="1183.1" cy="311.1" rx="22.6" ry="26.3"/><ellipse class="fern1" cx="1169.8" cy="318.8" rx="21.3" ry="25.3"/><ellipse class="fern1" cx="1166.1" cy="316.4" rx="26" ry="24"/><rect class="fern1" x="1161.6" y="314.9" width="38.6" height="97.1"/><ellipse class="fern1" cx="1223.3" cy="338.4" rx="17" ry="89.5"/><ellipse class="fern1" cx="1271.9" cy="295.2" rx="34.6" ry="26.8"/><ellipse class="fern1" cx="1301.7" cy="314" rx="30.5" ry="29.1"/><ellipse class="fern1" cx="1271.4" cy="299.2" rx="31.7" ry="27.9"/><rect class="fern1" x="1253.2" y="305.2" width="50.3" height="106.8"/><ellipse class="fern1" cx="1317.8" cy="352.3" rx="22.1" ry="23.6"/><ellipse class="fern1" cx="1349.5" cy="347.5" rx="20.7" ry="20.4"/><ellipse class="fern1" cx="1343.8" cy="352.5" rx="18.6" ry="18.2"/><rect class="fern1" x="1316.7" y="348.3" width="33.8" height="63.7"/><ellipse class="fern1" cx="1370.8" cy="350.9" rx="14.2" ry="73.9"/><ellipse class="fern1" cx="1403.3" cy="287.1" rx="20" ry="18.9"/><ellipse class="fern1" cx="1413.7" cy="296.7" rx="22.2" ry="14.7"/><ellipse class="fern1" cx="1415.7" cy="298.9" rx="19.4" ry="18.9"/><rect class="fern1" x="1402" y="297" width="29.4" height="115"/><ellipse class="fern1" cx="1449" cy="355.2" rx="9.1" ry="68.5"/><ellipse class="fern1" cx="1478.6" cy="349.6" rx="18.4" ry="21.6"/><ellipse class="fern1" cx="1482.4" cy="360" rx="22.9" ry="21.3"/><ellipse class="fern1" cx="1489.7" cy="357.7" rx="17.6" ry="16.8"/><rect class="fern1" x="1463" y="357.9" width="30.9" height="54.1"/><ellipse class="fern1" cx="1527.1" cy="310.3" rx="25.5" ry="21.4"/><ellipse class="fern1" cx="1528.5" cy="306.4" rx="32.1" ry="21.8"/><ellipse class="fern1" cx="1498.5" cy="296.2" rx="23.1" ry="27.2"/><rect class="fern1" x="1492.3" y="306.1" width="40.2" height="105.9"/><ellipse class="fern1" cx="1572.4" cy="291.6" rx="25.2" ry="26.6"/><ellipse class="fern1" cx="1557.7" cy="290.1" rx="26.2" ry="29"/><ellipse class="fern1" cx="1548.7" cy="287.2" rx="24.6" ry="27.6"/><rect class="fern1" x="1535.1" y="298.3" width="43" height="113.7"/><ellipse class="fern1" cx="1617.8" cy="335.4" rx="33.5" ry="28.4"/><ellipse class="fern1" cx="1614.3" cy="326.2" rx="34.9" ry="30.4"/><ellipse class="fern1" cx="1584.3" cy="333.2" rx="33.5" ry="28.1"/><rect class="fern1" x="1581.9" y="337.8" width="43.9" height="74.2"/><rect class="fern2" x="-40" y="440" width="1680" height="160"/><ellipse class="fern2" cx="-31.1" cy="374.6" rx="19.1" ry="19.5"/><ellipse class="fern2" cx="-34.2" cy="372.2" rx="18.3" ry="20.3"/><ellipse class="fern2" cx="-52.5" cy="381.1" rx="18.9" ry="15.7"/><rect class="fern2" x="-55.4" y="380.9" width="30.9" height="61.1"/><ellipse class="fern2" cx="-1.8" cy="357.1" rx="32.1" ry="27.5"/><ellipse class="fern2" cx="7.8" cy="365.4" rx="34.3" ry="23.9"/><ellipse class="fern2" cx="-17.8" cy="380" rx="27.6" ry="24.2"/><rect class="fern2" x="-24.3" y="371.3" width="45.9" height="70.7"/><ellipse class="fern2" cx="30.1" cy="386.5" rx="32.8" ry="31.6"/><ellipse class="fern2" cx="62.1" cy="385.5" rx="34" ry="27.3"/><ellipse class="fern2" cx="53.3" cy="410.1" rx="31" ry="36.4"/><rect class="fern2" x="28.9" y="402.8" width="54.2" height="39.2"/><ellipse class="fern2" cx="140.6" cy="378.6" rx="34.8" ry="28.3"/><ellipse class="fern2" cx="129.6" cy="377.9" rx="29.2" ry="24.7"/><ellipse class="fern2" cx="124" cy="371.5" rx="27.8" ry="26.4"/><rect class="fern2" x="100.3" y="378" width="46.6" height="64"/><ellipse class="fern2" cx="174" cy="367.6" rx="28.6" ry="24"/><ellipse class="fern2" cx="189" cy="381.6" rx="34" ry="25.1"/><ellipse class="fern2" cx="167.2" cy="379.2" rx="27.6" ry="28.2"/><rect class="fern2" x="160" y="375" width="43.8" height="67"/><ellipse class="fern2" cx="250.2" cy="372.1" rx="26.8" ry="22.2"/><ellipse class="fern2" cx="236.6" cy="389.8" rx="30" ry="22.8"/><ellipse class="fern2" cx="236.8" cy="376.5" rx="29.4" ry="24.7"/><rect class="fern2" x="215" y="384.9" width="43.5" height="57.1"/><ellipse class="fern2" cx="273" cy="380.1" rx="30.4" ry="24.5"/><ellipse class="fern2" cx="287.4" cy="386.8" rx="28.8" ry="21.4"/><ellipse class="fern2" cx="309.5" cy="389.8" rx="28.6" ry="23.5"/><rect class="fern2" x="270" y="387.7" width="42" height="54.3"/><ellipse class="fern2" cx="323.3" cy="375.1" rx="43.5" ry="36.1"/><ellipse class="fern2" cx="319.1" cy="385.6" rx="36.5" ry="29.5"/><ellipse class="fern2" cx="320.9" cy="387.6" rx="33.7" ry="33.9"/><rect class="fern2" x="316.1" y="392.8" width="55" height="49.2"/><ellipse class="fern2" cx="396.3" cy="372.7" rx="29.1" ry="27.2"/><ellipse class="fern2" cx="414.5" cy="361.2" rx="22.2" ry="20.7"/><ellipse class="fern2" cx="402.6" cy="370.4" rx="22.3" ry="22"/><rect class="fern2" x="392.2" y="375.2" width="40.2" height="66.8"/><ellipse class="fern2" cx="467.6" cy="393" rx="35" ry="30"/><ellipse class="fern2" cx="463.2" cy="385.9" rx="34.3" ry="35.7"/><ellipse class="fern2" cx="447.8" cy="403.3" rx="32.7" ry="36.5"/><rect class="fern2" x="435.1" y="393.3" width="55" height="48.7"/><ellipse class="fern2" cx="557.7" cy="377.7" rx="39.8" ry="26.8"/><ellipse class="fern2" cx="542.1" cy="386.3" rx="33.6" ry="28"/><ellipse class="fern2" cx="540.7" cy="376.4" rx="39.1" ry="29.2"/><rect class="fern2" x="504.7" y="378.3" width="53.4" height="63.7"/><ellipse class="fern2" cx="573.1" cy="416.2" rx="35" ry="33.6"/><ellipse class="fern2" cx="591.1" cy="415.1" rx="34.3" ry="31.7"/><ellipse class="fern2" cx="605" cy="417.2" rx="42.4" ry="31.4"/><rect class="fern2" x="570.9" y="409.4" width="54.5" height="32.6"/><ellipse class="fern2" cx="663.1" cy="370.2" rx="27.6" ry="23.2"/><ellipse class="fern2" cx="658" cy="379.1" rx="28" ry="26"/><ellipse class="fern2" cx="685.3" cy="385.3" rx="23.9" ry="22.1"/><rect class="fern2" x="646.3" y="384.1" width="40.1" height="57.9"/><ellipse class="fern2" cx="710.7" cy="371" rx="21.8" ry="20.4"/><ellipse class="fern2" cx="707.6" cy="365.8" rx="19.7" ry="15.6"/><ellipse class="fern2" cx="703.3" cy="379.1" rx="20.5" ry="19"/><rect class="fern2" x="701.2" y="375.8" width="30.5" height="66.2"/><ellipse class="fern2" cx="755" cy="374.6" rx="33.7" ry="27"/><ellipse class="fern2" cx="770.3" cy="380.8" rx="36.4" ry="30.4"/><ellipse class="fern2" cx="749" cy="374.1" rx="27.4" ry="34"/><rect class="fern2" x="729.9" y="379.9" width="49.3" height="62.1"/><ellipse class="fern2" cx="807.2" cy="396.1" rx="19.5" ry="19"/><ellipse class="fern2" cx="809" cy="390.5" rx="19.7" ry="21.2"/><ellipse class="fern2" cx="813.2" cy="387.2" rx="19.9" ry="20"/><rect class="fern2" x="799.3" y="389.3" width="33.9" height="52.7"/><ellipse class="fern2" cx="846.5" cy="414" rx="31" ry="30.9"/><ellipse class="fern2" cx="875.9" cy="413.8" rx="37.2" ry="31.3"/><ellipse class="fern2" cx="868.9" cy="405.4" rx="32.2" ry="31.9"/><rect class="fern2" x="833.7" y="416.6" width="49.8" height="25.4"/><ellipse class="fern2" cx="915.2" cy="375.7" rx="21.9" ry="22.7"/><ellipse class="fern2" cx="922.5" cy="360.7" rx="26.5" ry="21.4"/><ellipse class="fern2" cx="910.5" cy="373.7" rx="22.1" ry="21.9"/><rect class="fern2" x="902.7" y="371" width="36.3" height="71"/><ellipse class="fern2" cx="959.8" cy="424.9" rx="26.8" ry="30.1"/><ellipse class="fern2" cx="974.6" cy="421.1" rx="34.7" ry="32.6"/><ellipse class="fern2" cx="957" cy="409" rx="28.1" ry="32.1"/><rect class="fern2" x="942.8" y="417" width="46.9" height="25"/><ellipse class="fern2" cx="1027.9" cy="385.3" rx="26.8" ry="18.5"/><ellipse class="fern2" cx="1035" cy="372.5" rx="24.5" ry="19.8"/><ellipse class="fern2" cx="1009" cy="377.9" rx="25.9" ry="23.2"/><rect class="fern2" x="1007.6" y="380.7" width="34.5" height="61.3"/><ellipse class="fern2" cx="1068" cy="406" rx="15" ry="42.5"/><ellipse class="fern2" cx="1118.6" cy="375.8" rx="24.1" ry="26.5"/><ellipse class="fern2" cx="1125" cy="375.8" rx="28.6" ry="27.6"/><ellipse class="fern2" cx="1141.7" cy="373.9" rx="29.2" ry="22.3"/><rect class="fern2" x="1101.9" y="376.2" width="43" height="65.8"/><ellipse class="fern2" cx="1177.1" cy="399.5" rx="11.5" ry="50.6"/><ellipse class="fern2" cx="1202.1" cy="392.9" rx="36.3" ry="35.1"/><ellipse class="fern2" cx="1233.2" cy="406.2" rx="28.9" ry="30.4"/><ellipse class="fern2" cx="1197" cy="390.2" rx="36.9" ry="25.7"/><rect class="fern2" x="1194" y="405.6" width="50.4" height="36.4"/><ellipse class="fern2" cx="1282.2" cy="414.3" rx="17.5" ry="32.1"/><ellipse class="fern2" cx="1328.2" cy="392.9" rx="32" ry="27.4"/><ellipse class="fern2" cx="1369.7" cy="392.7" rx="33.8" ry="32.3"/><ellipse class="fern2" cx="1369" cy="380.4" rx="36.2" ry="31.8"/><rect class="fern2" x="1323.5" y="393.7" width="46.2" height="48.3"/><ellipse class="fern2" cx="1381.7" cy="374.6" rx="30.2" ry="30.9"/><ellipse class="fern2" cx="1385.7" cy="370.7" rx="32.2" ry="34.1"/><ellipse class="fern2" cx="1416.3" cy="376.9" rx="27.7" ry="27.3"/><rect class="fern2" x="1379.6" y="379.3" width="49.7" height="62.7"/><ellipse class="fern2" cx="1447.5" cy="388.8" rx="35.6" ry="27.9"/><ellipse class="fern2" cx="1489.7" cy="391.2" rx="27.6" ry="30.8"/><ellipse class="fern2" cx="1469.2" cy="381.4" rx="28.7" ry="29.9"/><rect class="fern2" x="1442.2" y="391.1" width="48.7" height="50.9"/><ellipse class="fern2" cx="1528.2" cy="403.8" rx="23.7" ry="22.1"/><ellipse class="fern2" cx="1508.5" cy="407.6" rx="29.7" ry="22.9"/><ellipse class="fern2" cx="1517.4" cy="419.9" rx="28.1" ry="27.4"/><rect class="fern2" x="1507.6" y="414.5" width="39.6" height="27.5"/><ellipse class="fern2" cx="1580.4" cy="396" rx="36.8" ry="32.7"/><ellipse class="fern2" cx="1582.7" cy="398.9" rx="34.9" ry="32.7"/><ellipse class="fern2" cx="1562.4" cy="390.8" rx="40.9" ry="33.4"/><rect class="fern2" x="1549" y="404.7" width="55.7" height="37.3"/><!--/gen:fern--></svg>
+  </div>
+
+  <div class="ebene e-mitte" data-tiefe="0.14">
+    <svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <radialGradient id="kuppel-licht" cx="50%" cy="75%" r="70%">
+          <stop offset="0" stop-color="#fff0b8"/><stop offset=".5" stop-color="#ffc867"/><stop offset="1" stop-color="#d98a3e"/>
+        </radialGradient>
+        <radialGradient id="glut-verlauf"><stop class="gl1" offset="0"/><stop class="gl1" offset=".35"/><stop class="gl2" offset="1"/></radialGradient>
+        <clipPath id="kuppel-form"><path d="M560 470 A82 70 0 0 1 724 470 Z"/></clipPath>
+      </defs>
+      <!--gen:mitte--><rect class="mitte1" x="-40" y="478" width="580" height="122"/><ellipse class="mitte1" cx="-37.9" cy="420.3" rx="43.2" ry="34.8"/><ellipse class="mitte1" cx="-23" cy="409.5" rx="31.3" ry="32.1"/><ellipse class="mitte1" cx="-28.9" cy="425.6" rx="34.8" ry="33.6"/><rect class="mitte1" x="-68.1" y="419.5" width="56.3" height="60.5"/><ellipse class="mitte1" cx="29.3" cy="349.9" rx="32" ry="28.6"/><ellipse class="mitte1" cx="-3.7" cy="341.2" rx="29.8" ry="25"/><ellipse class="mitte1" cx="2.5" cy="342.8" rx="34.1" ry="29.5"/><rect class="mitte1" x="-8.4" y="351.8" width="49.3" height="128.2"/><ellipse class="mitte1" cx="52.3" cy="390.1" rx="35" ry="34.6"/><ellipse class="mitte1" cx="69.7" cy="401.8" rx="38.6" ry="33.7"/><ellipse class="mitte1" cx="71" cy="385.9" rx="38.3" ry="32.6"/><rect class="mitte1" x="39.5" y="392.3" width="52.1" height="87.7"/><ellipse class="mitte1" cx="117.6" cy="439.4" rx="13.4" ry="48.3"/><ellipse class="mitte1" cx="152.6" cy="380" rx="31.4" ry="24.8"/><ellipse class="mitte1" cx="138.7" cy="383.5" rx="27.5" ry="22.7"/><ellipse class="mitte1" cx="146.2" cy="383.2" rx="27" ry="28.2"/><rect class="mitte1" x="135.9" y="381.7" width="42.4" height="98.3"/><ellipse class="mitte1" cx="181" cy="358.4" rx="32.4" ry="37.2"/><ellipse class="mitte1" cx="197.1" cy="361.7" rx="37.5" ry="37"/><ellipse class="mitte1" cx="178.6" cy="375.5" rx="36.4" ry="38"/><rect class="mitte1" x="172" y="374.5" width="55" height="105.5"/><ellipse class="mitte1" cx="254.5" cy="415.4" rx="11.8" ry="78.2"/><ellipse class="mitte1" cx="289.2" cy="405.6" rx="12.8" ry="90.5"/><ellipse class="mitte1" cx="342.4" cy="406.8" rx="29.8" ry="23.2"/><ellipse class="mitte1" cx="346.4" cy="409.6" rx="23.3" ry="25.1"/><ellipse class="mitte1" cx="336.7" cy="411.3" rx="31.6" ry="24.9"/><rect class="mitte1" x="306.9" y="409.2" width="39.7" height="70.8"/><ellipse class="mitte1" cx="379.6" cy="384.3" rx="24.6" ry="26.2"/><ellipse class="mitte1" cx="358.4" cy="378.8" rx="24.4" ry="28.7"/><ellipse class="mitte1" cx="377.4" cy="383.5" rx="31.4" ry="28.8"/><rect class="mitte1" x="344.3" y="391.7" width="44.2" height="88.3"/><ellipse class="mitte1" cx="414.5" cy="373.9" rx="42.6" ry="35.1"/><ellipse class="mitte1" cx="401.6" cy="373.9" rx="41.5" ry="33.1"/><ellipse class="mitte1" cx="429.5" cy="383.6" rx="38" ry="32.5"/><rect class="mitte1" x="379.9" y="392.4" width="61.6" height="87.6"/><ellipse class="mitte1" cx="472.3" cy="415" rx="19.4" ry="78.8"/><ellipse class="mitte1" cx="543.3" cy="416.8" rx="21.4" ry="24.4"/><ellipse class="mitte1" cx="525" cy="399.7" rx="30.6" ry="25.3"/><ellipse class="mitte1" cx="525" cy="406.8" rx="23.1" ry="23.3"/><rect class="mitte1" x="510.4" y="410.8" width="38.2" height="69.2"/><rect class="mitte1" x="740" y="478" width="120" height="122"/><ellipse class="mitte1" cx="740" cy="433.5" rx="20.2" ry="55.6"/><ellipse class="mitte1" cx="793.6" cy="365" rx="30.3" ry="31"/><ellipse class="mitte1" cx="796.3" cy="372.3" rx="34.5" ry="29.9"/><ellipse class="mitte1" cx="819.7" cy="376.7" rx="28.9" ry="26.2"/><rect class="mitte1" x="777.2" y="376.1" width="44.4" height="103.9"/><ellipse class="mitte1" cx="854.4" cy="370.7" rx="40.8" ry="29.3"/><ellipse class="mitte1" cx="846.3" cy="371.5" rx="33.6" ry="33.7"/><ellipse class="mitte1" cx="850.2" cy="383.6" rx="37.4" ry="39.2"/><rect class="mitte1" x="814.9" y="390.8" width="57.8" height="89.2"/><rect class="mitte1" x="1060" y="478" width="580" height="122"/><ellipse class="mitte1" cx="1060" cy="430.3" rx="12.6" ry="59.7"/><ellipse class="mitte1" cx="1100.9" cy="383.7" rx="24.2" ry="23"/><ellipse class="mitte1" cx="1104.4" cy="390.3" rx="26.3" ry="21.5"/><ellipse class="mitte1" cx="1096.4" cy="391.8" rx="29.4" ry="23.2"/><rect class="mitte1" x="1076.9" y="387" width="40.1" height="93"/><ellipse class="mitte1" cx="1140.8" cy="352.8" rx="32.5" ry="30.3"/><ellipse class="mitte1" cx="1134.6" cy="335.5" rx="45.6" ry="40.6"/><ellipse class="mitte1" cx="1121.5" cy="337.2" rx="34.1" ry="35.4"/><rect class="mitte1" x="1107.8" y="354" width="58.6" height="126"/><ellipse class="mitte1" cx="1214.3" cy="363.4" rx="28.9" ry="24.7"/><ellipse class="mitte1" cx="1188.8" cy="362.4" rx="26.8" ry="25.8"/><ellipse class="mitte1" cx="1187" cy="364.3" rx="25.6" ry="20.5"/><rect class="mitte1" x="1175.2" y="371.6" width="41" height="108.4"/><ellipse class="mitte1" cx="1253.5" cy="418" rx="24.6" ry="20.2"/><ellipse class="mitte1" cx="1243.6" cy="400.8" rx="29.2" ry="26.8"/><ellipse class="mitte1" cx="1250.8" cy="411.5" rx="29.8" ry="24.4"/><rect class="mitte1" x="1216.6" y="411.2" width="40.1" height="68.8"/><ellipse class="mitte1" cx="1289.3" cy="382" rx="36.6" ry="33.7"/><ellipse class="mitte1" cx="1275.6" cy="382.5" rx="47.7" ry="37.4"/><ellipse class="mitte1" cx="1284.4" cy="383.7" rx="44" ry="32.8"/><rect class="mitte1" x="1246" y="400.7" width="61.6" height="79.3"/><ellipse class="mitte1" cx="1332.6" cy="414.4" rx="32.1" ry="29.7"/><ellipse class="mitte1" cx="1349.5" cy="434.6" rx="34.2" ry="26.7"/><ellipse class="mitte1" cx="1339.6" cy="411.4" rx="35.1" ry="23.9"/><rect class="mitte1" x="1316.3" y="426.1" width="44" height="53.9"/><ellipse class="mitte1" cx="1382.3" cy="439.5" rx="20.6" ry="48.1"/><ellipse class="mitte1" cx="1442.8" cy="424.6" rx="17.3" ry="66.8"/><ellipse class="mitte1" cx="1522" cy="350.2" rx="32.5" ry="38.2"/><ellipse class="mitte1" cx="1481.3" cy="355.6" rx="40.7" ry="36.3"/><ellipse class="mitte1" cx="1480.7" cy="343.2" rx="40.8" ry="34.8"/><rect class="mitte1" x="1464.8" y="359.3" width="58" height="120.7"/><ellipse class="mitte1" cx="1528.4" cy="335.8" rx="31.7" ry="24.4"/><ellipse class="mitte1" cx="1540.9" cy="352.6" rx="36.9" ry="28.3"/><ellipse class="mitte1" cx="1560.6" cy="342.6" rx="34.5" ry="31"/><rect class="mitte1" x="1527.4" y="349.4" width="48.6" height="130.6"/><ellipse class="mitte1" cx="1601.7" cy="410.4" rx="34.7" ry="32.8"/><ellipse class="mitte1" cx="1593.5" cy="417.7" rx="31.8" ry="34.8"/><ellipse class="mitte1" cx="1600" cy="429.2" rx="31.3" ry="28"/><rect class="mitte1" x="1573.7" y="419.2" width="53.2" height="60.8"/><!--/gen:mitte-->
+      <!--gen:mitte-vorn--><rect class="mitte2" x="-40" y="505" width="270" height="95"/><ellipse class="mitte2" cx="-29.9" cy="410.9" rx="37.4" ry="29.3"/><ellipse class="mitte2" cx="-62.4" cy="412.9" rx="36" ry="27.1"/><ellipse class="mitte2" cx="-34.6" cy="411.8" rx="37.6" ry="29.6"/><rect class="mitte2" x="-66.8" y="417.1" width="53.7" height="89.9"/><ellipse class="mitte2" cx="16.4" cy="467.9" rx="18.4" ry="46.3"/><ellipse class="mitte2" cx="57.9" cy="419.8" rx="33.1" ry="26.9"/><ellipse class="mitte2" cx="87.3" cy="421.9" rx="32" ry="26.8"/><ellipse class="mitte2" cx="59.4" cy="412.1" rx="29.4" ry="28.3"/><rect class="mitte2" x="51.3" y="418" width="43.9" height="89"/><ellipse class="mitte2" cx="119.4" cy="452.6" rx="18.8" ry="65.5"/><ellipse class="mitte2" cx="156.2" cy="437.1" rx="24.2" ry="23.3"/><ellipse class="mitte2" cx="194.2" cy="443.5" rx="31.4" ry="22.1"/><ellipse class="mitte2" cx="166.4" cy="445.2" rx="32.8" ry="24"/><rect class="mitte2" x="156" y="437.1" width="42.7" height="69.9"/><ellipse class="mitte2" cx="222.1" cy="444.6" rx="14.6" ry="75.5"/><rect class="mitte2" x="1200" y="505" width="440" height="95"/><ellipse class="mitte2" cx="1223.6" cy="435.2" rx="34.9" ry="26.8"/><ellipse class="mitte2" cx="1195.6" cy="418.9" rx="38.8" ry="27"/><ellipse class="mitte2" cx="1203.1" cy="432.2" rx="34" ry="33.1"/><rect class="mitte2" x="1174.4" y="425.6" width="51.3" height="81.4"/><ellipse class="mitte2" cx="1242.4" cy="461.9" rx="34" ry="32.8"/><ellipse class="mitte2" cx="1230.5" cy="445.1" rx="38.4" ry="31.4"/><ellipse class="mitte2" cx="1240" cy="441.6" rx="32.3" ry="25.4"/><rect class="mitte2" x="1228.8" y="457.8" width="50" height="49.2"/><ellipse class="mitte2" cx="1325.4" cy="433.2" rx="32.8" ry="25"/><ellipse class="mitte2" cx="1320.2" cy="424.1" rx="32.6" ry="32.1"/><ellipse class="mitte2" cx="1328.4" cy="434.2" rx="36.5" ry="28.1"/><rect class="mitte2" x="1282.8" y="425.2" width="46.9" height="81.8"/><ellipse class="mitte2" cx="1335.6" cy="387.3" rx="31.2" ry="22.1"/><ellipse class="mitte2" cx="1338.8" cy="399.3" rx="28.5" ry="26.8"/><ellipse class="mitte2" cx="1359.8" cy="404.7" rx="33.8" ry="30.1"/><rect class="mitte2" x="1333.9" y="396.9" width="43.2" height="110.1"/><ellipse class="mitte2" cx="1401.8" cy="451.7" rx="41.7" ry="38.2"/><ellipse class="mitte2" cx="1383.3" cy="446.4" rx="44.2" ry="32.3"/><ellipse class="mitte2" cx="1415.8" cy="443.3" rx="34.7" ry="38"/><rect class="mitte2" x="1371.6" y="454.4" width="58.7" height="52.6"/><ellipse class="mitte2" cx="1443.8" cy="471.2" rx="29.1" ry="26.7"/><ellipse class="mitte2" cx="1443.3" cy="451.6" rx="35.7" ry="28.2"/><ellipse class="mitte2" cx="1467.9" cy="458.7" rx="30.9" ry="27.9"/><rect class="mitte2" x="1440.2" y="462.3" width="44.6" height="44.7"/><ellipse class="mitte2" cx="1516.3" cy="472" rx="28.6" ry="26.8"/><ellipse class="mitte2" cx="1503.5" cy="453.2" rx="31.8" ry="23.2"/><ellipse class="mitte2" cx="1508.9" cy="452.4" rx="28.3" ry="25.3"/><rect class="mitte2" x="1489.5" y="464.1" width="39.8" height="42.9"/><ellipse class="mitte2" cx="1551.2" cy="445.4" rx="41.4" ry="41.6"/><ellipse class="mitte2" cx="1536.8" cy="448.9" rx="36" ry="41.8"/><ellipse class="mitte2" cx="1540" cy="422.3" rx="47.7" ry="36.6"/><rect class="mitte2" x="1521.1" y="443.3" width="60.2" height="63.7"/><ellipse class="mitte2" cx="1606.2" cy="420.4" rx="32.9" ry="34.2"/><ellipse class="mitte2" cx="1608.5" cy="417.7" rx="37.1" ry="30.8"/><ellipse class="mitte2" cx="1602.8" cy="419" rx="39" ry="29.3"/><rect class="mitte2" x="1589.1" y="428.9" width="50.6" height="78.1"/><!--/gen:mitte-vorn-->
+      <!-- Hügel -->
+      <path class="huegel" d="M0 520 C 220 470 420 462 640 472 C 860 482 1060 470 1260 486 C 1420 496 1520 506 1600 512 L1600 600 L0 600 Z"/>
+      <!-- Viadukt -->
+      <g class="haus2">
+        <path d="M120 478 L470 456 L470 470 L120 492 Z"/>
+        <path d="M150 490 l0 26 h14 v-16 a14 14 0 0 1 28 0 v16 h14 v-16 a14 14 0 0 1 28 0 v16 h14 v-16 a14 14 0 0 1 28 0 v16 h14 v-16 a14 14 0 0 1 28 0 v16 h14 v-16 a14 14 0 0 1 28 0 v16 h14 v-16 a14 14 0 0 1 28 0 v16 h14 v-16 a14 14 0 0 1 28 0 v16 h14 L440 470 Z" opacity=".9"/>
+      </g>
+      <!-- Kuppel mit warmem Licht -->
+      <ellipse class="glut flackern b" cx="642" cy="452" rx="130" ry="70"/>
+      <path d="M560 470 A82 70 0 0 1 724 470 Z" fill="url(#kuppel-licht)"/>
+      <g clip-path="url(#kuppel-form)" class="gitter">
+        <path d="M560 470 A82 70 0 0 1 724 470"/>
+        <path d="M570 440 H714 M588 418 H696 M612 404 H672"/>
+        <path d="M560 470 L612 404 L642 400 L672 404 L724 470 M588 470 L612 404 M620 470 L642 400 L664 470 M696 470 L672 404"/>
+        <path d="M570 440 L620 470 M714 440 L664 470 M588 418 L642 470 M696 418 L642 470 M588 418 L620 470 M696 418 L664 470"/>
+      </g>
+      <path class="haus" d="M548 470 h188 v6 h-188 Z"/>
+      <!-- Haus mit Balkon, Antenne und Schüssel -->
+      <g>
+        <ellipse class="glut flackern" cx="960" cy="420" rx="130" ry="80"/>
+        <rect class="haus" x="890" y="400" width="150" height="80"/>
+        <path class="haus" d="M912 400 V362 A48 26 0 0 1 1018 362 V400 Z"/>
+        <rect class="haus" x="878" y="396" width="174" height="6"/>
+        <path class="haus" d="M880 380 h170 v3 h-170 Z M884 380 v18 M900 380 v18 M916 380 v18 M1014 380 v18 M1030 380 v18 M1046 380 v18" stroke="var(--haus)" stroke-width="2.5"/>
+        <rect class="fenster" x="904" y="420" width="22" height="26" rx="2"/>
+        <rect class="fenster flackern" x="938" y="420" width="22" height="26" rx="2"/>
+        <rect class="fenster" x="972" y="420" width="22" height="26" rx="2"/>
+        <rect class="fenster" x="1006" y="420" width="22" height="26" rx="2"/>
+        <path class="fenster" d="M926 392 V368 a10 10 0 0 1 20 0 V392 Z M955 392 V366 a10 10 0 0 1 20 0 V392 Z M984 392 V368 a10 10 0 0 1 20 0 V392 Z"/>
+        <path d="M995 340 V246" stroke="var(--haus)" stroke-width="4"/>
+        <path d="M988 290 h14 M990 270 h10" stroke="var(--haus)" stroke-width="3"/>
+        <circle class="antennenlicht" cx="995" cy="244" r="5"/>
+        <path class="haus" d="M930 348 a20 20 0 0 1 26 -22 l-26 22 Z"/>
+        <path d="M940 338 l-6 -4" stroke="var(--haus)" stroke-width="3"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="funken"><!--gen:funken--><i style="left:28%;top:88.9%;--x1:13px;--y1:13px;--x2:-26px;--y2:-15px;--d:16.2s;--v:-2.4s"></i><i style="left:73.7%;top:43.1%;--x1:32px;--y1:-1px;--x2:9px;--y2:-19px;--d:17.6s;--v:-8.3s"></i><i style="left:8.2%;top:87.6%;--x1:-57px;--y1:8px;--x2:39px;--y2:-57px;--d:12.1s;--v:-5s"></i><i style="left:71.5%;top:57.9%;--x1:21px;--y1:-37px;--x2:86px;--y2:15px;--d:12.4s;--v:-5.8s"></i><i style="left:96.3%;top:73.9%;--x1:3px;--y1:-31px;--x2:-88px;--y2:12px;--d:10.2s;--v:-2.2s"></i><i style="left:79.5%;top:40%;--x1:38px;--y1:-5px;--x2:60px;--y2:-5px;--d:13.7s;--v:-4.5s"></i><i style="left:87.5%;top:79.9%;--x1:55px;--y1:-47px;--x2:-43px;--y2:-38px;--d:17.7s;--v:-2.9s"></i><i style="left:21.6%;top:82.3%;--x1:16px;--y1:-12px;--x2:49px;--y2:9px;--d:17.4s;--v:-11.7s"></i><i style="left:62.5%;top:58.9%;--x1:-3px;--y1:-40px;--x2:58px;--y2:-34px;--d:16.3s;--v:-3.4s"></i><i style="left:35.4%;top:87.3%;--x1:-1px;--y1:-18px;--x2:-30px;--y2:-25px;--d:17.4s;--v:-1.4s"></i><i style="left:50.9%;top:35.2%;--x1:46px;--y1:15px;--x2:-7px;--y2:-9px;--d:10.1s;--v:-6.2s"></i><i style="left:7.4%;top:38.1%;--x1:-18px;--y1:-29px;--x2:-50px;--y2:-63px;--d:11.1s;--v:-0.9s"></i><i style="left:51.9%;top:52.5%;--x1:35px;--y1:-18px;--x2:-3px;--y2:10px;--d:17.8s;--v:-5s"></i><i style="left:71.7%;top:81.4%;--x1:-56px;--y1:2px;--x2:-4px;--y2:-36px;--d:9.1s;--v:-7.9s"></i><!--/gen:funken--></div>
+
+  <div class="e-vorn" data-tiefe="0.22" style="inset:0">
+    <div class="ecke links">
+      <svg viewBox="0 0 460 320" preserveAspectRatio="xMinYMax meet">
+        <defs>
+          <radialGradient id="beerenverlauf" cx="36%" cy="32%" r="72%">
+            <stop class="bv1" offset="0"/><stop class="bv2" offset=".5"/><stop class="bv3" offset="1"/>
+          </radialGradient>
+          <g id="blatt"><path d="M0 0 C16 -10 40 -9 62 0 C40 9 16 10 0 0 Z"/><path class="rippe" d="M3 0 C22 -1 40 -1 58 0"/></g>
+          <g id="beere">
+            <ellipse cx="0" cy="0" rx="10" ry="12.5" fill="url(#beerenverlauf)"/>
+            <ellipse cx="-3.6" cy="-4" rx="2.6" ry="4.6" fill="#fff" opacity=".22" transform="rotate(-20 -3.6 -4)"/>
+            <g class="krone"><path d="M0 11 L-6 19 L-2 13 Z M0 11 L6 19 L2 13 Z M0 11 L-8 14 L-2 12 Z M0 11 L8 14 L2 12 Z M0 11 L0 19.5 L1.4 12 Z"/><circle cx="0" cy="11.5" r="2.4"/></g>
+          </g>
+        </defs>
+        <g class="wiegen"><!--gen:busch-links--><path class="stiel" stroke-width="4.8" d="M10 330 Q42.2 205.8 162.4 125.3"/><use href="#blatt" class="bl1" transform="translate(24.5 286.7) rotate(-128.7) scale(1.3)"/><use href="#blatt" class="bl1" transform="translate(24.5 286.7) rotate(-12.6) scale(1.3)"/><use href="#blatt" class="bl1" transform="translate(38.8 256.5) rotate(-107.3) scale(1.4)"/><use href="#blatt" class="bl1" transform="translate(56.3 227.8) rotate(-112.7) scale(1.1)"/><use href="#blatt" class="bl3" transform="translate(56.3 227.8) rotate(4.6) scale(1.1)"/><path class="stiel" stroke-width="2.2" d="M56.3 227.8 Q54.3 250.2 49.5 254.2"/><path class="stiel" stroke-width="2.2" d="M56.3 227.8 Q56.5 255.6 56.9 259.6"/><path class="stiel" stroke-width="2.2" d="M56.3 227.8 Q59 249.2 65.1 253.2"/><path class="stiel" stroke-width="2.2" d="M100.7 175 Q97.4 195 89.6 199"/><path class="stiel" stroke-width="2.2" d="M100.7 175 Q101.9 191.9 104.5 195.9"/><path class="stiel" stroke-width="2.2" d="M100.7 175 Q103.7 201.5 110.7 205.5"/><path class="stiel" stroke-width="4.2" d="M0 330 Q98.7 258.7 251.2 207"/><use href="#blatt" class="bl3" transform="translate(73.3 283.8) rotate(24.2) scale(1.2)"/><use href="#blatt" class="bl3" transform="translate(112.1 263.6) rotate(34.1) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(153.7 244.4) rotate(-77.7) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(153.7 244.4) rotate(37.4) scale(0.9)"/><path class="stiel" stroke-width="1.9" d="M153.7 244.4 Q147.7 261.5 133.8 265.5"/><path class="stiel" stroke-width="1.9" d="M153.7 244.4 Q153.5 258.7 153 262.7"/><path class="stiel" stroke-width="1.9" d="M153.7 244.4 Q151.7 257.4 147 261.4"/><use href="#blatt" class="bl1" transform="translate(198 226.2) rotate(-80.2) scale(0.9)"/><use href="#blatt" class="bl2" transform="translate(245.1 209.1) rotate(22.8) scale(0.7)"/><path class="stiel" stroke-width="4.4" d="M60 330 Q120.8 223.6 100.6 64.7"/><use href="#blatt" class="bl1" transform="translate(94.5 241.6) rotate(-114.8) scale(1.2)"/><path class="stiel" stroke-width="2" d="M94.5 241.6 Q97.8 268.8 105.6 272.8"/><path class="stiel" stroke-width="2" d="M94.5 241.6 Q94.5 266.8 94.4 270.8"/><use href="#blatt" class="bl2" transform="translate(103.3 188.9) rotate(-140.4) scale(1)"/><use href="#blatt" class="bl1" transform="translate(103.3 188.9) rotate(-45.6) scale(1)"/><use href="#blatt" class="bl1" transform="translate(105.6 132.1) rotate(-142) scale(0.8)"/><use href="#blatt" class="bl2" transform="translate(105.6 132.1) rotate(-32.2) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(101.4 71.1) rotate(-155.4) scale(0.7)"/><path class="stiel" stroke-width="2" d="M101.4 71.1 Q102.3 96.9 104.4 100.9"/><path class="stiel" stroke-width="2" d="M101.4 71.1 Q99.4 91.5 94.8 95.5"/><path class="stiel" stroke-width="4" d="M-10 260 Q63 169.4 46.3 16.1"/><use href="#blatt" class="bl3" transform="translate(13.4 225.3) rotate(-118.8) scale(1.2)"/><use href="#blatt" class="bl1" transform="translate(26.9 197.1) rotate(-27.2) scale(1)"/><use href="#blatt" class="bl2" transform="translate(44.5 133.8) rotate(-141.4) scale(0.9)"/><path class="stiel" stroke-width="1.8" d="M44.5 133.8 Q43.8 152.5 42.2 156.5"/><path class="stiel" stroke-width="1.8" d="M44.5 133.8 Q43.3 152.6 40.6 156.6"/><path class="stiel" stroke-width="1.8" d="M44.5 133.8 Q48 155.5 56.1 159.5"/><use href="#blatt" class="bl1" transform="translate(48.5 98.8) rotate(-39.2) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(47 22.2) rotate(-34.5) scale(0.7)"/><path class="stiel" stroke-width="3.6" d="M120 330 Q213.6 280.5 325 286.4"/><use href="#blatt" class="bl3" transform="translate(154.3 314) rotate(22.4) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(193.7 300.4) rotate(-74.2) scale(1)"/><use href="#blatt" class="bl2" transform="translate(234.5 291.2) rotate(-59.1) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(234.5 291.2) rotate(36.6) scale(0.9)"/><path class="stiel" stroke-width="1.6" d="M234.5 291.2 Q233.3 303.8 230.4 307.8"/><path class="stiel" stroke-width="1.6" d="M234.5 291.2 Q232.3 311.7 227 315.7"/><use href="#blatt" class="bl3" transform="translate(320.5 286.2) rotate(-52.9) scale(0.6)"/><path class="stiel" stroke-width="3.8" d="M20 330 Q10.2 235.1 -16 112.2"/><use href="#blatt" class="bl1" transform="translate(15.9 294.9) rotate(-142) scale(1.1)"/><use href="#blatt" class="bl3" transform="translate(12.2 267.8) rotate(-37.1) scale(1.1)"/><use href="#blatt" class="bl3" transform="translate(8 239.6) rotate(-154.9) scale(0.9)"/><use href="#blatt" class="bl2" transform="translate(8 239.6) rotate(-49.9) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(3.1 210.5) rotate(-160.8) scale(0.8)"/><use href="#blatt" class="bl2" transform="translate(3.1 210.5) rotate(-50.8) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(-2.4 180.4) rotate(-157.3) scale(0.8)"/><use href="#blatt" class="bl3" transform="translate(-2.4 180.4) rotate(-42.4) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(-15 117.1) rotate(-151.1) scale(0.6)"/><use href="#blatt" class="bl1" transform="translate(38.8 256.5) rotate(-12.5) scale(1.4)"/><use href="#blatt" class="bl2" transform="translate(77 200.6) rotate(-107.7) scale(1)"/><use href="#blatt" class="bl3" transform="translate(77 200.6) rotate(2) scale(1)"/><use href="#blatt" class="bl1" transform="translate(100.7 175) rotate(-104.5) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(100.7 175) rotate(5.8) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(127.6 151) rotate(-86.9) scale(1)"/><use href="#blatt" class="bl1" transform="translate(127.6 151) rotate(1.1) scale(1)"/><use href="#blatt" class="bl1" transform="translate(157.6 128.5) rotate(-84.7) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(157.6 128.5) rotate(24) scale(0.8)"/><use href="#blatt" class="bl3" transform="translate(162.4 125.3) rotate(-33.8) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(37.3 305) rotate(-72.4) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(37.3 305) rotate(23.7) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(73.3 283.8) rotate(-80.5) scale(1.2)"/><use href="#blatt" class="bl1" transform="translate(112.1 263.6) rotate(-70.8) scale(0.9)"/><use href="#blatt" class="bl2" transform="translate(198 226.2) rotate(22.4) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(245.1 209.1) rotate(-72.9) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(251.2 207) rotate(-18.7) scale(0.8)"/><use href="#blatt" class="bl2" transform="translate(79.3 290) rotate(-118) scale(1.2)"/><use href="#blatt" class="bl2" transform="translate(79.3 290) rotate(-8.5) scale(1.2)"/><use href="#blatt" class="bl1" transform="translate(94.5 241.6) rotate(-21.5) scale(1.2)"/><use href="#blatt" class="bl2" transform="translate(101.4 71.1) rotate(-34.8) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(100.6 64.7) rotate(-97.3) scale(0.8)"/><use href="#blatt" class="bl2" transform="translate(13.4 225.3) rotate(-4) scale(1.2)"/><use href="#blatt" class="bl2" transform="translate(26.9 197.1) rotate(-120.8) scale(1)"/><use href="#blatt" class="bl2" transform="translate(37.3 166.5) rotate(-122.6) scale(1)"/><use href="#blatt" class="bl1" transform="translate(37.3 166.5) rotate(-12.6) scale(1)"/><use href="#blatt" class="bl1" transform="translate(44.5 133.8) rotate(-23.2) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(48.5 98.8) rotate(-125.8) scale(0.8)"/><use href="#blatt" class="bl2" transform="translate(49.3 61.6) rotate(-148.4) scale(0.9)"/><use href="#blatt" class="bl2" transform="translate(49.3 61.6) rotate(-50.5) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(47 22.2) rotate(-155.5) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(46.3 16.1) rotate(-96.2) scale(0.7)"/><use href="#blatt" class="bl2" transform="translate(154.3 314) rotate(-76.5) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(193.7 300.4) rotate(31.1) scale(1)"/><use href="#blatt" class="bl1" transform="translate(276.8 286.5) rotate(-56.6) scale(0.7)"/><use href="#blatt" class="bl2" transform="translate(276.8 286.5) rotate(34.9) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(320.5 286.2) rotate(54.3) scale(0.6)"/><use href="#blatt" class="bl3" transform="translate(325 286.4) rotate(3) scale(0.6)"/><use href="#blatt" class="bl3" transform="translate(15.9 294.9) rotate(-43) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(12.2 267.8) rotate(-141.4) scale(1.1)"/><use href="#blatt" class="bl2" transform="translate(-8.4 149.3) rotate(-142.2) scale(0.7)"/><use href="#blatt" class="bl2" transform="translate(-8.4 149.3) rotate(-60.8) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(-15 117.1) rotate(-44.8) scale(0.6)"/><use href="#blatt" class="bl3" transform="translate(-16 112.2) rotate(-102) scale(0.7)"/><use href="#beere" transform="translate(49.5 268.4) rotate(14.6) scale(1.4)"/><use href="#beere" transform="translate(56.9 273.8) rotate(-1.1) scale(1.4)"/><use href="#beere" transform="translate(65.1 264.6) rotate(-19) scale(1.1)"/><use href="#beere" transform="translate(89.6 210.1) rotate(24.9) scale(1.1)"/><use href="#beere" transform="translate(104.5 208.4) rotate(-10.2) scale(1.3)"/><use href="#beere" transform="translate(110.7 217.1) rotate(-18.1) scale(1.2)"/><use href="#beere" transform="translate(133.8 276.6) rotate(43.4) scale(1.1)"/><use href="#beere" transform="translate(153 273.4) rotate(2.2) scale(1.1)"/><use href="#beere" transform="translate(147 271.8) rotate(21.7) scale(1)"/><use href="#beere" transform="translate(105.6 285) rotate(-19.5) scale(1.2)"/><use href="#beere" transform="translate(94.4 283.5) rotate(0.3) scale(1.3)"/><use href="#beere" transform="translate(104.4 111.8) rotate(-5.9) scale(1.1)"/><use href="#beere" transform="translate(94.8 107.6) rotate(15.1) scale(1.2)"/><use href="#beere" transform="translate(42.2 166.6) rotate(5.8) scale(1)"/><use href="#beere" transform="translate(40.6 168.3) rotate(9.8) scale(1.2)"/><use href="#beere" transform="translate(56.1 168.8) rotate(-24.3) scale(0.9)"/><use href="#beere" transform="translate(230.4 318.3) rotate(14) scale(1)"/><use href="#beere" transform="translate(227 325.8) rotate(17.1) scale(1)"/><!--/gen:busch-links--></g>
+      </svg>
+    </div>
+    <div class="ecke rechts">
+      <svg viewBox="0 0 460 320" preserveAspectRatio="xMaxYMax meet"><g class="wiegen"><!--gen:busch-rechts--><path class="stiel" stroke-width="4.8" d="M450 330 Q419.8 192.6 288.4 118.9"/><use href="#blatt" class="bl3" transform="translate(435.8 282.6) rotate(-151.9) scale(1.2)"/><use href="#blatt" class="bl1" transform="translate(421.1 250.2) rotate(-167.4) scale(1.2)"/><use href="#blatt" class="bl2" transform="translate(402.8 220) rotate(-167) scale(1.3)"/><path class="stiel" stroke-width="2.2" d="M402.8 220 Q407.8 237.8 419.5 241.8"/><path class="stiel" stroke-width="2.2" d="M402.8 220 Q397.8 244 386.1 248"/><path class="stiel" stroke-width="2.2" d="M402.8 220 Q396 240.7 380.1 244.7"/><use href="#blatt" class="bl3" transform="translate(355.4 166.4) rotate(-84.2) scale(1)"/><path class="stiel" stroke-width="2.2" d="M355.4 166.4 Q352.2 190.2 344.8 194.2"/><path class="stiel" stroke-width="2.2" d="M355.4 166.4 Q353.2 188.7 348 192.7"/><path class="stiel" stroke-width="2.2" d="M355.4 166.4 Q360.6 194.6 372.8 198.6"/><use href="#blatt" class="bl1" transform="translate(293.6 121.9) rotate(-192.6) scale(0.9)"/><path class="stiel" stroke-width="4.2" d="M460 330 Q365.2 253.2 213.7 202.8"/><use href="#blatt" class="bl1" transform="translate(424 303.2) rotate(-199.2) scale(1)"/><use href="#blatt" class="bl1" transform="translate(389 280.8) rotate(-206.9) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(351 259.8) rotate(-105.3) scale(1)"/><use href="#blatt" class="bl1" transform="translate(310.2 240.1) rotate(-203.7) scale(1)"/><use href="#blatt" class="bl1" transform="translate(310.2 240.1) rotate(-96.1) scale(1)"/><path class="stiel" stroke-width="1.9" d="M310.2 240.1 Q312.1 257.4 316.5 261.4"/><path class="stiel" stroke-width="1.9" d="M310.2 240.1 Q313.7 250.6 322 254.6"/><path class="stiel" stroke-width="1.9" d="M310.2 240.1 Q307.3 259.8 300.6 263.8"/><use href="#blatt" class="bl2" transform="translate(266.4 221.8) rotate(-109.5) scale(0.9)"/><use href="#blatt" class="bl2" transform="translate(219.7 204.8) rotate(-119.6) scale(0.8)"/><path class="stiel" stroke-width="4.4" d="M400 330 Q335.2 221.5 341.2 55.2"/><use href="#blatt" class="bl1" transform="translate(361 239.2) rotate(-162.2) scale(1.3)"/><path class="stiel" stroke-width="2" d="M361 239.2 Q364 259.1 371 263.1"/><path class="stiel" stroke-width="2" d="M361 239.2 Q368 259.2 384.3 263.2"/><use href="#blatt" class="bl2" transform="translate(348.6 184.7) rotate(-156.9) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(348.6 184.7) rotate(-46.4) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(341.9 125.6) rotate(-153.4) scale(0.8)"/><use href="#blatt" class="bl2" transform="translate(341.9 125.6) rotate(-53.6) scale(0.8)"/><path class="stiel" stroke-width="2" d="M340.9 61.8 Q338.7 79.9 333.3 83.9"/><path class="stiel" stroke-width="2" d="M340.9 61.8 Q341.4 85.5 342.5 89.5"/><path class="stiel" stroke-width="4" d="M470 260 Q391.9 167.2 422.6 23.4"/><use href="#blatt" class="bl1" transform="translate(431.7 196.8) rotate(-151.4) scale(1)"/><use href="#blatt" class="bl1" transform="translate(416 135.2) rotate(-139.4) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(416 135.2) rotate(-57.8) scale(0.9)"/><path class="stiel" stroke-width="1.8" d="M416 135.2 Q411.6 150.6 401.5 154.6"/><path class="stiel" stroke-width="1.8" d="M416 135.2 Q413.7 160.2 408.5 164.2"/><use href="#blatt" class="bl1" transform="translate(421.4 29.1) rotate(-127.1) scale(0.6)"/><use href="#blatt" class="bl1" transform="translate(421.4 29.1) rotate(-23.2) scale(0.6)"/><path class="stiel" stroke-width="3.6" d="M340 330 Q228.9 297.9 123.6 270"/><use href="#blatt" class="bl1" transform="translate(300.2 318.6) rotate(-105.9) scale(1)"/><use href="#blatt" class="bl1" transform="translate(241.9 302.1) rotate(-109.7) scale(1)"/><path class="stiel" stroke-width="1.6" d="M241.9 302.1 Q246.1 317.2 255.8 321.2"/><path class="stiel" stroke-width="1.6" d="M241.9 302.1 Q243.6 319.8 247.6 323.8"/><use href="#blatt" class="bl3" transform="translate(184.5 286.3) rotate(-105.3) scale(0.8)"/><path class="stiel" stroke-width="3.8" d="M440 330 Q438.2 237.8 476.2 109.4"/><use href="#blatt" class="bl1" transform="translate(443.4 263.1) rotate(-135.2) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(443.4 263.1) rotate(-22.9) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(448.2 228.7) rotate(-133.4) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(463.8 154.5) rotate(-31.1) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(474.7 114.6) rotate(-32.9) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(435.8 282.6) rotate(-57.3) scale(1.2)"/><use href="#blatt" class="bl1" transform="translate(421.1 250.2) rotate(-56.6) scale(1.2)"/><use href="#blatt" class="bl3" transform="translate(402.8 220) rotate(-77.3) scale(1.3)"/><use href="#blatt" class="bl2" transform="translate(380.9 192.1) rotate(-182.7) scale(1)"/><use href="#blatt" class="bl2" transform="translate(380.9 192.1) rotate(-83.3) scale(1)"/><use href="#blatt" class="bl1" transform="translate(355.4 166.4) rotate(-185) scale(1)"/><use href="#blatt" class="bl3" transform="translate(326.3 143) rotate(-193) scale(1)"/><use href="#blatt" class="bl3" transform="translate(326.3 143) rotate(-98.8) scale(1)"/><use href="#blatt" class="bl2" transform="translate(293.6 121.9) rotate(-107.8) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(288.4 118.9) rotate(-150.7) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(424 303.2) rotate(-99.7) scale(1)"/><use href="#blatt" class="bl1" transform="translate(389 280.8) rotate(-106.6) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(351 259.8) rotate(-193.1) scale(1)"/><use href="#blatt" class="bl1" transform="translate(266.4 221.8) rotate(-204.1) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(219.7 204.8) rotate(-200.1) scale(0.8)"/><use href="#blatt" class="bl3" transform="translate(213.7 202.8) rotate(-161.6) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(379 289.1) rotate(-160.9) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(379 289.1) rotate(-63) scale(1.1)"/><use href="#blatt" class="bl2" transform="translate(361 239.2) rotate(-45.3) scale(1.3)"/><use href="#blatt" class="bl2" transform="translate(340.9 61.8) rotate(-126.4) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(340.9 61.8) rotate(-44.8) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(341.2 55.2) rotate(-87.9) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(445.4 224.9) rotate(-160.4) scale(1.2)"/><use href="#blatt" class="bl3" transform="translate(445.4 224.9) rotate(-60.7) scale(1.2)"/><use href="#blatt" class="bl1" transform="translate(431.7 196.8) rotate(-68.2) scale(1)"/><use href="#blatt" class="bl2" transform="translate(421.9 166.9) rotate(-164.9) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(421.9 166.9) rotate(-50.7) scale(1.1)"/><use href="#blatt" class="bl1" transform="translate(413.9 101.6) rotate(-136.5) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(413.9 101.6) rotate(-45.1) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(415.7 66.3) rotate(-126.4) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(415.7 66.3) rotate(-33.4) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(422.6 23.4) rotate(-77.9) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(300.2 318.6) rotate(-218.9) scale(1)"/><use href="#blatt" class="bl1" transform="translate(270.9 310.3) rotate(-204.8) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(270.9 310.3) rotate(-104.7) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(241.9 302.1) rotate(-205) scale(1)"/><use href="#blatt" class="bl2" transform="translate(213.1 294.2) rotate(-209.1) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(213.1 294.2) rotate(-105) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(184.5 286.3) rotate(-224.1) scale(0.8)"/><use href="#blatt" class="bl1" transform="translate(156 278.7) rotate(-218.8) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(156 278.7) rotate(-127) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(127.9 271.2) rotate(-218.1) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(127.9 271.2) rotate(-110.5) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(123.6 270) rotate(-165.2) scale(0.6)"/><use href="#blatt" class="bl2" transform="translate(440.6 295.6) rotate(-127.1) scale(1.2)"/><use href="#blatt" class="bl3" transform="translate(440.6 295.6) rotate(-27.4) scale(1.2)"/><use href="#blatt" class="bl3" transform="translate(448.2 228.7) rotate(-40.4) scale(0.8)"/><use href="#blatt" class="bl3" transform="translate(455 192.5) rotate(-138.4) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(455 192.5) rotate(-39.4) scale(0.9)"/><use href="#blatt" class="bl2" transform="translate(463.8 154.5) rotate(-135.4) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(474.7 114.6) rotate(-129.9) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(476.2 109.4) rotate(-73.5) scale(0.7)"/><use href="#beere" transform="translate(419.5 255.1) rotate(-37.5) scale(1.3)"/><use href="#beere" transform="translate(386.1 259.3) rotate(30.8) scale(1.1)"/><use href="#beere" transform="translate(380.1 256.5) rotate(42.7) scale(1.2)"/><use href="#beere" transform="translate(344.8 205.1) rotate(20.9) scale(1.1)"/><use href="#beere" transform="translate(348 206.9) rotate(15.7) scale(1.4)"/><use href="#beere" transform="translate(372.8 211.5) rotate(-28.4) scale(1.3)"/><use href="#beere" transform="translate(316.5 271.3) rotate(-16.6) scale(1)"/><use href="#beere" transform="translate(322 266.6) rotate(-39.2) scale(1.2)"/><use href="#beere" transform="translate(300.6 274.6) rotate(22) scale(1.1)"/><use href="#beere" transform="translate(371 274.5) rotate(-22.9) scale(1.1)"/><use href="#beere" transform="translate(384.3 274.7) rotate(-44.2) scale(1.1)"/><use href="#beere" transform="translate(333.3 94) rotate(19.1) scale(1)"/><use href="#beere" transform="translate(342.5 99.9) rotate(-3.2) scale(1)"/><use href="#beere" transform="translate(401.5 165.8) rotate(36.7) scale(1.1)"/><use href="#beere" transform="translate(408.5 173.7) rotate(14.5) scale(1)"/><use href="#beere" transform="translate(255.8 330) rotate(-36.1) scale(0.9)"/><use href="#beere" transform="translate(247.6 334.2) rotate(-14.7) scale(1)"/><!--/gen:busch-rechts--></g></svg>
+    </div>
+    <div class="zweig">
+      <svg viewBox="0 0 330 260" preserveAspectRatio="xMaxYMin meet"><g class="wiegen"><!--gen:zweig--><path class="stiel" stroke-width="3.6" d="M340 -10 Q230 30 90 150"/><use href="#blatt" class="bl1" transform="translate(299.4 7) rotate(99.4) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(299.4 7) rotate(213.7) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(252.1 32) rotate(103.2) scale(0.9)"/><path class="stiel" stroke-width="1.6" d="M202.3 63.3 Q201 75.3 197.9 79.3"/><path class="stiel" stroke-width="1.6" d="M202.3 63.3 Q201.1 79.1 198.3 83.1"/><path class="stiel" stroke-width="1.6" d="M202.3 63.3 Q202.1 82 201.6 86"/><use href="#blatt" class="bl1" transform="translate(95.6 145.2) rotate(84.1) scale(0.6)"/><path class="stiel" stroke-width="1.6" d="M95.6 145.2 Q90.8 160.9 79.8 164.9"/><path class="stiel" stroke-width="1.6" d="M95.6 145.2 Q90.8 161.8 79.8 165.8"/><path class="stiel" stroke-width="3" d="M300 -10 Q250 80 220 210"/><use href="#blatt" class="bl2" transform="translate(268.3 55.8) rotate(70.2) scale(0.7)"/><use href="#blatt" class="bl3" transform="translate(255 90) rotate(48.2) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(255 90) rotate(162) scale(0.7)"/><path class="stiel" stroke-width="1.4" d="M242.7 126.2 Q241 137.5 237.1 141.5"/><path class="stiel" stroke-width="1.4" d="M242.7 126.2 Q241.1 135 237.2 139"/><use href="#blatt" class="bl1" transform="translate(231.4 164.5) rotate(52.5) scale(0.6)"/><use href="#blatt" class="bl1" transform="translate(231.4 164.5) rotate(149.1) scale(0.6)"/><use href="#blatt" class="bl3" transform="translate(221.2 204.8) rotate(145.9) scale(0.6)"/><use href="#blatt" class="bl1" transform="translate(252.1 32) rotate(211.1) scale(0.9)"/><use href="#blatt" class="bl3" transform="translate(202.3 63.3) rotate(95.5) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(202.3 63.3) rotate(198.4) scale(0.7)"/><use href="#blatt" class="bl2" transform="translate(150.1 101.1) rotate(87) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(150.1 101.1) rotate(197) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(95.6 145.2) rotate(187.9) scale(0.6)"/><use href="#blatt" class="bl3" transform="translate(90 150) rotate(139.4) scale(0.6)"/><use href="#blatt" class="bl2" transform="translate(282.6 23.7) rotate(75.1) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(282.6 23.7) rotate(177.4) scale(0.9)"/><use href="#blatt" class="bl1" transform="translate(268.3 55.8) rotate(168.9) scale(0.7)"/><use href="#blatt" class="bl2" transform="translate(242.7 126.2) rotate(68.1) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(242.7 126.2) rotate(155.1) scale(0.7)"/><use href="#blatt" class="bl1" transform="translate(221.2 204.8) rotate(44.2) scale(0.6)"/><use href="#blatt" class="bl3" transform="translate(220 210) rotate(103) scale(0.5)"/><use href="#beere" transform="translate(197.9 87) rotate(15.3) scale(0.8)"/><use href="#beere" transform="translate(198.3 90.6) rotate(11.5) scale(0.8)"/><use href="#beere" transform="translate(201.6 95) rotate(1.8) scale(0.9)"/><use href="#beere" transform="translate(79.8 172.5) rotate(38.8) scale(0.8)"/><use href="#beere" transform="translate(79.8 174) rotate(37.5) scale(0.8)"/><use href="#beere" transform="translate(237.1 149.1) rotate(20.1) scale(0.8)"/><use href="#beere" transform="translate(237.2 146.3) rotate(23.1) scale(0.7)"/><!--/gen:zweig--></g></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ═════ Kopfzeile ═════ -->
+<header class="kopf">
+  <a class="marke" href="#" aria-label="MyrSpace">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M33 16 C35 11 38 8 42 6" fill="none" stroke="#4a5a34" stroke-width="2" stroke-linecap="round"/>
+      <path d="M41 7 C47 3 56 4 60 7 C55 11 46 12 41 7 Z" fill="#4f8a4e"/>
+      <path d="M39 9 C38 2 31 -1 26 1 C27 6 33 10 39 9 Z" fill="#3f7a4a" transform="rotate(-8 39 9)"/>
+      <ellipse cx="32" cy="39" rx="17" ry="21" fill="url(#beerenverlauf)"/>
+      <ellipse cx="25" cy="31" rx="5" ry="8" fill="#fff" opacity=".18" transform="rotate(-18 25 31)"/>
+      <g fill="#3a2c4f"><path d="M32 21 L27 13 L30.5 19 Z M32 21 L37 13 L33.5 19 Z M32 21 L23.5 17 L29.5 20.5 Z M32 21 L40.5 17 L34.5 20.5 Z"/><circle cx="32" cy="20.5" r="2.4"/></g>
+    </svg>
+    MyrSpace
+  </a>
+  <button class="thema" type="button" aria-label="Zwischen Nacht und Morgen wechseln">
+    <svg class="ic-sonne" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#f2b84b"/><g stroke="#e0a040" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></g></svg>
+    <svg class="ic-mond" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="#b8a8ee"/></svg>
+    <span class="thema-text">Morgen</span>
+  </button>
+</header>
+
+<main>
+  <!-- ═════ 1 · Die Handy-Demo ═════ -->
+  <section class="buehne" aria-label="Kennst du das?">
+    <p class="anreisser">Kennst du das? <span>Ein Finger löst es.</span></p>
+
+    <div class="handy-platz">
+      <div class="handy">
+        <div class="bildschirm">
+          <div class="statuszeile" aria-hidden="true"><span class="uhr">7:42</span><span class="icons"><i style="height:5px"></i><i style="height:7px"></i><i style="height:9px"></i><i style="height:11px"></i></span></div>
+          <div class="szene" aria-live="polite">
+            <span class="ort"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="5.5" width="8" height="5.5" rx="1.2" fill="currentColor"/><path d="M3.8 5.5V4a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span class="ort-text">konto.beispiel</span></span>
+            <p class="frage">Die Seite will deinen Code.</p>
+            <div class="bild">
+              <div class="mitte-stapel"><div class="code ok"><span>4</span><span>8</span><span>1</span><span>9</span><span>0</span><span>3</span></div><div class="klein ok">✓ Angemeldet</div></div>
+            </div>
+            <div class="siegel">
+              <button class="finger" type="button" aria-label="Finger auflegen und besiegeln">
+                <svg viewBox="0 0 64 64" aria-hidden="true">
+                  <circle class="ring-grund" cx="32" cy="32" r="30"/>
+                  <circle class="ring" cx="32" cy="32" r="30"/>
+                  <g class="linien" transform="translate(2 1) scale(.94)">
+                    <path d="M17 26c2-8 8-12 15-12s13 4 15 12"/>
+                    <path d="M13 34c0-3 .5-6 1.5-8.5"/>
+                    <path d="M51 34c0-3-.5-6-1.5-8.5"/>
+                    <path d="M21 47c-1.6-3.6-2.4-7.6-2.4-12 0-7.5 6-13.2 13.4-13.2S45.4 27.5 45.4 35c0 3.5-.4 7-1.4 10"/>
+                    <path d="M26.5 51c-1.8-4.4-2.8-9.4-2.8-15 0-4.6 3.7-8.2 8.3-8.2s8.3 3.6 8.3 8.2c0 5-.8 9.8-2.5 14"/>
+                    <path d="M32 34.5c0 7.6-1.4 14-4 19"/>
+                    <path d="M37.2 40c-.4 5.2-1.6 9.6-3.6 13.4"/>
+                  </g>
+                  <path class="haken" d="M21 33 l8 8 l15 -16"/>
+                </svg>
+              </button>
+              <svg class="tipp-hand" viewBox="0 0 32 32" aria-hidden="true"><path d="M13 2.5c-1.4 0-2.5 1.1-2.5 2.5v11.2l-1.6-1.6c-1-1-2.6-1-3.5 0-.9.9-.9 2.3-.1 3.3l5.2 6.6c1.3 1.6 3.2 2.5 5.3 2.5h4.2c3.6 0 6.5-2.9 6.5-6.5v-5.6c0-1.3-1.1-2.4-2.4-2.4-.5 0-1 .2-1.4.4-.3-1-1.2-1.7-2.3-1.7-.6 0-1.1.2-1.5.5-.4-.8-1.2-1.4-2.2-1.4-.4 0-.8.1-1.2.3V5c0-1.4-1.1-2.5-2.5-2.5z" fill="#f5f3ee" stroke="#2f2552" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              <span class="finger-text">Besiegelt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="unterzeile">
+      <p class="nerv geschafft">Eingetragen. Kein Abtippen, keine App suchen.</p>
+      <button class="noch-eins" type="button" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        noch eins!
+      </button>
+    </div>
+  </section>
+
+  <!-- ═════ Kernbotschaft ═════ -->
+  <section class="kern">
+    <h1>Dein eigener Raum für Geräte, Apps und KI.</h1>
+    <p>Die KI darf arbeiten, du besiegelst <mark>mit dem Finger</mark>, und nichts davon hängt an fremden Rechenzentren.</p>
+  </section>
+
+  <!-- ═════ 2 · Die Weiche als Revolver ═════ -->
+  <section class="weiche anker" aria-labelledby="weiche-titel">
+    <h2 id="weiche-titel">Wer liest hier?</h2>
+    <div class="trommel-reihe">
+      <button class="pfeil zurueck" type="button" aria-label="Trommel nach links drehen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="trommel" tabindex="0" role="group" aria-roledescription="Drehtrommel" aria-label="Sicht wählen: Anwender, Bastler oder Konzerner und Cyberpunk. Pfeiltasten drehen.">
+        <svg viewBox="-125 -125 250 250" aria-hidden="true">
+          <defs>
+            <radialGradient id="metall" cx="35%" cy="28%" r="85%">
+              <stop class="mv1" offset="0"/><stop class="mv2" offset=".55"/><stop class="mv3" offset="1"/>
+            </radialGradient>
+            <mask id="kerben">
+              <circle r="104" fill="#fff"/>
+              <circle cx="0" cy="104" r="17" fill="#000"/>
+              <circle cx="-90.07" cy="-52" r="17" fill="#000"/>
+              <circle cx="90.07" cy="-52" r="17" fill="#000"/>
+            </mask>
+          </defs>
+          <g class="kreisel-dreh">
+            <path class="kreisel" d="M-117 -10 A118 118 0 0 1 -60 -101"/>
+            <path class="kreisel" d="M117 10 A118 118 0 0 1 60 101"/>
+          </g>
+          <g class="drehteil">
+            <circle r="104" fill="url(#metall)" mask="url(#kerben)"/>
+            <circle r="96" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5" mask="url(#kerben)"/>
+            <circle r="13" fill="#5e5090"/><circle r="6" fill="#2a2148"/>
+            <g class="kammer" data-k="0" transform="translate(0 -54)">
+              <circle class="kammer-loch" r="35"/><circle class="kammer-rand" r="35"/>
+              <g class="ikon"><circle r="22" fill="none"/><circle cy="-8" r="8.5"/><path d="M-15 16 a15 13 0 0 1 30 0 Z"/></g>
+            </g>
+            <g class="kammer" data-k="1" transform="translate(46.77 27)">
+              <circle class="kammer-loch" r="35"/><circle class="kammer-rand" r="35"/>
+              <g class="ikon"><circle r="22" fill="none"/><path d="M8.6 -16.4 a10 10 0 0 0 -11.2 13 L-15.5 9.5 a3.6 3.6 0 0 0 5.1 5.1 L2.5 1.6 a10 10 0 0 0 13 -11.2 L9.6 -3.7 L4 -4.6 L3.1 -10.2 Z"/></g>
+            </g>
+            <g class="kammer" data-k="2" transform="translate(-46.77 27)">
+              <circle class="kammer-loch" r="35"/><circle class="kammer-rand" r="35"/>
+              <g class="ikon ik-kz"><circle r="22" fill="none"/><path d="M0 -17 L14 -11.5 V0 C14 9.5 7.5 14.8 0 18 C-7.5 14.8 -14 9.5 -14 0 V-11.5 Z"/><path class="zu" d="M-6 0 l4.5 4.5 l8 -9" stroke="#2a2148"/></g>
+              <g class="ikon ik-cp"><circle r="22" fill="none"/><path d="M-16 18 C-16 0 -11 -16 0 -18 C11 -16 16 0 16 18 Z"/><path d="M-10.5 -3 H10.5 L8.5 6 H-8.5 Z" fill="#2a2148"/><path class="visier" d="M-7.5 1.5 H7.5"/></g>
+            </g>
+          </g>
+          <circle class="zeiger-ring" cx="0" cy="-54" r="40"/>
+          <path class="zeiger" d="M-9 -122 L9 -122 L0 -108 Z"/>
+        </svg>
+      </div>
+      <button class="pfeil vor" type="button" aria-label="Trommel nach rechts drehen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="ich-bin">Ich bin … <span class="sicht-name"><span class="wer">Anwender</span></span></div>
+    <nav class="reiter" aria-label="Sicht">
+      <a href="#anwender" data-sicht="anwender" aria-current="true">Anwender</a>
+      <a href="#bastler" data-sicht="bastler">Bastler</a>
+      <a href="#konzerner" data-sicht="sicherheit">Konzerner · Cyberpunk</a>
+    </nav>
+    <div class="anriss">
+      <p data-sicht="anwender" class="aktiv"><b>Anwender:</b> Ein Finger statt vieler Passwörter. Deine Geräte kennen sich, auch ohne Internet.</p>
+      <p data-sicht="bastler"><b>Bastler:</b> Eine Myrte ist ein Git-Projekt mit ein paar Metadaten. Ein Befehl, und sie läuft.</p>
+      <p data-sicht="sicherheit" data-wer="konzerner"><b class="kz">Konzerner:</b> Kontrolle im eigenen Haus, kein Fremder drin. KI-Agenten fragen an, statt Admin zu sein, und jeder Eingriff steht im Laufbuch.</p>
+      <p data-sicht="sicherheit" data-wer="cyberpunk"><b class="cp">Cyberpunk:</b> Eigene Wurzel, offline. Kein Konzern dazwischen, und nur Menschen besiegeln.</p>
+      <p data-sicht="sicherheit">Dieselbe Mathematik schützt beide, auch voreinander.</p>
+    </div>
+    <a class="weiter" href="#">einfach weiterlesen <span>↓</span></a>
+  </section>
+
+  <!-- ═════ A · Warum dezentral ═════ -->
+  <section class="abschnitt anker" aria-labelledby="a-dezentral">
+    <h2 class="kicker" id="a-dezentral">Warum dezentral</h2>
+    <div class="je-sicht">
+      <div data-sicht="anwender"><h3>Wenn Outlook ausfällt, läuft deins weiter.</h3></div>
+      <div data-sicht="bastler"><h3>Stern gegen Netz.</h3></div>
+      <div data-sicht="sicherheit"><h3>Kein Single Point of Failure.</h3></div>
+    </div>
+    <figure class="ausfall">
+      <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zentral hängen alle Geräte an einem Dienst. Fällt er aus, stehen alle. In MyrSpace sprechen die Geräte direkt miteinander. Fällt eines aus, sogar der NAS, läuft der Rest weiter."></svg>
+      <div class="schalter-reihe">
+        <button type="button" class="lbl an" data-modus="stern">Zentral</button>
+        <button type="button" class="schalter" role="switch" aria-checked="false" aria-label="MyrSpace einschalten"></button>
+        <button type="button" class="lbl" data-modus="netz">MyrSpace</button>
+      </div>
+      <figcaption class="ausfall-text">Zentral hängen alle Geräte am selben Dienst. In MyrSpace sprechen sie direkt miteinander.</figcaption>
+    </figure>
+    <details class="mehr">
+      <summary>Mehr erfahren</summary>
+      <div class="je-sicht">
+        <div data-sicht="anwender">
+          <p><b>Ein Handgriff an einer Stelle, und alle stehen.</b> Am Abend des 12. November 2026 fiel Exchange Online aus, Outlook blieb bis zum nächsten Tag gestört, weltweit kamen über 130.000 Störungsmeldungen zusammen. Die Ursache laut Microsoft: ein zuvor durchgeführtes Upgrade der Netzkapazität. Die Geräte der Leute liefen die ganze Zeit einwandfrei.</p>
+          <p>Zentral ist bequem, aber zerbrechlich. Selbst hosten war robust, aber mühsam, denn man musste selbst Admin sein. Mit KI ändert sich das: Die KI pflegt, repariert und richtet ein, und du siehst, was sie vorhat, und besiegelst mit dem Finger.</p>
+          <p class="quellen">Quellen: <a href="https://www.zdfheute.de/wirtschaft/stoerung-outlook-teams-microsoft-100.html" rel="noopener">zdfheute</a> · <a href="https://www.pcwelt.de/article/3284443/microsoft-dienste-funktionieren-wieder-das-war-der-grund-fur-den-ausfall.html" rel="noopener">PC-Welt</a> · <a href="https://www.computerwoche.de/article/4248360/exchange-online-stoerung-legt-microsoft-365-dienste-lahm.html" rel="noopener">Computerwoche</a></p>
+        </div>
+        <div data-sicht="bastler">
+          <p><b>Der NAS ist Ausgabestelle, nicht Betrieb.</b> Er koppelt Geräte, liefert Myrten aus und verlängert Ausweise. Für den Alltag braucht ihn niemand: Eine einmal geladene Myrte läuft weiter, Geräte sprechen direkt miteinander, und ein Gerät mit dem passenden Recht kann andere auch bei ausgeschaltetem NAS verändern.</p>
+          <p>Kein Gerät ist „das MyrSpace“, auch nicht der Haupt-PC. Und ganz ohne NAS geht es auch: Im Taschen-Space ist das Handy der Space.</p>
+        </div>
+        <div data-sicht="sicherheit">
+          <p><b>Eigene Wurzel statt fremder Zentrale.</b> Jeder Space hat seine eigene Wurzel, und alle Schlüssel stammen von ihr ab: Geräte-Ausweise, Rechte, Paket-Signierer. Jedes Gerät kennt ihren Fingerabdruck und prüft Ausweise selbst, ohne jemanden zu fragen.</p>
+          <p>Es gibt keine Stelle, die alle zugleich sperren oder abschalten kann. Und standardmäßig ist alles zu: Von außen gibt es eine einzige Tür, und die geht nur mit Ausweis auf.</p>
+        </div>
+      </div>
+    </details>
+    <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
+  </section>
+
+  <!-- ═════ Platzhalter ═════ -->
+  <section class="abschnitt anker" aria-labelledby="a-netz">
+    <span class="platzhalter-marke">Platzhalter</span>
+    <h2 class="kicker" id="a-netz">Ein Netz aus Myrten</h2>
+    <div class="platzhalter-bild" aria-hidden="true">Bild kommt noch:<br>Netz aus Myrten, MyrTube antippen lässt seine Verbindungen leuchten</div>
+    <div class="je-sicht">
+      <div data-sicht="anwender"><h3>Apps, die sich kennen.</h3>
+        <p>Deine Apps sprechen miteinander, ohne Konten, ohne API-Schlüssel, ohne Anmeldung je Dienst. Jede neue Myrte kann alle anderen nutzen, und ein eigenes Video-Portal ist einfach eine Myrte von vielen.</p></div>
+      <div data-sicht="bastler"><h3>Ein Paket mit Ausweis.</h3>
+        <p>Eine Myrte ist ein Git-Projekt mit ein paar Metadaten mehr (heute <code>myrapp.json</code>). MyrSpace ist der Paketmanager und gibt vor, wie Myrten über den Myrtag miteinander sprechen. Statt eines Stores hat jeder Space ein öffentliches Protokoll, um Myrten zu suchen.</p></div>
+      <div data-sicht="sicherheit"><h3>Ausweise statt Schlüssel, Empfehlungen als Vertrauen.</h3>
+        <p>Zwischen Myrten gelten Ausweise, die von der Wurzel des Space abstammen. Jeder unterschreibt, was er baut, Forks tragen ihre Abstammung. Empfehlungen sammeln sich bei der Person und am Strang der Myrte, so sieht man, wem man vertraut.</p></div>
+    </div>
+    <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
+  </section>
+
+  <p class="fuss"><span>Prototyp · erster Bildschirm, „Warum dezentral“ und ein Platzhalter · im Aufbau</span></p>
+</main>
+
+<button class="dock" type="button" aria-label="Sicht weiterdrehen" tabindex="-1">
+  <span class="dock-trommel" aria-hidden="true"></span>
+  <span class="dock-text"><small>Ich bin …</small><b class="dock-name">Anwender</b></span>
+</button>
+
+
+<script>
+(() => {
+  'use strict';
+  const html = document.documentElement;
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)');
+  const dunkelMq = matchMedia('(prefers-color-scheme: dark)');
+  const warte = ms => new Promise(r => setTimeout(r, ruhig.matches ? Math.min(ms, 40) : ms));
+  const $ = (s, el = document) => el.querySelector(s);
+
+  /* ── Nacht / Morgen ───────────────────────────────────────── */
+  const themaKnopf = $('.thema'), themaText = $('.thema-text');
+  const istDunkel = () => html.dataset.theme ? html.dataset.theme === 'dark' : dunkelMq.matches;
+  const themaZeigen = () => { themaText.textContent = istDunkel() ? 'Nacht' : 'Morgen'; };
+  themaKnopf.addEventListener('click', () => {
+    const neu = istDunkel() ? 'light' : 'dark';
+    html.dataset.theme = neu;
+    try { localStorage.setItem('myr-pitch-thema', neu); } catch (e) {}
+    themaZeigen();
+  });
+  dunkelMq.addEventListener('change', themaZeigen);
+  themaZeigen();
+
+  /* ── Uhr im Handy ─────────────────────────────────────────── */
+  const uhr = $('.uhr');
+  const tick = () => { const d = new Date(); uhr.textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
+  tick(); setInterval(tick, 20000);
+
+  /* ── Handy-Demo ───────────────────────────────────────────── */
+  const szeneEl = $('.szene'), ortText = $('.ort-text'), frageEl = $('.frage'), bildEl = $('.bild');
+  const handy = $('.handy'), tippHand = $('.tipp-hand');
+  const finger = $('.finger'), fingerText = $('.finger-text'), nerv = $('.nerv'), nochEins = $('.noch-eins'), kern = $('.kern');
+
+  const zufall = n => Array.from({ length: n }, () => Math.floor(Math.random() * 10));
+
+  function qrSvg() {
+    // Ein QR-artiges Muster (Bild, kein echter Code): drei Suchmarken, Rest Zufall.
+    const n = 21, m = [];
+    for (let y = 0; y < n; y++) { m[y] = []; for (let x = 0; x < n; x++) m[y][x] = Math.random() < .47; }
+    const marke = (ox, oy) => { for (let y = -1; y < 8; y++) for (let x = -1; x < 8; x++) {
+      const X = ox + x, Y = oy + y; if (X < 0 || Y < 0 || X >= n || Y >= n) continue;
+      const r = Math.max(Math.abs(x - 3), Math.abs(y - 3)); m[Y][X] = r === 3 || r <= 1; } };
+    marke(0, 0); marke(n - 7, 0); marke(0, n - 7);
+    let d = '';
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (m[y][x]) d += `M${x} ${y}h1v1h-1z`;
+    return `<svg viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges"><path d="${d}" fill="#2f2552"/></svg>`;
+  }
+
+  const SZENEN = [
+    {
+      ort: 'konto.beispiel', frage: 'Die Seite will deinen Code.',
+      nerv: 'Authenticator-App suchen, sechs Ziffern abtippen … zu spät, neuer Code.',
+      fertig: 'Eingetragen. Kein Abtippen, keine App suchen.',
+      bild: () => `<div class="mitte-stapel"><div class="code">${'<span></span>'.repeat(6)}</div><div class="klein">Code aus der Authenticator-App</div></div>`,
+      async loesen() {
+        const felder = bildEl.querySelectorAll('.code span');
+        for (const [i, z] of zufall(6).entries()) { felder[i].textContent = z; felder[i].classList.add('drin'); await warte(95); }
+        $('.code', bildEl).classList.add('ok');
+        const k = $('.klein', bildEl); k.textContent = '✓ Angemeldet'; k.classList.add('ok');
+      }
+    },
+    {
+      ort: 'Zuhause · WLAN', frage: 'Besuch will ins WLAN.',
+      nerv: 'Wie war noch mal das Passwort? Das auf dem Zettel unterm Router?',
+      fertig: 'QR zeigen, Besuch ist drin. Dein Passwort bleibt geheim.',
+      bild: () => `<div class="wlan-karte"><svg class="wifi" viewBox="0 0 56 44"><path d="M4 16a34 34 0 0 1 48 0M12 25a22 22 0 0 1 32 0M20 33a10 10 0 0 1 16 0"/><circle cx="28" cy="40" r="3.5" fill="#b8a8ee"/></svg><div class="zettel">WLAN: <s>Hx7#qL2m</s><br>Vb9!kR4w-Tz…?</div></div>`,
+      async loesen() {
+        bildEl.innerHTML = `<div class="mitte-stapel"><div class="qr">${qrSvg()}</div><div class="klein ok">✓ Gäste-Zugang</div></div>`;
+        await warte(250);
+      }
+    },
+    {
+      ort: 'Rechner in der Bibliothek', frage: 'Anmelden am fremden Rechner.',
+      nerv: 'Dein Passwort in eine fremde Tastatur tippen? Lieber nicht.',
+      fertig: 'Angemeldet. Getippt hast du nichts.',
+      bild: () => `<div class="rechner"><div class="schirm"><div class="titel">Anmelden</div><div class="feld">du@zuhause</div><div class="feld"><span class="punkte"></span><i class="cursor"></i></div><div class="anmelden">Anmelden</div></div><div class="fuss"></div></div>`,
+      async loesen() {
+        const p = $('.punkte', bildEl);
+        for (let i = 0; i < 12; i++) { p.textContent += '•'; await warte(45); }
+        const a = $('.anmelden', bildEl); a.textContent = '✓ Angemeldet'; a.classList.add('ok');
+        $('.cursor', bildEl).remove();
+      }
+    },
+    {
+      ort: 'Spielrechner · oben', frage: 'Das Essen wird kalt.',
+      nerv: 'Dreimal gerufen. Kopfhörer auf, keine Chance.',
+      fertig: '„Komm essen!“ steht groß auf seinem Bildschirm.',
+      bild: () => `<div class="mitte-stapel" style="width:100%"><div class="monitor"><span class="punktestand">PUNKTE 1240</span><i class="spieler"></i><i class="hindernis"></i><i class="hindernis b"></i><div class="banner"><b>Komm essen! 🍝</b></div></div><div class="zimmer">oben, Kopfhörer auf</div></div>`,
+      async loesen() { $('.monitor', bildEl).classList.add('essen'); await warte(300); }
+    }
+  ];
+
+  let nr = 0, beschaeftigt = false, geloest = false, kernDa = false, schonGetippt = false, handUhr = 0;
+
+  // Wer zögert, bekommt eine tippende Hand gezeigt (beim ersten Mal schneller).
+  function handPlanen() {
+    clearTimeout(handUhr); tippHand.classList.remove('zeigt');
+    handUhr = setTimeout(() => { if (!geloest && !beschaeftigt) tippHand.classList.add('zeigt'); }, schonGetippt ? 5000 : 2200);
+  }
+  // Das ganze Handy ist Tippfläche, nicht nur der Fingerabdruck.
+  handy.addEventListener('click', e => { if (!e.target.closest('.finger')) finger.click(); });
+
+  function zeigeSzene(i) {
+    const s = SZENEN[i];
+    ortText.textContent = s.ort; frageEl.textContent = s.frage; bildEl.innerHTML = s.bild();
+    nerv.textContent = s.nerv; nerv.classList.remove('geschafft');
+    finger.classList.remove('liest', 'fertig'); fingerText.textContent = 'Finger auflegen';
+    finger.setAttribute('aria-label', 'Finger auflegen und besiegeln');
+    geloest = false; nochEins.classList.remove('lockt');
+    handPlanen();
+  }
+
+  function kernZeigen() { if (!kernDa) { kernDa = true; kern.classList.add('da'); } }
+
+  function funkenflug() {
+    if (ruhig.matches || !finger.animate) return;
+    const r = finger.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement('div'); el.className = 'funkenflug';
+      const beere = i % 3 === 0;
+      el.innerHTML = beere
+        ? '<svg viewBox="-12 -14 24 36"><use href="#beere"/></svg>'
+        : `<svg viewBox="0 -12 64 24"><use href="#blatt" class="${i % 2 ? 'bl1' : 'bl3'}"/></svg>`;
+      if (!beere) { el.style.width = '26px'; el.style.height = '12px'; el.style.margin = '-6px 0 0 -13px'; }
+      el.style.left = cx + 'px'; el.style.top = cy + 'px';
+      document.body.appendChild(el);
+      const w = (i / 12) * Math.PI * 2 + Math.random() * .4, d = 70 + Math.random() * 70;
+      el.animate([
+        { transform: 'translate(0,0) rotate(0deg) scale(.3)', opacity: 1 },
+        { transform: `translate(${Math.cos(w) * d}px, ${Math.sin(w) * d - 30}px) rotate(${(Math.random() - .5) * 540}deg) scale(1)`, opacity: 1, offset: .6 },
+        { transform: `translate(${Math.cos(w) * d * 1.15}px, ${Math.sin(w) * d + 40}px) rotate(${(Math.random() - .5) * 720}deg) scale(.8)`, opacity: 0 }
+      ], { duration: 1100 + Math.random() * 300, easing: 'cubic-bezier(.2,.7,.4,1)' }).onfinish = () => el.remove();
+    }
+  }
+
+  finger.addEventListener('click', async () => {
+    if (beschaeftigt || geloest) {
+      if (geloest && finger.animate && !ruhig.matches) finger.animate([{ transform: 'scale(1)' }, { transform: 'scale(.9)' }, { transform: 'scale(1)' }], 250);
+      return;
+    }
+    beschaeftigt = true; schonGetippt = true;
+    clearTimeout(handUhr); tippHand.classList.remove('zeigt');
+    fingerText.textContent = 'liest …';
+    finger.classList.add('liest');
+    await warte(800);
+    finger.classList.remove('liest'); finger.classList.add('fertig');
+    fingerText.textContent = 'Besiegelt';
+    finger.setAttribute('aria-label', 'Besiegelt');
+    funkenflug();
+    await SZENEN[nr].loesen();
+    nerv.textContent = SZENEN[nr].fertig; nerv.classList.add('geschafft');
+    geloest = true; beschaeftigt = false;
+    nochEins.hidden = false; nochEins.classList.add('lockt');
+    await warte(500);
+    kernZeigen();
+  });
+
+  nochEins.addEventListener('click', async () => {
+    if (beschaeftigt) return;
+    beschaeftigt = true;
+    nochEins.classList.remove('lockt');
+    nr = (nr + 1) % SZENEN.length;
+    szeneEl.classList.add('raus');
+    await warte(320);
+    szeneEl.classList.remove('raus'); szeneEl.classList.add('rein');
+    zeigeSzene(nr);
+    void szeneEl.offsetWidth;
+    szeneEl.classList.remove('rein');
+    beschaeftigt = false;
+  });
+
+  // Start: Szene 1 ungelöst, Kernbotschaft erst nach dem ersten Finger (spätestens nach 12 s).
+  zeigeSzene(0);
+  nochEins.hidden = true;  // erst nach dem ersten Finger
+  setTimeout(kernZeigen, 12000);
+
+  /* ── Die Weiche als Revolver ──────────────────────────────── */
+  const SICHTEN = ['anwender', 'bastler', 'sicherheit'];
+  const NAMEN = { anwender: 'Anwender', bastler: 'Bastler' };
+  const WER = { konzerner: 'Konzerner', cyberpunk: 'Cyberpunk' };
+  // Links: #anwender, #bastler, #konzerner, #cyberpunk (startet mit dem Cyberpunk); alte Namen gehen weiter
+  const LINKS = { anwender: 0, nutzer: 0, bastler: 1, konzerner: 2, cyberpunk: 2, sicherheit: 2 };
+  // Die Mini-Trommel ist eine Kopie der großen (ohne Kreisel, ohne zweite defs) und dreht immer mit.
+  const dock = $('.dock'), dockName = $('.dock-name');
+  const kopie = $('.trommel svg').cloneNode(true);
+  kopie.querySelector('defs').remove(); kopie.querySelector('.kreisel-dreh').remove();
+  $('.dock-trommel').append(kopie);
+  const trommel = $('.trommel'), drehteile = [...document.querySelectorAll('.drehteil')], ikonen = [...document.querySelectorAll('.ikon')];
+  const nameEl = $('.sicht-name'), reiter = [...document.querySelectorAll('.reiter a')], anrisse = [...document.querySelectorAll('.anriss p')];
+
+  let ziel = 0, winkel = 0, sicht = 0, anim = 0, wer = 'konzerner', duellUhr = 0;
+  const mod = (a, n) => ((a % n) + n) % n;
+  const sichtAusWinkel = w => mod(-Math.round(w / 120), 3);
+
+  function zeichne(w) {
+    for (const d of drehteile) d.setAttribute('transform', `rotate(${w.toFixed(2)})`);
+    for (const ik of ikonen) ik.setAttribute('transform', `rotate(${(-w).toFixed(2)})`);
+  }
+
+  // Weich anlaufen, gleiten, ein Hauch Überschwingen, einrasten. Nach Zeit, also gleich schnell bei 60 und 120 Hz.
+  const gleiten = t => {
+    const g = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    return g + .045 * Math.sin(Math.PI * Math.max(0, (t - .55) / .45));
+  };
+  function anschieben() {
+    cancelAnimationFrame(anim);
+    if (ruhig.matches) { winkel = ziel; zeichne(winkel); return; }
+    const von = winkel, nach = ziel, t0 = performance.now();
+    const dauer = 600 + Math.min(500, Math.abs(nach - von) * 2.2);
+    const schritt = jetzt => {
+      const t = Math.min(1, (jetzt - t0) / dauer);
+      winkel = von + (nach - von) * gleiten(t); zeichne(winkel);
+      if (t < 1) anim = requestAnimationFrame(schritt);
+    };
+    anim = requestAnimationFrame(schritt);
+  }
+
+  // Ändert sich Text oberhalb oder im gelesenen Abschnitt, bleibt dieser Abschnitt an seinem Platz.
+  function verankert(fn) {
+    if (window.scrollY < 10) return fn();
+    const a = [...document.querySelectorAll('.anker')].find(el => el.getBoundingClientRect().bottom > 80);
+    const vorher = a && a.getBoundingClientRect().top;
+    fn();
+    if (a) { const d = a.getBoundingClientRect().top - vorher; if (Math.abs(d) > .5) window.scrollBy(0, d); }
+  }
+  function dockNameSetzen() {
+    const name = sicht !== 2 ? NAMEN[SICHTEN[sicht]] : ruhig.matches ? 'Konzerner/Cyberpunk' : WER[wer];
+    dockName.textContent = name;
+    dockName.className = 'dock-name' + (sicht === 2 && !ruhig.matches ? ' ' + wer : '');
+  }
+
+  /* Dritte Kammer: Konzerner und Cyberpunk im Wechsel. Der Cyberpunk greift von links an,
+     steht eine Weile, dann holt sich der Konzerner von rechts den Platz zurück. */
+  const ichBin = $('.ich-bin');
+  function nameZeigen(text, klasse) {
+    nameEl.textContent = '';
+    const s = document.createElement('span'); s.className = 'wer' + (klasse ? ' ' + klasse : ''); s.textContent = text;
+    nameEl.append(s);
+  }
+  function werSetzen(w) {
+    wer = w || 'konzerner';
+    document.body.dataset.wer = wer; trommel.dataset.wer = wer;
+    verankert(() => anrisse.forEach(p => p.classList.toggle('aktiv', p.dataset.sicht === SICHTEN[sicht] && (!w || !p.dataset.wer || p.dataset.wer === w))));
+    dockNameSetzen();
+  }
+  function angriff() {
+    const neu = wer === 'konzerner' ? 'cyberpunk' : 'konzerner';
+    const s = neu === 'cyberpunk' ? -1 : 1;  // -1: kommt von links
+    const alt = nameEl.querySelector('.wer');
+    const ein = document.createElement('span'); ein.className = 'wer ' + neu; ein.textContent = WER[neu];
+    nameEl.append(ein);
+    ein.animate([
+      { transform: `translateX(${s * 170}px) skewX(${s * 18}deg)`, opacity: 0 },
+      { transform: `translateX(${-s * 12}px) skewX(${-s * 8}deg)`, opacity: 1, offset: .6 },
+      { transform: 'none', opacity: 1 }
+    ], { duration: 560, easing: 'cubic-bezier(.55,0,.35,1)' });
+    if (alt) alt.animate([
+      { transform: 'none', opacity: 1 },
+      { transform: 'none', opacity: 1, offset: .45 },
+      { transform: `translate(${-s * 150}px, -22px) rotate(${-s * 32}deg)`, opacity: 0 }
+    ], { duration: 620, easing: 'ease-in', fill: 'forwards' });
+    // Aufräumen nach Uhr, nicht nach onfinish: im Hintergrund-Tab stehen Animationen still
+    setTimeout(() => nameEl.querySelectorAll('.wer').forEach(w => w !== ein && w.remove()), 700);
+    const blitz = document.createElement('i'); blitz.className = 'blitz';
+    blitz.style.setProperty('--blitz', neu === 'cyberpunk' ? '#ff5c8a' : '#8fb0ff');
+    nameEl.append(blitz);
+    blitz.animate([{ opacity: 0, transform: 'scale(.2)' }, { opacity: 1, transform: 'scale(1.1)', offset: .3 }, { opacity: 0, transform: 'scale(1.7)' }],
+      { duration: 480, delay: 270 });
+    setTimeout(() => blitz.remove(), 800);
+    ichBin.animate([{ transform: 'none' }, { transform: `translateX(${-s * 7}px) rotate(${-s * 1.5}deg)` }, { transform: `translateX(${s * 4}px)` }, { transform: 'none' }],
+      { duration: 320, delay: 280 });
+    werSetzen(neu);
+  }
+  function duellPlanen() {
+    clearTimeout(duellUhr);
+    if (sicht !== 2 || ruhig.matches || !Element.prototype.animate) return;
+    duellUhr = setTimeout(() => { angriff(); duellPlanen(); }, 5500);
+  }
+
+  function sichtSetzen(neu, richtung, sofort) { verankert(() => sichtSetzenJetzt(neu, richtung, sofort)); }
+  function sichtSetzenJetzt(neu, richtung, sofort) {
+    const alt = sicht; sicht = neu;
+    document.body.dataset.sicht = SICHTEN[neu];
+    if (neu !== 2 && location.hash !== '#cyberpunk') wer = 'konzerner';
+    if (neu === 2 && ruhig.matches) { nameZeigen('Konzerner oder Cyberpunk'); werSetzen(''); }
+    else if (neu === 2) { nameZeigen(WER[wer], wer); werSetzen(wer); }
+    else { nameZeigen(NAMEN[SICHTEN[neu]]); werSetzen(wer); }
+    if (!sofort && alt !== neu) {
+      nameEl.classList.remove('links', 'rechts'); void nameEl.offsetWidth;
+      nameEl.classList.add(richtung > 0 ? 'links' : 'rechts');
+    }
+    reiter.forEach(a => a.setAttribute('aria-current', a.dataset.sicht === SICHTEN[neu] ? 'true' : 'false'));
+    const h = '#' + (neu === 2 ? (location.hash === '#cyberpunk' ? 'cyberpunk' : 'konzerner') : SICHTEN[neu]);
+    if (!sofort && location.hash !== h) history.replaceState(null, '', h);
+    duellPlanen();
+  }
+
+  function drehe(schritte) {
+    // schritte > 0: nach rechts (nächste Sicht), < 0: nach links
+    ziel = Math.round(ziel / 120) * 120 - schritte * 120;
+    sichtSetzen(sichtAusWinkel(ziel), schritte);
+    anschieben();
+  }
+  function geheZu(i, sofort) {
+    if (i === sicht && !sofort) return;
+    const d = mod(i - sicht, 3) === 1 ? 1 : -1;
+    if (sofort) { cancelAnimationFrame(anim); ziel = winkel = -i * 120; zeichne(winkel); sichtSetzen(i, 0, true); return; }
+    drehe(d);
+  }
+
+  $('.pfeil.vor').addEventListener('click', () => drehe(1));
+  document.querySelectorAll('.genauer').forEach(b => b.addEventListener('click', () => drehe(1)));
+
+  // Dock: Antippen dreht weiter, Wischen dreht in Wischrichtung
+  let dockZug = null, dockGewischt = false;
+  dock.addEventListener('pointerdown', e => { dockZug = { x: e.clientX, id: e.pointerId }; dockGewischt = false; });
+  dock.addEventListener('pointerup', e => {
+    if (!dockZug || e.pointerId !== dockZug.id) return;
+    const dx = e.clientX - dockZug.x; dockZug = null;
+    if (Math.abs(dx) > 28) { dockGewischt = true; drehe(dx < 0 ? 1 : -1); }
+  });
+  dock.addEventListener('click', () => { if (dockGewischt) { dockGewischt = false; return; } drehe(1); });
+  // Andocken, sobald die große Trommel oben aus dem Bild ist
+  let dockGeplant = false;
+  const dockPruefen = () => {
+    dockGeplant = false;
+    const zeigen = trommel.getBoundingClientRect().bottom < 0;
+    if (zeigen !== dock.classList.contains('zeigt')) { dock.classList.toggle('zeigt', zeigen); dock.tabIndex = zeigen ? 0 : -1; }
+  };
+  window.addEventListener('scroll', () => { if (!dockGeplant) { dockGeplant = true; requestAnimationFrame(dockPruefen); } }, { passive: true });
+  window.addEventListener('resize', dockPruefen);
+  dockPruefen();
+  $('.pfeil.zurueck').addEventListener('click', () => drehe(-1));
+  reiter.forEach(a => a.addEventListener('click', e => { e.preventDefault(); geheZu(SICHTEN.indexOf(a.dataset.sicht)); }));
+
+  // Pfeiltasten überall, solange kein Eingabefeld den Fokus hat
+  document.addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName)) return;
+    if (e.key === 'ArrowRight') { drehe(1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { drehe(-1); e.preventDefault(); }
+  });
+
+  // Mausrad über der Trommel
+  let radSperre = 0, radSumme = 0;
+  trommel.addEventListener('wheel', e => {
+    e.preventDefault();
+    const jetzt = performance.now();
+    radSumme += Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (jetzt < radSperre || Math.abs(radSumme) < 30) return;
+    drehe(radSumme > 0 ? 1 : -1); radSumme = 0; radSperre = jetzt + 380;
+  }, { passive: false });
+
+  // Wischen und Ziehen: die Trommel folgt dem Finger, rastet beim Loslassen ein
+  let zug = null;
+  trommel.addEventListener('pointerdown', e => {
+    zug = { x: e.clientX, y: e.clientY, start: winkel, bewegt: false, id: e.pointerId, ziel: e.target.closest('.kammer') };
+  });
+  trommel.addEventListener('pointermove', e => {
+    if (!zug || e.pointerId !== zug.id) return;
+    const dx = e.clientX - zug.x, dy = e.clientY - zug.y;
+    if (!zug.bewegt) {
+      if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy)) return;
+      zug.bewegt = true; trommel.setPointerCapture(e.pointerId);
+    }
+    cancelAnimationFrame(anim); winkel = ziel = zug.start + dx * 0.75; zeichne(winkel);
+    const s = sichtAusWinkel(winkel);
+    if (s !== sicht) sichtSetzen(s, dx < 0 ? 1 : -1);
+  });
+  const loslassen = e => {
+    if (!zug || e.pointerId !== zug.id) return;
+    const dx = e.clientX - zug.x;
+    if (zug.bewegt) {
+      let schritte = Math.round((winkel - zug.start) / 120);
+      if (schritte === 0 && Math.abs(dx) > 24) schritte = dx < 0 ? -1 : 1;
+      ziel = Math.round(zug.start / 120) * 120 + schritte * 120;
+      sichtSetzen(sichtAusWinkel(ziel), dx < 0 ? 1 : -1);
+      anschieben();
+    } else if (zug.ziel) {
+      geheZu(+zug.ziel.dataset.k);
+    }
+    zug = null;
+  };
+  trommel.addEventListener('pointerup', loslassen);
+  trommel.addEventListener('pointercancel', e => { if (zug && zug.bewegt) loslassen(e); zug = null; });
+
+  // Sicht aus dem Link (#bastler …)
+  const ausLink = sofort => {
+    const name = location.hash.slice(1), i = LINKS[name];
+    if (i === undefined) return;
+    if (i === 2) wer = name === 'cyberpunk' ? 'cyberpunk' : 'konzerner';
+    if (i === sicht && i === 2) sichtSetzen(2, 0, true); else geheZu(i, sofort);
+  };
+  window.addEventListener('hashchange', () => ausLink(false));
+  ausLink(true);
+  if (LINKS[location.hash.slice(1)] === undefined) sichtSetzen(0, 0, true);
+
+  /* ── Warum dezentral: Stern gegen Netz ──────────────────── */
+  {
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = $('.ausfall svg'), schalter = $('.schalter'), text = $('.ausfall-text'), lbls = [...document.querySelectorAll('.schalter-reihe .lbl')];
+    const NAMEN_G = ['Handy', 'Laptop', 'Fernseher', 'NAS', 'Tablet', 'Spiel-PC', 'Drucker'], NAS = 3;
+    const MX = 180, MY = 128;
+    const pos = NAMEN_G.map((_, i) => { const w = -Math.PI / 2 + i * 2 * Math.PI / NAMEN_G.length; return [MX + 140 * Math.cos(w), MY + 96 * Math.sin(w)]; });
+    const STERN = NAMEN_G.map((_, i) => [-1, i]);
+    const NETZ = [...NAMEN_G.map((_, i) => [i, (i + 1) % NAMEN_G.length]), [0, 3], [1, 5], [2, 6]];
+    const ort = i => i < 0 ? [MX, MY] : pos[i];
+    const el = (name, attr, eltern) => { const e = document.createElementNS(NS, name); for (const k in attr) e.setAttribute(k, attr[k]); eltern.append(e); return e; };
+    const kanten = el('g', {}, svg), pakete = el('g', {}, svg), knoten = el('g', {}, svg);
+    const linie = ([a, b], klasse) => { const [x1, y1] = ort(a), [x2, y2] = ort(b);
+      el('line', { x1, y1, x2, y2, class: klasse + (a === NAS || b === NAS ? ' am-nas' : '') }, kanten); };
+    STERN.forEach(k => linie(k, 'k-stern')); NETZ.forEach(k => linie(k, 'k-netz'));
+    const x = (g, r) => el('path', { class: 'x', d: `M${-r} ${-r}L${r} ${r}M${r} ${-r}L${-r} ${r}` }, g);
+    pos.forEach(([px, py], i) => {
+      const g = el('g', { class: 'knoten' + (i === NAS ? ' nas' : ''), transform: `translate(${px.toFixed(1)} ${py.toFixed(1)})` }, knoten);
+      el('circle', { r: 13 }, g); x(g, 5.5);
+      const t = el('text', { y: py > MY + 10 ? 30 : -20 }, g); t.textContent = NAMEN_G[i];
+    });
+    const z = el('g', { class: 'zentrum' }, knoten);
+    el('circle', { cx: MX, cy: MY, r: 30 }, z);
+    const zt = el('text', { x: MX, y: MY + 4 }, z); zt.textContent = 'Dienst';
+    const zx = el('g', { transform: `translate(${MX} ${MY})` }, z); x(zx, 9);
+
+    let modus = 'stern', ausgefallen = false, uhr = 0, selbst = false, sichtbar = false, liste = [], zuletzt = 0, letzteGeburt = 0;
+    const TEXTE = {
+      stern: ['Zentral hängen alle Geräte am selben Dienst …', 'Eine Störung im Zentrum, und alle stehen, obwohl ihre Geräte einwandfrei laufen.'],
+      netz: ['In MyrSpace sprechen deine Geräte direkt miteinander …', 'Sogar der NAS ist aus, und der Rest läuft weiter.']
+    };
+    function zeige() {
+      svg.classList.toggle('stern', modus === 'stern'); svg.classList.toggle('netz', modus === 'netz');
+      svg.classList.toggle('ausgefallen', ausgefallen);
+      schalter.setAttribute('aria-checked', modus === 'netz');
+      lbls.forEach(l => l.classList.toggle('an', l.dataset.modus === modus));
+      text.textContent = TEXTE[modus][ausgefallen ? 1 : 0];
+      text.classList.toggle('schlecht', ausgefallen && modus === 'stern'); text.classList.toggle('gut', ausgefallen && modus === 'netz');
+    }
+    function starte(m) {
+      clearTimeout(uhr); modus = m; ausgefallen = false; zeige();
+      uhr = setTimeout(() => {
+        ausgefallen = true; zeige();
+        if (!ruhig.matches) svg.animate([{ transform: 'none' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(4px)' }, { transform: 'none' }], 260);
+        // Beim ersten Mal erzählt sich die Geschichte selbst weiter: nach dem Stern das Netz
+        if (m === 'stern' && !selbst) uhr = setTimeout(() => { if (!selbst) starte('netz'); }, 2600);
+      }, ruhig.matches ? 0 : 2300);
+    }
+    const waehle = m => { selbst = true; verankert(() => starte(m)); };
+    schalter.addEventListener('click', () => waehle(modus === 'stern' ? 'netz' : 'stern'));
+    lbls.forEach(l => l.addEventListener('click', () => waehle(l.dataset.modus)));
+
+    // Datenpakete laufen über alle Leitungen, die noch leben
+    function lebendig() {
+      if (modus === 'stern') return ausgefallen ? [] : STERN;
+      return ausgefallen ? NETZ.filter(([a, b]) => a !== NAS && b !== NAS) : NETZ;
+    }
+    function tick(jetzt) {
+      if (!sichtbar || ruhig.matches) { zuletzt = 0; return; }
+      if (jetzt - letzteGeburt > 260) {
+        const l = lebendig();
+        if (l.length) {
+          let [a, b] = l[Math.floor(Math.random() * l.length)];
+          if (Math.random() < .5) [a, b] = [b, a];
+          liste.push({ a: ort(a), b: ort(b), t0: jetzt, el: el('circle', { r: 3.2, class: 'paket' }, pakete), m: modus });
+        }
+        letzteGeburt = jetzt;
+      }
+      liste = liste.filter(p => {
+        const t = (jetzt - p.t0) / 900;
+        if (t >= 1 || p.m !== modus || !lebendig().length) { p.el.remove(); return false; }
+        p.el.setAttribute('cx', (p.a[0] + (p.b[0] - p.a[0]) * t).toFixed(1));
+        p.el.setAttribute('cy', (p.a[1] + (p.b[1] - p.a[1]) * t).toFixed(1));
+        return true;
+      });
+      requestAnimationFrame(tick);
+    }
+    let gestartet = false;
+    new IntersectionObserver(([e]) => {
+      const war = sichtbar; sichtbar = e.isIntersecting;
+      if (sichtbar && !gestartet) { gestartet = true; starte('stern'); }
+      if (sichtbar && !war) requestAnimationFrame(tick);
+    }, { threshold: .35 }).observe(svg);
+    zeige();
+  }
+
+  /* ── Parallaxe ────────────────────────────────────────────── */
+  const ebenen = [...document.querySelectorAll('[data-tiefe]')];
+  let geplant = false;
+  const versetze = () => {
+    geplant = false;
+    const y = ruhig.matches ? 0 : window.scrollY;
+    for (const el of ebenen) el.style.transform = `translate3d(0, ${(-y * el.dataset.tiefe).toFixed(1)}px, 0)`;
+  };
+  window.addEventListener('scroll', () => { if (!geplant) { geplant = true; requestAnimationFrame(versetze); } }, { passive: true });
+  ruhig.addEventListener('change', versetze);
+})();
+</script>
+</body>
+</html>
