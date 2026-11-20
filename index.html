@@ -727,7 +727,7 @@ svg.dabei .tr-du .tr-zweig { opacity: 1; }
 /* Kleiner Zettel an einem Wort: zeigen beim Schweben oder Antippen (Fokus), ohne JS genauso */
 .tipp { position: relative; text-decoration: underline dotted var(--tx3); text-decoration-thickness: 2px; text-underline-offset: 3px; cursor: help; outline: none; }
 .tipp:focus-visible { outline: 2px solid var(--neon); outline-offset: 2px; border-radius: 3px; }
-.tipp-zettel { position: absolute; z-index: 7; left: -6px; bottom: calc(100% + 6px); width: max-content; max-width: min(16em, 70vw); padding: 7px 11px;
+.tipp-zettel { position: absolute; z-index: 7; left: calc(-6px + var(--schub, 0px)); bottom: calc(100% + 6px); width: max-content; max-width: min(16em, 70vw); padding: 7px 11px;
   border-radius: 12px 12px 12px 4px; background: var(--grund); border: 1px solid var(--panel-rand); box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
   font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--tx); text-decoration: none;
   opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .2s, transform .2s, visibility .2s; pointer-events: none; }
@@ -1198,7 +1198,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
     <li data-wann="neu">Wo <span class="beide">Konzerner und Cyberpunk</span> beide gemeint sind, verläuft die Schrift von Blau nach Rot.</li>
-    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „Kontrolliere“, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C, und jemand fragt an einer Zeile den Agenten.</li>
+    <li data-wann="neu">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer bis zum Ende der Seite keins angetippt hat, bekommt den Zug dort einmal von selbst. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C, und jemand fragt an einer Zeile den Agenten.</li>
     <li data-wann="neu">Im äußersten Ring, Sicht <span class="beide">Konzerner/Cyberpunk</span>: Empfehlungen zeigen, wem man vielleicht trauen kann, mehr nicht. Kontrollieren und mit dem Finger hereinlassen musst du selbst.</li>
     <li data-wann="neu"><span class="beide">Konzerner und Cyberpunk</span> wechseln sich nur noch oben unter dem Revolver ab. Weiter unten stehen beide Texte fest untereinander, das liest sich ruhiger.</li>
     <li data-wann="neu"><a href="#a-ringe">Von innen nach außen</a>: Erst steht nur dein Handy da. Mit „Weiterer Kreis?“ oder einem Tipp ins Bild wächst dein Space Ring um Ring bis zu vielen Spaces.</li>
@@ -1436,7 +1436,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     </div>
     <figure class="myrling-bild">
       <svg viewBox="0 0 360 262" role="img" aria-label="Schaubild: Zwei Keimlinge, die Myrlinge, wachsen je unter einem Wabenschild. Aus ihnen sprießen Myrten-Beeren, daneben steckt je ein Schildchen mit der Aufschrift Myrtag. Eine Beere reist signiert und unter einem eigenen kleinen Schild zum anderen Myrling. Dort wartet sie vor dem Schild, bis ein kleines Handy beim Empfänger den Finger liest, dann kommt sie hinein. Bomben, Viren, Bugs, Fremde und Phishing-Haken fliegen von allen Seiten heran und prallen an den Schilden ab."></svg>
-      <figcaption class="myrling-text">Signiert und unter eigenem Schild reist eine Myrte zum anderen Myrling. Hinein kommt sie erst, wenn dort jemand mit dem Finger besiegelt. Alles Fremde prallt ab.</figcaption>
+      <figcaption class="myrling-text">Signiert und unter eigenem Schild reist eine Myrte zum anderen Myrling. Hinein kommt sie erst, wenn du ihr Paket mit dem Finger besiegelst. Vorher solltest du sie <span class="tipp" tabindex="0" data-ankunft aria-describedby="tipp-mt5">kontrollieren<span class="tipp-zettel" role="tooltip" id="tipp-mt5">z.&nbsp;B. mit merge-train, dem voll integrierbaren Diff-Tool</span></span>. Alles Fremde prallt ab.</figcaption>
     </figure>
     <button class="genauer" type="button"><span data-sicht="anwender">Mehr Informationen →</span><span data-sicht="bastler">Und wie sicher ist das? →</span><span data-sicht="sicherheit">↺ Und wieder ganz einfach</span></button>
   </section>
@@ -2875,7 +2875,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         frage: 'Warum NODA? Dann darf man die PIN beliebig oft raten.',
         antwort: 'Stimmt, mit NODA zählt der Chip keine Fehlversuche. Ohne sperrt er nach zu vielen falschen PINs eine Weile.' },
     };
-    const bsp = () => BSP[(zurueck.closest('[data-sicht]') || document.body).dataset.sicht] || BSP.anwender;
+    const bsp = () => BSP[(zurueck && zurueck.closest('[data-sicht]') || document.body).dataset.sicht] || BSP.anwender;
     const zaehl = (b, art) => b.zeilen.filter(z => art === '-' ? z[2] === '-' : z[2] === '+' || z[2] === 'ziel').length;
     // Kleine Syntaxfarben: Kommentar, Text, Zahl/Wert, Schlüsselwort/Konstante/Abschnitt, Funktion/Schlüssel
     const MUSTER = {
@@ -2989,8 +2989,13 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     }
     const fahren = x => { zugEl.style.transform = `translateX(${x}px)`; };
 
-    async function ankunft() {
+    // Einmal je Sitzung soll jeder den Zug gesehen haben: Wer bis zum Ende der Seite nichts angetippt hat, bekommt ihn dort
+    const GESEHEN = 'myr-pitch-zug';
+    const gesehen = () => { try { return sessionStorage.getItem(GESEHEN) === 'ja'; } catch (e) { return false; } };
+    async function ankunft(auto) {
       if (offen) return;
+      try { sessionStorage.setItem(GESEHEN, 'ja'); } catch (e) {}
+      if (auto === true) zurueck = null;
       offen = true;
       const n = ++lauf;
       zeichnen();
@@ -3003,7 +3008,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       ak.classList.remove('faehrt'); ak.classList.add('laedt', 'voll');
       await warte(1300); if (n !== lauf) return;
       ak.classList.remove('laedt'); ak.classList.add('steht');
-      wagenEl.focus({ preventScroll: true });
+      if (zurueck) wagenEl.focus({ preventScroll: true }); // von selbst gekommen: den Fokus nicht wegnehmen
     }
     async function abfahrt() {
       if (!offen || ak.classList.contains('weg')) return;
@@ -3014,7 +3019,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       ak.classList.remove('faehrt', 'auf');
       await warte(650); if (n !== lauf) return;
       ak.hidden = true; offen = false;
-      zurueck.focus({ preventScroll: true });
+      if (zurueck) zurueck.focus({ preventScroll: true });
     }
     ausloeser.forEach(a => {
       a.setAttribute('role', 'button');
@@ -3022,6 +3027,26 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); zurueck = a; ankunft(); } });
     });
     $('.ak-zu', ak).addEventListener('click', abfahrt);
+    // Zettel am Rand (etwa im zentrierten Text unter dem Myrling) ins Bild schieben
+    document.querySelectorAll('.tipp').forEach(t => {
+      const z = $('.tipp-zettel', t);
+      const schieben = () => {
+        z.style.setProperty('--schub', '0px');
+        const r = z.getBoundingClientRect(), b = html.clientWidth;
+        const d = r.right > b - 8 ? b - 8 - r.right : r.left < 8 ? 8 - r.left : 0;
+        z.style.setProperty('--schub', Math.round(Math.max(d, 8 - r.left)) + 'px');
+      };
+      t.addEventListener('pointerenter', schieben); t.addEventListener('focus', schieben);
+    });
+    const ende = $('p.fuss');
+    if (ende && 'IntersectionObserver' in window) {
+      const beobachter = new IntersectionObserver(eintraege => {
+        if (!eintraege.some(e => e.isIntersecting)) return;
+        beobachter.disconnect();
+        if (!gesehen() && !offen) ankunft(true);
+      });
+      if (!gesehen()) beobachter.observe(ende);
+    }
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && offen && !dlg.open) abfahrt(); });
     addEventListener('resize', () => { if (ak.classList.contains('steht')) zeichnen('stopp'); });
 
