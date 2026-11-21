@@ -23,7 +23,7 @@
   // Vor dem ersten Bild: JS-Klasse und gemerktes Thema setzen, damit nichts flackert.
   document.documentElement.classList.add('js');
   try { var t = localStorage.getItem('myr-pitch-thema'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
-  // Bewegung: aus, wenn das System „Bewegung reduzieren“ meldet oder der Schalter auf dem Absperrband es sagt (gemerkt).
+  // Bewegung: aus, wenn das System „Bewegung reduzieren“ meldet oder der Schalter in der Kopfzeile es sagt (gemerkt).
   (function () {
     var mq = matchMedia('(prefers-reduced-motion: reduce)'), d = document.documentElement, hoerer = [];
     try { if (localStorage.getItem('myr-pitch-ruhig') === 'an') d.dataset.ruhig = 'an'; } catch (e) {}
@@ -806,25 +806,18 @@ html:not(.js) .ring-reihe { display: none; }
   .handy { width: 300px; }
 }
 
-/* ── Baustelle: Absperrband, Bauschild, Bautafel ───────────────── */
-.absperrband { position: relative; z-index: 4; width: 106vw; margin: 0 -3vw; overflow: hidden; padding: 5px 0;
-  transform: rotate(-1.1deg); transform-origin: 50% 50%;
-  background: repeating-linear-gradient(-45deg, var(--fenster) 0 16px, var(--beere-dunkel) 16px 32px);
-  box-shadow: 0 3px 14px rgba(0, 0, 0, .2), 0 0 24px -6px var(--glut-farbe); }
-.band-lauf { display: flex; width: max-content; animation: bandlauf 48s linear infinite; }
-.band-lauf span { flex: none; margin: 0 22px; padding: 2px 12px; border-radius: 3px; background: var(--fenster); color: #17122a;
-  font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
-@keyframes bandlauf { to { transform: translateX(-50%); } }
-/* Schalter für Bewegung: steht fest auf dem laufenden Band */
-.ruhe-knopf { position: absolute; top: 50%; left: calc(3vw + 12px); transform: translateY(-50%); display: none; cursor: pointer;
-  padding: 3px 12px; border-radius: 999px; border: 2px solid #17122a; background: #f5f3ee; color: #17122a;
-  font-size: 12.5px; font-weight: 600; white-space: nowrap; box-shadow: 0 2px 10px rgba(0, 0, 0, .3); }
-html.js .ruhe-knopf { display: inline-block; }
+/* ── Kopfzeile rechts: Bautafel, Bewegung, Nacht/Morgen ────────── */
+/* Schalter für Bewegung: sieht aus wie „Nacht/Morgen“; bei der Systemeinstellung ist Bewegung ohnehin aus, dann fehlt er */
+.ruhe-knopf { display: none; align-items: center; gap: 6px; border: 1px solid var(--panel-rand); background: var(--panel); color: inherit;
+  border-radius: 999px; padding: 6px 12px 6px 8px; cursor: pointer; font-size: 14px; font-weight: 600;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+html.js .ruhe-knopf { display: inline-flex; }
 html.js .ruhe-knopf[hidden] { display: none; }
-.ruhe-knopf b { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
-.ruhe-knopf:focus-visible { outline: 3px solid var(--neon); outline-offset: 2px; }
-.ruhe-knopf .kurz { display: none; font-weight: 800; }
-@media (max-width: 520px) { .ruhe-knopf .lang { display: none; } .ruhe-knopf .kurz { display: inline; } }
+.ruhe-knopf svg { width: 18px; height: 18px; fill: var(--tx3); }
+.ruhe-knopf .ic-play, .ruhe-knopf[aria-pressed="true"] .ic-pause { display: none; }
+.ruhe-knopf[aria-pressed="true"] .ic-play { display: block; }
+.ruhe-knopf:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
+@media (max-width: 560px) { .ruhe-knopf .ruhe-text { display: none; } .ruhe-knopf { padding: 6px 8px; } }
 
 .kopf-rechts { display: inline-flex; align-items: center; gap: 8px; }
 .bauschild { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--panel-rand); background: var(--panel);
@@ -835,6 +828,7 @@ html.js .ruhe-knopf[hidden] { display: none; }
 .bauschild:hover svg { animation: locken 1.2s ease; }
 .bauschild:focus-visible { outline: 3px solid var(--neon); outline-offset: 3px; }
 @media (max-width: 430px) { .bauschild span { display: none; } .bauschild { padding: 5px 8px; } }
+@media (max-width: 380px) { .thema-text { display: none; } }
 
 .platzhalter-marke { background: repeating-linear-gradient(-45deg, var(--fenster) 0 8px, #ffe2a6 8px 16px); color: #17122a; }
 
@@ -1187,17 +1181,8 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   </div>
 </div>
 
-<!-- ═════ Baustelle: Absperrband ═════ -->
-<div class="absperrband" id="anfang" role="note" aria-label="Baustelle: Diese Seite ist ein Prototyp und noch nicht fertig.">
-  <div class="band-lauf" aria-hidden="true">
-    <span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span><span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span>
-    <span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span><span>Baustelle</span><span>Prototyp</span><span>Betreten erwünscht</span><span>noch nicht fertig</span>
-  </div>
-  <button class="ruhe-knopf" type="button" aria-pressed="false"><span class="lang">Zu viel Bewegung? <b>Hier ausschalten</b></span><span class="kurz">Bewegung aus</span></button>
-</div>
-
 <!-- ═════ Kopfzeile ═════ -->
-<header class="kopf">
+<header class="kopf" id="anfang">
   <a class="marke" href="#" aria-label="MyrSpace">
     <svg viewBox="0 0 64 64" aria-hidden="true">
       <path d="M33 16 C35 11 38 8 42 6" fill="none" stroke="#4a5a34" stroke-width="2" stroke-linecap="round"/>
@@ -1210,7 +1195,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     MyrSpace
   </a>
   <div class="kopf-rechts">
-  <a class="bauschild" href="#bautafel" aria-label="Baustelle: zur Bautafel mit dem Stand">
+  <a class="bauschild" href="#bautafel" aria-label="Bautafel: was an MyrSpace schon steht und was noch kommt">
     <svg viewBox="0 0 32 28" aria-hidden="true">
       <defs><pattern id="bake-streifen" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3.5" height="7" fill="#ffcf73"/><rect x="3.5" width="3.5" height="7" fill="#2f2552"/></pattern></defs>
       <path d="M8 15v11M24 15v11M5 26h6M21 26h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
@@ -1218,8 +1203,13 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
       <path d="M16 7.7v2.3" stroke="currentColor" stroke-width="2"/>
       <rect x="2" y="10" width="28" height="8" rx="1.8" fill="url(#bake-streifen)" stroke="#2f2552" stroke-width="1.2"/>
     </svg>
-    <span>Baustelle</span>
+    <span>Bautafel</span>
   </a>
+  <button class="ruhe-knopf" type="button" aria-pressed="false" aria-label="Bewegung ausschalten">
+    <svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>
+    <svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+    <span class="ruhe-text">Bewegung aus</span>
+  </button>
   <button class="thema" type="button" aria-label="Zwischen Nacht und Morgen wechseln">
     <svg class="ic-sonne" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#f2b84b"/><g stroke="#e0a040" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></g></svg>
     <svg class="ic-mond" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="#b8a8ee"/></svg>
@@ -1236,6 +1226,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   <details class="neu-box" open>
     <summary class="besuch-neu"><i aria-hidden="true"></i><span class="neu-titel">Was zuletzt neu ist</span></summary>
     <ol class="neuigkeiten">
+    <li data-wann="neu">Die Seite ist keine Baustelle mehr: Das Absperrband ist weg, „Bewegung aus“ sitzt jetzt oben neben Nacht und Morgen. Gebaut wird weiter an MyrSpace selbst, das zeigt die <a href="#bautafel">Bautafel</a>.</li>
     <li data-wann="2026-11-21T00:55">Am Ende steht jetzt der <a href="#schluss">Schluss</a>: Fragen und Kommentare gern auf GitHub, bis die erste Fassung erscheint.</li>
     <li data-wann="2026-11-21T00:55">Wo <span class="beide">Konzerner und Cyberpunk</span> beide gemeint sind, verläuft die Schrift von Blau nach Rot.</li>
     <li data-wann="2026-11-21T00:55">Der merge-train fährt ein: Hinter gepunkteten Wörtern wie „kontrollieren“ unter dem Myrling, „nachlesen“ oder „schaust du durch“ klappt oben ein Bahnhof herunter. Wer keins angetippt hat, bekommt den Zug einmal von selbst, sobald er die Bautafel hinunterliest. Oben im Bahnhof steht auf einer Anzeigetafel, was merge-train kann. Im Waggon steckt ein Diff, je nach Sicht eine Konfiguration, Python oder TPM2 in C. An einer Zeile steht eine Frage an den Agenten, abschicken musst du sie selbst. Drehst du den Revolver, während der Bahnhof offen ist, wird der Waggon neu beladen.</li>
@@ -1604,7 +1595,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
         Darunter sind noch Ideen, viele sind aber schon gut durchdacht und geplant.</p>
     </div>
     <div class="bau-gruppe">
-      <h4>Diese Seite <small>Pitch, Prototyp</small><span class="bau-zahl"></span></h4>
+      <h4>Diese Seite <small>Pitch</small><span class="bau-zahl"></span></h4>
       <span class="bau-balken" aria-hidden="true"><i></i></span>
       <ul class="bau-liste">
         <li class="fertig" tabindex="0" aria-describedby="bau-z12"><i class="kasten" aria-hidden="true"></i><span class="bau-text"><span class="unsichtbar">fertig: </span><span class="bau-titel">Konzept und Erzählbogen</span><span class="bau-zettel" role="tooltip" id="bau-z12">Drei Versprechen: eigen, besiegelt, offen. Drei Sichten: Anwender, Bastler, Sicherheit.</span></span></li>
@@ -1636,7 +1627,7 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
     <p class="schluss-vision">Dann fangen wir zusammen an, die Vision von MyrSpace Wirklichkeit werden zu lassen.</p>
   </section>
 
-  <p class="fuss"><span>Prototyp, noch im Bau ·<a class="nach-oben" href="#anfang">↑ zurück zum Anfang</a></span></p>
+  <p class="fuss"><span><a class="nach-oben" href="#anfang">↑ zurück zum Anfang</a></span></p>
 </main>
 
 <button class="dock" type="button" aria-label="Sicht weiterdrehen" tabindex="-1">
@@ -3279,14 +3270,14 @@ html[data-ruhig="an"] .handy { transform: rotate(-3deg); }
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && lade.classList.contains('offen') && !(e.target instanceof Element && e.target.closest('.bau-liste li, .bau-pfad li'))) schublade(false); });
   document.addEventListener('click', e => { if (lade.classList.contains('offen') && !lade.contains(e.target) && !schild.contains(e.target)) schublade(false); });
 
-  // Schalter auf dem Absperrband: Bewegung aus und wieder an. Bei der Systemeinstellung ist sie ohnehin aus.
+  // Schalter in der Kopfzeile: Bewegung aus und wieder an. Bei der Systemeinstellung ist sie ohnehin aus.
   const ruheKnopf = document.querySelector('.ruhe-knopf');
   const ruheZeigen = () => {
     const aus = ruhig.matches;
     ruheKnopf.hidden = ruhig.system;
     ruheKnopf.setAttribute('aria-pressed', String(aus));
-    ruheKnopf.querySelector('.lang').innerHTML = aus ? 'Bewegung ist aus. <b>Wieder einschalten</b>' : 'Zu viel Bewegung? <b>Hier ausschalten</b>';
-    ruheKnopf.querySelector('.kurz').textContent = aus ? 'Bewegung an' : 'Bewegung aus';
+    ruheKnopf.querySelector('.ruhe-text').textContent = aus ? 'Bewegung an' : 'Bewegung aus';
+    ruheKnopf.setAttribute('aria-label', aus ? 'Bewegung wieder einschalten' : 'Bewegung ausschalten');
   };
   ruheKnopf.addEventListener('click', () => { ruhig.setzen(!ruhig.matches); ruheZeigen(); });
   ruhig.addEventListener('change', ruheZeigen);
